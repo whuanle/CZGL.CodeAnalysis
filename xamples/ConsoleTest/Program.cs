@@ -1,4 +1,3 @@
-
 using CZGL.CodeAnalysis.Shared;
 using CZGL.Roslyn;
 using Microsoft.CodeAnalysis;
@@ -20,10 +19,19 @@ namespace ConsoleTest
         public event A1 a1;
         static void Main(string[] args)
         {
-            ClassBuidler buidler=new ClassBuidler();
+            ClassBuilder buidler = new ClassBuilder();
+            var build = buidler.SetVisibility(ClassVisibilityType.Public)
+                .SetName("Test")
+                .AddMethodMember(b =>
+                {
+                    b.SetVisibility(MemberVisibilityType.Public)
+                    .SetRondomName()
+                    .SetBlock("System.Console.WriteLine(\"111\");");
+                })
+                .Build();
 
-
-            Console.WriteLine(result);
+            CompilationBuilder compilation = new CompilationBuilder();
+            compilation.Test(build);
             Console.ReadKey();
 
         }

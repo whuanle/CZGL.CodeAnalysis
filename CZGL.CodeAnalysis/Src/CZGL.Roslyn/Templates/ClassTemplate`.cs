@@ -236,7 +236,7 @@ namespace CZGL.Roslyn.Templates
             return _TBuilder;
         }
 
-        public virtual TBuilder AddMember(Action<FieldBuilder> builder) 
+        public virtual TBuilder AddFieldMember(Action<FieldBuilder> builder) 
         {
             FieldBuilder member = new FieldBuilder();
             builder.Invoke(member);
@@ -244,7 +244,7 @@ namespace CZGL.Roslyn.Templates
             return _TBuilder;
         }
 
-        public virtual TBuilder AddMember(Action<PropertyBuilder> builder)
+        public virtual TBuilder AddPropertyMember(Action<PropertyBuilder> builder)
         {
             PropertyBuilder member = new PropertyBuilder();
             builder.Invoke(member);
@@ -253,7 +253,7 @@ namespace CZGL.Roslyn.Templates
         }
 
 
-        public virtual TBuilder AddMember(Action<MethodBuilder> builder)
+        public virtual TBuilder AddMethodMember(Action<MethodBuilder> builder)
         {
             MethodBuilder member = new MethodBuilder();
             builder.Invoke(member);
@@ -261,7 +261,7 @@ namespace CZGL.Roslyn.Templates
             return _TBuilder;
         }
 
-        public virtual TBuilder AddMember(Action<DelegateBuilder> builder)
+        public virtual TBuilder AddDelegateMember(Action<DelegateBuilder> builder)
         {
             DelegateBuilder member = new DelegateBuilder();
             builder.Invoke(member);
@@ -270,14 +270,13 @@ namespace CZGL.Roslyn.Templates
         }
 
 
-        public virtual TBuilder AddMember(Action<EventBuilder> builder)
+        public virtual TBuilder AddEventMember(Action<EventBuilder> builder)
         {
             EventBuilder member = new EventBuilder();
             builder.Invoke(member);
             Members.Add(member.Build());
             return _TBuilder;
         }
-
 
         #endregion
     }

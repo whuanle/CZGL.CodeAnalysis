@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -12,6 +13,24 @@ namespace CZGL.Roslyn
 {
     public static class RoslynHelper
     {
+        private static string runtimePath = Path.Combine(typeof(RoslynHelper).Assembly.Location,"aaa.dll");
+        public static void CreateDll(ClassDeclarationSyntax classDeclaration)
+        {
+            var syntaxTree = CSharpSyntaxTree.ParseText( classDeclaration.NormalizeWhitespace().ToFullString());
+
+            var compilation = CSharpCompilation.Create("Test.dll", new SyntaxTree[] { syntaxTree });
+            try
+            {
+                var result = compilation.Emit(@"c:\temp\Test.dll");
+
+                Console.WriteLine(result.Success ? "Sucess!!" : "Failed");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            Console.Read();
+        }
 
         #region Token
 

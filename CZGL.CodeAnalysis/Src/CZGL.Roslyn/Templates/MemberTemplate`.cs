@@ -82,7 +82,9 @@ namespace CZGL.Roslyn.Templates
         /// <returns></returns>
         public virtual TBuilder SetRondomName()
         {
-            MemberName = Guid.NewGuid().ToString();
+            var b = Guid.NewGuid().ToByteArray();
+            b[3] |= 0xF0;
+            MemberName = new Guid(b).ToString("N");
             return _TBuilder;
         }
     }

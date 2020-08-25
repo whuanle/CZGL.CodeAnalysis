@@ -1,5 +1,4 @@
 using CZGL.CodeAnalysis.Shared;
-using CZGL.Roslyn;
 using CZGL.Roslyn.Models;
 using CZGL.Roslyn.Templates;
 using Microsoft.CodeAnalysis;
@@ -12,7 +11,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading;
 
-namespace CZGL.CodeAnalysis.Roslyn
+namespace CZGL.Roslyn
 {
     public sealed class ClassBuilder : ClassTemplate<ClassBuilder>
     {
@@ -98,7 +97,7 @@ namespace CZGL.CodeAnalysis.Roslyn
 
 
             if (Members.Count != 0)
-                memberDeclaration = memberDeclaration.WithMembers(SyntaxFactory.List<MemberDeclarationSyntax>(Members));
+                memberDeclaration = memberDeclaration.WithMembers(SyntaxFactory.List(Members));
 
 
             return memberDeclaration;
