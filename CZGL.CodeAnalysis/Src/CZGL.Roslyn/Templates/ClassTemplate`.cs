@@ -1,4 +1,4 @@
-﻿using CZGL.CodeAnalysis.Shared;
+using CZGL.CodeAnalysis.Shared;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
@@ -183,11 +183,11 @@ namespace CZGL.Roslyn.Templates
             return _TBuilder;
         }
 
-        public virtual TBuilder SetConstraint(Action<GenericBuilder> builder)
-        {
+        // public virtual TBuilder SetConstraint(Action<GenericBuilder> builder)
+        // {
 
-            return _TBuilder;
-        }
+        //     return _TBuilder;
+        // }
 
         #endregion
 

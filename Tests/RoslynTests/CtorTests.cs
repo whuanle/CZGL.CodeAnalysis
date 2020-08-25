@@ -1,4 +1,4 @@
-﻿using CZGL.CodeAnalysis.Shared;
+using CZGL.CodeAnalysis.Shared;
 using CZGL.Roslyn;
 using Microsoft.CodeAnalysis;
 using System;

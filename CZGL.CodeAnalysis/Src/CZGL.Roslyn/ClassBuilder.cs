@@ -1,4 +1,4 @@
-﻿using CZGL.CodeAnalysis.Shared;
+using CZGL.CodeAnalysis.Shared;
 using CZGL.Roslyn;
 using CZGL.Roslyn.Models;
 using CZGL.Roslyn.Templates;
@@ -14,7 +14,7 @@ using System.Threading;
 
 namespace CZGL.CodeAnalysis.Roslyn
 {
-    public sealed class ClassBuilder: ClassTemplate<ClassBuilder>
+    public sealed class ClassBuilder : ClassTemplate<ClassBuilder>
     {
         public ClassBuilder()
         {
@@ -67,11 +67,11 @@ namespace CZGL.CodeAnalysis.Roslyn
             if (isBase)
             {
                 stringBuilder.Append(BaseTypeName);
-                if(isInterfaces)
+                if (isInterfaces)
                 {
                     stringBuilder.Append(",");
                     stringBuilder.Append(string.Join(",", BaseInterfaces));
-                }    
+                }
             }
 
             else if (isInterfaces)
@@ -83,15 +83,23 @@ namespace CZGL.CodeAnalysis.Roslyn
             stringBuilder.AppendLine("}");
 
 
-             memberDeclaration = CSharpSyntaxTree.ParseText(stringBuilder.ToString())
-                .GetRoot()
-                .DescendantNodes()
-                .OfType<ClassDeclarationSyntax>()
-                .Single();
+            memberDeclaration = CSharpSyntaxTree.ParseText(stringBuilder.ToString())
+               .GetRoot()
+               .DescendantNodes()
+               .OfType<ClassDeclarationSyntax>()
+               .Single();
 
             if (MemberAttrs.Count != 0)
                 memberDeclaration = memberDeclaration
                     .WithAttributeLists(AttributeBuilder.CreateAttributeList(MemberAttrs.ToArray()));
+
+            if (Ctors.Count != 0)
+                memberDeclaration = memberDeclaration.WithMembers(SyntaxFactory.List<MemberDeclarationSyntax>(Ctors));
+
+
+            if (Members.Count != 0)
+                memberDeclaration = memberDeclaration.WithMembers(SyntaxFactory.List<MemberDeclarationSyntax>(Members));
+
 
             return memberDeclaration;
 
