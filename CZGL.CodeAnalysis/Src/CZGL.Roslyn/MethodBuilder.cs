@@ -1,10 +1,6 @@
-﻿using CZGL.CodeAnalysis.Shared;
-using CZGL.Roslyn.Templates;
-using Microsoft.CodeAnalysis;
+﻿using CZGL.Roslyn.Templates;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -15,46 +11,6 @@ namespace CZGL.Roslyn
         public MethodBuilder()
         {
             _TBuilder = this;
-        }
-
-        /// <summary>
-        /// 修饰符
-        /// </summary>
-        /// <param name="qualifierType"></param>
-        /// <returns></returns>
-        public  MethodBuilder SetQualifier(MemberQualifierType qualifierType)
-        {
-            Qualifier = RoslynHelper.GetName(qualifierType);
-            return _TBuilder;
-        }
-
-        /// <summary>
-        /// 修饰符
-        /// </summary>
-        /// <param name="str">static... </param>
-        /// <returns></returns>
-        public  MethodBuilder SetQualifier(string str = "")
-        {
-            Qualifier = str;
-            return _TBuilder;
-        }
-
-
-        /// <summary>
-        /// 方法体中的代码
-        /// </summary>
-        /// <param name="block">方法体中的代码</param>
-        /// <returns></returns>
-        /// <example>
-        /// <code>
-        /// int a = 0;
-        /// Console.WriteLine(a);
-        /// </code>
-        /// </example>
-        public MethodBuilder SetBlock(string blockCode = null)
-        {
-            BlockCode = blockCode;
-            return _TBuilder;
         }
 
 
@@ -98,18 +54,18 @@ namespace CZGL.Roslyn
         {
             StringBuilder stringBuilder = new StringBuilder("class Test66666666{");
 
-            stringBuilder.Append(Visibility);
+            stringBuilder.Append(MemberVisibility);
 
             stringBuilder.Append(" ");
-            stringBuilder.Append(Qualifier);
+            stringBuilder.Append(MemberQualifier);
 
             stringBuilder.Append(" ");
-            stringBuilder.Append(ReturnType);
+            stringBuilder.Append(FuncReturnType);
 
             stringBuilder.Append(" ");
             stringBuilder.Append(MemberName);
 
-            stringBuilder.AppendLine($"({Params})");
+            stringBuilder.AppendLine($"({FuncParams})");
 
             stringBuilder.AppendLine("{");
             stringBuilder.AppendLine(BlockCode);

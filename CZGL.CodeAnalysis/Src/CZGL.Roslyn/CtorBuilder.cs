@@ -1,8 +1,6 @@
 ﻿using CZGL.Roslyn.Templates;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -15,6 +13,7 @@ namespace CZGL.Roslyn
         {
             _TBuilder = this;
         }
+
         public static ConstructorDeclarationSyntax Build(string Code, string[] attrs = null)
         {
             var syntaxNodes = CSharpSyntaxTree.ParseText(Code).GetRoot().DescendantNodes();
@@ -33,16 +32,16 @@ namespace CZGL.Roslyn
         {
             StringBuilder stringBuilder = new StringBuilder($"class {MemberName}");
             stringBuilder.AppendLine("{");
-            stringBuilder.Append(Visibility);
+            stringBuilder.Append(MemberVisibility);
 
             stringBuilder.Append(" ");
-            stringBuilder.Append(Qualifier);
+            stringBuilder.Append(MemberQualifier);
 
 
             stringBuilder.Append(" ");
             stringBuilder.Append(MemberName);
 
-            stringBuilder.Append($"({Params})");
+            stringBuilder.Append($"({FuncParams})");
             if (!string.IsNullOrEmpty(BaseCtor))
                 stringBuilder.Append(":" + BaseCtor);
             else if (!string.IsNullOrEmpty(ThisCtor))

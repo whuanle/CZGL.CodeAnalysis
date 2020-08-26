@@ -126,19 +126,19 @@ namespace CZGL.Roslyn
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append("[");
 
-            stringBuilder.Append(Name);
-            bool isCtor = !string.IsNullOrEmpty(Ctor);
-            bool isProperty = !string.IsNullOrEmpty(Propertys);
+            stringBuilder.Append(MemberName);
+            bool isCtor = !string.IsNullOrEmpty(MemberCtor);
+            bool isProperty = !string.IsNullOrEmpty(MemberPropertys);
 
             if (isCtor || isProperty)
             {
                 stringBuilder.Append("(");
                 if (isCtor)
-                    stringBuilder.Append(Ctor);
+                    stringBuilder.Append(MemberCtor);
                 if (isCtor && isProperty)
                     stringBuilder.Append(",");
                 if (isProperty)
-                    stringBuilder.Append(Propertys);
+                    stringBuilder.Append(MemberPropertys);
                 stringBuilder.Append(")");
             }
 

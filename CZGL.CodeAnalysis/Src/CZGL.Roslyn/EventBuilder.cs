@@ -44,7 +44,7 @@ namespace CZGL.Roslyn
         {
             StringBuilder stringBuilder = new StringBuilder();
 
-            stringBuilder.Append(Visibility);
+            stringBuilder.Append(MemberVisibility);
 
             stringBuilder.Append(" ");
             stringBuilder.Append("event");

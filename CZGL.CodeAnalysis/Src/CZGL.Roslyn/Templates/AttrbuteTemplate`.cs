@@ -8,9 +8,9 @@ namespace CZGL.Roslyn.Templates
 {
     public abstract class AttrbuteTemplate<TBuilder> where TBuilder : AttrbuteTemplate<TBuilder>
     {
-        protected internal string Name;
-        protected internal string Ctor;
-        protected internal string Propertys;
+        protected internal string MemberName;
+        protected internal string MemberCtor;
+        protected internal string MemberPropertys;
 
         protected internal TBuilder _TBuilder;
 
@@ -22,7 +22,7 @@ namespace CZGL.Roslyn.Templates
         /// <param name="attrType">名称后缀不需要带上 Attribute</param>
         public virtual TBuilder SetName(string attrType)
         {
-            Name = attrType;
+            MemberName = attrType;
             return _TBuilder;
         }
 
@@ -34,7 +34,7 @@ namespace CZGL.Roslyn.Templates
         /// <returns></returns>
         public virtual TBuilder SetName(Type attrType)
         {
-            Name = attrType.Name;
+            MemberName = attrType.Name;
             return _TBuilder;
         }
 
@@ -54,7 +54,7 @@ namespace CZGL.Roslyn.Templates
         /// </example>
         public virtual TBuilder SetCtor(string[] @params)
         {
-            Ctor = string.Join(",", @params);
+            MemberCtor = string.Join(",", @params);
             return _TBuilder;
         }
 
@@ -65,7 +65,7 @@ namespace CZGL.Roslyn.Templates
         /// <returns></returns>
         public virtual TBuilder SetCtor(string paramsStr)
         {
-            Ctor = paramsStr;
+            MemberCtor = paramsStr;
             return _TBuilder;
         }
 
@@ -83,7 +83,7 @@ namespace CZGL.Roslyn.Templates
         /// </example>
         public virtual TBuilder SetProperty(params string[] propertys)
         {
-            Propertys = string.Join(",",propertys);
+            MemberPropertys = string.Join(",",propertys);
             return _TBuilder;
         }
 

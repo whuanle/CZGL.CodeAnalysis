@@ -6,53 +6,47 @@ using System.Text;
 
 namespace CZGL.Roslyn.Templates
 {
-    public abstract class MethodTemplate<TBuilder> : MemberTemplate<TBuilder> where TBuilder : MethodTemplate<TBuilder>
+    public abstract class MethodTemplate<TBuilder> : FuncTemplate<TBuilder> where TBuilder : MethodTemplate<TBuilder>
     {
-        protected internal string ReturnType = "void";
-        protected internal string Params;
         protected internal string BlockCode;
 
         /// <summary>
-        /// 设置返回返回类型
+        /// 修饰符
         /// </summary>
-        /// <example>int</example>
-        /// <param name="str"></param>
+        /// <param name="qualifierType"></param>
         /// <returns></returns>
-        public virtual TBuilder SetReturnType(string str = "void")
+        public TBuilder SetQualifier(MemberQualifierType qualifierType)
         {
-            ReturnType = str;
+            MemberQualifier = RoslynHelper.GetName(qualifierType);
             return _TBuilder;
         }
 
         /// <summary>
-        /// 设置方法的参数列表
+        /// 修饰符
         /// </summary>
-        /// <param name="paramsStr">参数内容</param>
+        /// <param name="str">static... </param>
         /// <returns></returns>
-        /// <example>
-        /// <code>
-        /// SetParams("int a,int b,int c = 0")
-        /// </code>
-        /// </example>
-        public virtual TBuilder SetParams(string paramsStr)
+        public TBuilder SetQualifier(string str = "")
         {
-            Params = paramsStr;
+            MemberQualifier = str;
             return _TBuilder;
         }
 
+
         /// <summary>
-        /// 设置方法的参数列表
+        /// 方法体中的代码
         /// </summary>
-        /// <param name="paramsStr">参数内容</param>
+        /// <param name="block">方法体中的代码</param>
         /// <returns></returns>
         /// <example>
         /// <code>
-        /// SetParams("int a,int b,int c = 0")
+        /// int a = 0;
+        /// Console.WriteLine(a);
         /// </code>
         /// </example>
-        public virtual TBuilder SetParams(params string[] @params)
+        public TBuilder SetBlock(string blockCode = null)
         {
-            Params = string.Join(",",@params);
+            BlockCode = blockCode;
             return _TBuilder;
         }
 

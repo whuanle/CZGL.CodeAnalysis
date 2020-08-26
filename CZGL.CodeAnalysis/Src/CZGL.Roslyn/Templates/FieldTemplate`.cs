@@ -7,30 +7,32 @@ using System.Text;
 
 namespace CZGL.Roslyn
 {
-    public abstract class FieldTemplate<TBuilder> : QualifierTemplate<TBuilder> where TBuilder : FieldTemplate<TBuilder>
+
+    public abstract class FieldTemplate<TBuilder> : VariableTemplate<TBuilder> where TBuilder : FieldTemplate<TBuilder>
     {
-        protected internal string MemberType;
-        protected internal string MemberInit;
-
         /// <summary>
-        /// 定义类型
+        /// 设置修饰符，是否为常量，是否为静态成员，是否只读
+        /// <para> MemberQualifierType.Abstract 对字段无效</para>
         /// </summary>
-        /// <param name="str"></param>
+        /// <param name="qualifierType"></param>
         /// <returns></returns>
-        public virtual TBuilder SetType(string str = null)
+        public virtual TBuilder SetQualifier(MemberQualifierType qualifierType = MemberQualifierType.Default)
         {
-            MemberType = str;
+            MemberQualifier = RoslynHelper.GetName(qualifierType);
             return _TBuilder;
         }
 
+
         /// <summary>
-        /// 初始化器
+        /// 设置修饰符，是否为常量，是否为静态成员，是否只读
         /// </summary>
+        /// <param name="str">static... </param>
         /// <returns></returns>
-        public virtual TBuilder Initializer(string initString = null)
+        public virtual TBuilder SetQualifier(string str = "")
         {
-            MemberInit = initString;
+            MemberQualifier = str;
             return _TBuilder;
         }
+
     }
 }

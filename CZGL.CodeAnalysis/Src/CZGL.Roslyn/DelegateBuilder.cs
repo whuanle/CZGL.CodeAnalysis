@@ -12,7 +12,7 @@ namespace CZGL.Roslyn
     /// <summary>
     /// 构建委托
     /// </summary>
-    public sealed class DelegateBuilder : MethodTemplate<DelegateBuilder>
+    public sealed class DelegateBuilder : FuncTemplate<DelegateBuilder>
     {
         public DelegateBuilder()
         {
@@ -59,18 +59,18 @@ namespace CZGL.Roslyn
         {
             StringBuilder stringBuilder = new StringBuilder();
 
-            stringBuilder.Append(Visibility);
+            stringBuilder.Append(MemberVisibility);
 
             stringBuilder.Append(" ");
             stringBuilder.Append("delegate");
 
             stringBuilder.Append(" ");
-            stringBuilder.Append(ReturnType);
+            stringBuilder.Append(FuncReturnType);
 
             stringBuilder.Append(" ");
             stringBuilder.Append(MemberName);
 
-            stringBuilder.AppendLine($"({Params})");
+            stringBuilder.AppendLine($"({FuncParams})");
 
             stringBuilder.AppendLine(";");
             DelegateDeclarationSyntax memberDeclaration = default;

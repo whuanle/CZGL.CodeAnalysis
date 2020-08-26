@@ -15,19 +15,6 @@ namespace CZGL.Roslyn
             _TBuilder = this;
         }
 
-
-        /// <summary>
-        /// 设置修饰符，是否为常量，是否为静态成员，是否只读
-        /// <para>MemberQualifierType.Abstract 对字段无效</para>
-        /// </summary>
-        /// <param name="qualifierType"></param>
-        /// <returns></returns>
-        public override FieldBuilder SetQualifier(MemberQualifierType qualifierType = MemberQualifierType.Default)
-        {
-            Qualifier = RoslynHelper.GetName(qualifierType);
-            return this;
-        }
-
         /// <summary>
         /// 通过代码直接生成
         /// </summary>
@@ -57,11 +44,11 @@ namespace CZGL.Roslyn
             bool isCanCreate = false;
 
 
-            if (!string.IsNullOrEmpty(Visibility)) isCanCreate = true;
-            stringBuilder.Append(Visibility);
+            if (!string.IsNullOrEmpty(MemberVisibility)) isCanCreate = true;
+            stringBuilder.Append(MemberVisibility);
 
             stringBuilder.Append(" ");
-            stringBuilder.Append(Qualifier);
+            stringBuilder.Append(MemberQualifier);
 
             stringBuilder.Append(" ");
             stringBuilder.Append(MemberType);

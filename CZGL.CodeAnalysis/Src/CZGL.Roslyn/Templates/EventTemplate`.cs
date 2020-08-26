@@ -4,29 +4,16 @@ using System.Text;
 
 namespace CZGL.Roslyn.Templates
 {
-    public abstract class EventTemplate<TBuilder> : MemberTemplate<TBuilder> where TBuilder : EventTemplate<TBuilder>
+    public abstract class EventTemplate<TBuilder> : VariableTemplate<TBuilder> where TBuilder : EventTemplate<TBuilder>
     {
-        protected internal string MemberType;
-        protected internal string MemberInit;
-
         /// <summary>
-        /// 定义类型
+        /// 定义事件的委托类型
         /// </summary>
-        /// <param name="str"></param>
+        /// <param name="typeName">不能为空</param>
         /// <returns></returns>
-        public virtual TBuilder SetDelegateType(string str = null)
+        public virtual TBuilder SetDelegateType(string typeName)
         {
-            MemberType = str;
-            return _TBuilder;
-        }
-
-        /// <summary>
-        /// 初始化器
-        /// </summary>
-        /// <returns></returns>
-        public virtual TBuilder Initializer(string initString = null)
-        {
-            MemberInit = initString;
+            MemberType = typeName;
             return _TBuilder;
         }
 

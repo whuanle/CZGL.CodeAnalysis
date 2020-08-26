@@ -52,10 +52,10 @@ namespace CZGL.Roslyn
         {
             StringBuilder stringBuilder = new StringBuilder();
 
-            stringBuilder.Append(Visibility);
+            stringBuilder.Append(MemberVisibility);
 
             stringBuilder.Append(" ");
-            stringBuilder.Append(Qualifier);
+            stringBuilder.Append(MemberQualifier);
 
             stringBuilder.Append(" ");
             stringBuilder.Append(MemberType);
