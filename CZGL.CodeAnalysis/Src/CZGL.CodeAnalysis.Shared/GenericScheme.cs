@@ -7,6 +7,7 @@ namespace CZGL.CodeAnalysis.Shared
     /// 泛型参数以及此参数的约束，请注意构造函数的使用
     /// <para>为了避免滥用，请先了解：<inheritdoc>https://www.cnblogs.com/whuanle/p/12252754.html#113-泛型的参数名称和泛型限定</inheritdoc>/></para>
     /// </summary>
+    [Obsolete]
     public class GenericScheme
     {
 
@@ -33,7 +34,7 @@ namespace CZGL.CodeAnalysis.Shared
         /// </summary>
         /// <param name="name">参数名称</param>
         /// <param name="type"></param>
-        public GenericScheme(string name, GenericConstraintsType red)
+        public void AddStructOrUmanaged(string name, GenericConstraintsType red)
         {
             NameIsNullOrEmpty(name);
 
@@ -64,7 +65,7 @@ namespace CZGL.CodeAnalysis.Shared
                 case GenericConstraintsType.Class: Yellow = yellow; break;
                 case GenericConstraintsType.Notnull: Yellow = yellow; break;
                 case GenericConstraintsType.BaseClass:
-                    Yellow = yellow; break;
+                    Yellow = yellow; 
                     if (baseClass != null)
                         break;
                     else throw new ArgumentNullException($"{nameof(yellow)} 为 GenericConstraintsType.BaseClass ，但 {nameof(baseClass)} 参数为空！");
@@ -134,7 +135,9 @@ namespace CZGL.CodeAnalysis.Shared
                 case GenericConstraintsType.Notnull: break;
                 case GenericConstraintsType.BaseClass:
                     if (baseClass != null)
-                        break;
+                    {
+                        BaseType = baseClass; break;
+                    }
                     else throw new ArgumentNullException($"{nameof(yellow)} 为 GenericConstraintsType.BaseClass ，但 {nameof(baseClass)} 参数为空！");
                 default: throw new ArgumentException($"{nameof(yellow)} 约束条件错误！");
             }
@@ -151,12 +154,12 @@ namespace CZGL.CodeAnalysis.Shared
         /// 设置泛型约束
         /// <para>yellow+blues+orange，blue 可为空,orange 可空</para>
         /// </summary>
+        /// <param name="isNewConstraint">是否 new 约束</param>
         /// <param name="yellow">设置 class、notnull、<基类> 其中一种约束，不允许多个同时使用！</param>
         /// <param name="blues"><接口>或者 T;U，可以多个同时使用，使用数组形式存储</param>
-        /// <param name="isNew">是否 new 约束</param>
-        public GenericScheme(string name, GenericConstraintsType yellow, Type baseClass = null, GenericBlueScheme interfaceSchemes = null, GenericBlueScheme TUSchemes = null,bool isNew = false):this(name, yellow, baseClass, interfaceSchemes, TUSchemes)
+        public GenericScheme(string name, GenericConstraintsType yellow, bool isNewConstraint, Type baseClass = null, GenericBlueScheme interfaceSchemes = null, GenericBlueScheme TUSchemes = null):this(name, yellow, baseClass, interfaceSchemes, TUSchemes)
         {
-            if (isNew)
+            if (isNewConstraint)
             {
                 TypeId = TypeId == 2 ? 5 : 6;
             }

@@ -1,15 +1,9 @@
-using CZGL.CodeAnalysis.Shared;
-using CZGL.Roslyn.Models;
 using CZGL.Roslyn.Templates;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata;
 using System.Text;
-using System.Threading;
 
 namespace CZGL.Roslyn
 {
@@ -20,7 +14,12 @@ namespace CZGL.Roslyn
             _TBuilder = this;
         }
 
-
+        /// <summary>
+        /// 通过字符串代码生成类
+        /// </summary>
+        /// <param name="Code">字符串代码</param>
+        /// <param name="attrs">类型的特性注解</param>
+        /// <returns></returns>
         public static ClassDeclarationSyntax Build(string Code, string[] attrs = null)
         {
             ClassDeclarationSyntax memberDeclaration;
@@ -102,6 +101,15 @@ namespace CZGL.Roslyn
 
             return memberDeclaration;
 
+        }
+
+        /// <summary>
+        /// 获得格式化代码
+        /// </summary>
+        /// <returns></returns>
+        public override string FullCode()
+        {
+            return Build().NormalizeWhitespace().ToFullString();
         }
 
     }

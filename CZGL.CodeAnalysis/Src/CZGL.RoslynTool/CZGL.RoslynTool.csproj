@@ -12,8 +12,4 @@
     <ProjectReference Include="..\CZGL.CodeAnalysis.Shared\CZGL.CodeAnalysis.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>

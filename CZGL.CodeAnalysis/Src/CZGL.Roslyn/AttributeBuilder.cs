@@ -23,35 +23,28 @@ namespace CZGL.Roslyn
 
 
         /// <summary>
-        /// 构建 AttributeListSynta
-        /// </summary>
-        /// <param name="syntaxes"></param>
-        /// <returns></returns>
-        public static AttributeListSyntax CreateAttributeListSyntax(AttributeSyntax[] syntaxes)
-        {
-            var attributeList = new SeparatedSyntaxList<AttributeSyntax>();
-            foreach (var item in syntaxes)
-            {
-                attributeList = attributeList.Add(item);
-            }
-            var list = SyntaxFactory.AttributeList(attributeList);
-
-            return list;
-        }
-
-
-
-        /// <summary>
         /// 字符串生成特性列表
+        /// <para>
+        /// <example>
+        /// <code>
+        /// string[] code = new string[]
+        /// {
+        ///     "[Display(Name = \"a\")]",
+        ///     "[Display(Name = \"b\")]"
+        /// };
+        /// Cbuilder.reateAttributeList(code);
+        /// </code>
+        /// </example>
+        /// </para>
         /// </summary>
         /// <param name="attrCode"></param>
         /// <returns></returns>
-        /// <example>
-        /// <code>
-        /// {"[Display(Name = \"a\")]","[Display(Name = \"b\")]"}
-        /// </code>
-        /// </example>
-        public static SyntaxList<AttributeListSyntax> CreateAttributeList(params string[] attrsCode)
+#if DEBUG
+        public
+#else
+internal
+#endif
+         static SyntaxList<AttributeListSyntax> CreateAttributeList(params string[] attrsCode)
         {
             List<AttributeListSyntax> syntaxes = new List<AttributeListSyntax>();
 
@@ -76,7 +69,12 @@ namespace CZGL.Roslyn
         /// "[Display(Name = \"a\")]"
         /// </code>
         /// </example>
-        public static AttributeListSyntax CreateAttributeList(string attrCode)
+#if DEBUG
+        public
+#else
+internal
+#endif
+         static AttributeListSyntax CreateAttributeList(string attrCode)
         {
             var result = CreateAttribute(attrCode);
 
@@ -94,7 +92,12 @@ namespace CZGL.Roslyn
         /// "[Display(Name = \"a\")]"
         /// </code>
         /// </example>
-        public static AttributeListSyntax CreateAttributeList(AttributeSyntax attrbuteSyntax)
+#if DEBUG
+        public
+#else
+internal
+#endif
+            static AttributeListSyntax CreateAttributeList(AttributeSyntax attrbuteSyntax)
         {
             return SyntaxFactory.AttributeList(
                   SyntaxFactory.SingletonSeparatedList<AttributeSyntax>(attrbuteSyntax));
@@ -110,7 +113,12 @@ namespace CZGL.Roslyn
         /// "[Display(Name = \"a\")]"
         /// </code>
         /// </example>
-        public static AttributeSyntax CreateAttribute(string attrCode)
+#if DEBUG
+        public
+#else
+internal
+#endif
+            static AttributeSyntax CreateAttribute(string attrCode)
         {
             var syntaxNodes = CSharpSyntaxTree.ParseText(attrCode).GetRoot().DescendantNodes();
             var member = syntaxNodes.OfType<AttributeSyntax>().FirstOrDefault();
@@ -144,8 +152,6 @@ namespace CZGL.Roslyn
 
             stringBuilder.Append("]");
 
-            Console.WriteLine(CreateAttribute(stringBuilder.ToString()).NormalizeWhitespace().ToFullString());
-
             return CreateAttribute(stringBuilder.ToString());
         }
 
@@ -153,10 +159,23 @@ namespace CZGL.Roslyn
         /// 构建特性注解
         /// </summary>
         /// <returns></returns>
-        public AttributeListSyntax BuildAttributeListSyntax()
+#if DEBUG
+        public
+#else
+internal
+#endif   
+        AttributeListSyntax BuildAttributeListSyntax()
         {
             return AttributeBuilder.CreateAttributeList(Build());
         }
 
+        /// <summary>
+        /// 获得格式化代码
+        /// </summary>
+        /// <returns></returns>
+        public override string FullCode()
+        {
+            return Build().NormalizeWhitespace().ToFullString();
+        }
     }
 }

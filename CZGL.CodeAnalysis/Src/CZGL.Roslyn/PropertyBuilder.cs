@@ -1,5 +1,6 @@
 ﻿using CZGL.CodeAnalysis.Shared;
 using CZGL.Roslyn.Templates;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
@@ -86,5 +87,15 @@ namespace CZGL.Roslyn
 
             return memberDeclaration;
         }
+
+        /// <summary>
+        /// 获得格式化代码
+        /// </summary>
+        /// <returns></returns>
+        public override string FullCode()
+        {
+            return Build().NormalizeWhitespace().ToFullString();
+        }
+
     }
 }

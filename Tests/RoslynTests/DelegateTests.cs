@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using Xunit;
 using Xunit.Abstractions;
+
 namespace RoslynTests
 {
     public class DelegateTests

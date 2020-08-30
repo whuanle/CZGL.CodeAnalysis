@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CZGL.Roslyn.Models
+namespace CZGL.RoslynTool.Models
 {
     public class DefineGenericInfo
     {

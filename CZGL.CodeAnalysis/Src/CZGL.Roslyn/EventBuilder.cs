@@ -75,5 +75,15 @@ namespace CZGL.Roslyn
                     .WithAttributeLists(AttributeBuilder.CreateAttributeList(MemberAttrs.ToArray()));
             return memberDeclaration;
         }
+
+        /// <summary>
+        /// 获得格式化代码
+        /// </summary>
+        /// <returns></returns>
+        public override string FullCode()
+        {
+            return Build().NormalizeWhitespace().ToFullString();
+        }
+
     }
 }

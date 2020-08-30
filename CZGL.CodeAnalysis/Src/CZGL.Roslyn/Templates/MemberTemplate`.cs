@@ -132,5 +132,11 @@ namespace CZGL.Roslyn.Templates
 
 
         #endregion 
+
+        /// <summary>
+        /// 获得格式化代码
+        /// </summary>
+        /// <returns></returns>
+        public abstract string FullCode();
     }
 }

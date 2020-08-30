@@ -68,5 +68,6 @@ namespace CZGL.Roslyn
             }
             return SyntaxFactory.List<AttributeListSyntax>(list.ToArray());
         }
+
     }
 }

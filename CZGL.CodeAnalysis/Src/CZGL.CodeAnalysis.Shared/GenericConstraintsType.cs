@@ -60,6 +60,6 @@ namespace CZGL.CodeAnalysis.Shared
         /// 参数必须是为 U 提供的参数或派生自为 U 提供的参数
         /// <para>Blue</para>
         /// </summary>
-        U = 128
+        TU = 128
     }
 }

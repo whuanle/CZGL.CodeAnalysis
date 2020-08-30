@@ -177,17 +177,41 @@ namespace CZGL.Roslyn.Templates
 
         #region 泛型约束
 
+        /// <summary>
+        /// 添加泛型约束
+        /// <para>
+        /// <example>
+        /// <code>
+        /// string Code = @"
+        ///         where T1 : struct
+        ///         where T2 : class
+        ///         where T3 : notnull
+        ///         where T4 : unmanaged
+        ///         where T5 : new()
+        ///         where T6 : Model_泛型类4
+        ///         where T7 : IEnumerable<int>
+        ///         where T8 : T2
+        /// "; 
+        /// SetConstraint(Code);
+        /// </code>
+        /// </example>
+        /// </para>
+        /// </summary>
+        /// <param name="Code"></param>
+        /// <returns></returns>
         public virtual TBuilder SetConstraint(string Code)
         {
             Constraint = Code;
             return _TBuilder;
         }
 
-        // public virtual TBuilder SetConstraint(Action<GenericBuilder> builder)
-        // {
-
-        //     return _TBuilder;
-        // }
+        public virtual TBuilder SetConstraint(Action<GenericTemplate<GenericBuilder>> builder)
+        {
+            GenericBuilder generic = new GenericBuilder();
+            builder.Invoke(generic);
+            Constraint = generic.FullCode();
+            return _TBuilder;
+        }
 
         #endregion
 
@@ -277,6 +301,13 @@ namespace CZGL.Roslyn.Templates
             Members.Add(member.Build());
             return _TBuilder;
         }
+
+
+        /// <summary>
+        /// 获得格式化代码
+        /// </summary>
+        /// <returns></returns>
+        public abstract string FullCode();
 
         #endregion
     }

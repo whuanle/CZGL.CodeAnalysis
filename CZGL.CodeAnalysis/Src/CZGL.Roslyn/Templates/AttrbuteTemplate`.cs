@@ -1,8 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 
 namespace CZGL.Roslyn.Templates
 {
@@ -83,9 +79,16 @@ namespace CZGL.Roslyn.Templates
         /// </example>
         public virtual TBuilder SetProperty(params string[] propertys)
         {
-            MemberPropertys = string.Join(",",propertys);
+            MemberPropertys = string.Join(",", propertys);
             return _TBuilder;
         }
+
+
+        /// <summary>
+        /// 获得格式化代码
+        /// </summary>
+        /// <returns></returns>
+        public abstract string FullCode();
 
     }
 }

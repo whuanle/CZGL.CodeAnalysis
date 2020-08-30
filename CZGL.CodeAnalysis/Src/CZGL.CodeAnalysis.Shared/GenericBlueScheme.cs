@@ -18,7 +18,7 @@ namespace CZGL.CodeAnalysis.Shared
         {
             if (TUNames is null || TUNames.Length == 0)
                 throw new ArgumentNullException($"{TUNames} 不能为空或数组长度为 0 ！");
-            Constraints = GenericConstraintsType.U;
+            Constraints = GenericConstraintsType.TU;
             TU = TUNames;
         }
 
