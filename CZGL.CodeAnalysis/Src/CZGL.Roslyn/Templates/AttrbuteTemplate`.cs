@@ -37,9 +37,6 @@ namespace CZGL.Roslyn.Templates
         /// <summary>
         /// 设置构造函数中的参数
         /// <para>例如: ["666","false","\"myname\"","new int[1,2,3]"]</para>
-        /// </summary>
-        /// <param name="params"></param>
-        /// <returns></returns>
         /// <example>
         /// <code>
         /// "666"
@@ -48,6 +45,9 @@ namespace CZGL.Roslyn.Templates
         /// "new int[1,2,3]"
         /// </code>
         /// </example>
+        /// </summary>
+        /// <param name="params"></param>
+        /// <returns></returns>
         public virtual TBuilder SetCtor(string[] @params)
         {
             MemberCtor = string.Join(",", @params);
@@ -67,9 +67,6 @@ namespace CZGL.Roslyn.Templates
 
         /// <summary>
         /// 添加属性初始化
-        /// </summary>
-        /// <param name="propertys"></param>
-        /// <returns></returns>
         /// <example>
         /// <code>
         /// param1: false
@@ -77,6 +74,9 @@ namespace CZGL.Roslyn.Templates
         /// param3: new int[]{1,2,3}()
         /// </code>
         /// </example>
+        /// </summary>
+        /// <param name="propertys"></param>
+        /// <returns></returns>
         public virtual TBuilder SetProperty(params string[] propertys)
         {
             MemberPropertys = string.Join(",", propertys);

@@ -1,4 +1,5 @@
 ﻿using CZGL.CodeAnalysis.Shared;
+using CZGL.Roslyn.States;
 using CZGL.Roslyn.Templates;
 using Microsoft.CodeAnalysis;
 using System;
@@ -7,32 +8,23 @@ using System.Text;
 
 namespace CZGL.Roslyn
 {
-
+    /// <summary>
+    /// 字段构建模板
+    /// </summary>
+    /// <typeparam name="TBuilder"></typeparam>
     public abstract class FieldTemplate<TBuilder> : VariableTemplate<TBuilder> where TBuilder : FieldTemplate<TBuilder>
     {
-        /// <summary>
-        /// 设置修饰符，是否为常量，是否为静态成员，是否只读
-        /// <para> MemberQualifierType.Abstract 对字段无效</para>
-        /// </summary>
-        /// <param name="qualifierType"></param>
-        /// <returns></returns>
-        public virtual TBuilder SetQualifier(MemberQualifierType qualifierType = MemberQualifierType.Default)
-        {
-            MemberQualifier = RoslynHelper.GetName(qualifierType);
-            return _TBuilder;
-        }
-
+        //protected internal readonly FieldState _field = new FieldState();
 
         /// <summary>
-        /// 设置修饰符，是否为常量，是否为静态成员，是否只读
+        /// 设置字段的关键字，如 static，readonly 等
         /// </summary>
-        /// <param name="str">static... </param>
+        /// <param name="keyword">字段修饰符</param>
         /// <returns></returns>
-        public virtual TBuilder SetQualifier(string str = "")
+        public virtual TBuilder WithKeyword(FieldKeyword keyword = FieldKeyword.Default)
         {
-            MemberQualifier = str;
+            _variable.Keyword = RoslynHelper.GetName(keyword);
             return _TBuilder;
         }
-
     }
 }

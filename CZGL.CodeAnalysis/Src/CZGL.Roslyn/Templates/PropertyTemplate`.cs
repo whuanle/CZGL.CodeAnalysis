@@ -1,31 +1,68 @@
-﻿using System;
+﻿using CZGL.CodeAnalysis.Shared;
+using CZGL.Roslyn.States;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace CZGL.Roslyn.Templates
 {
-    public abstract class PropertyTemplate<TBuilder> : FieldTemplate<TBuilder> where TBuilder : PropertyTemplate<TBuilder>
+
+    /// <summary>
+    /// 属性构建器
+    /// </summary>
+    /// <typeparam name="TBuilder"></typeparam>
+    public abstract class PropertyTemplate<TBuilder> : VariableTemplate<TBuilder> where TBuilder : PropertyTemplate<TBuilder>
     {
-        protected internal string SetBlock = "get;";
-        protected internal string GetBlock = "set;";
+        protected internal readonly PropertyState _property = new PropertyState();
+
+        #region 关键字
 
         /// <summary>
-        /// 设置为 set 构造器为 set;        
+        /// 设置字段的关键字，如 static，readonly 等
+        /// </summary>
+        /// <param name="keyword">字段修饰符</param>
+        /// <returns></returns>
+        public virtual TBuilder WithKeyword(PropertyKeyword keyword = PropertyKeyword.Default)
+        {
+            _variable.Keyword = RoslynHelper.GetName(keyword);
+            return _TBuilder;
+        }
+
+        #endregion
+
+        #region 构造器
+
+        private const string GetBlock = "get;";
+        private const string SetBlock = "set;";
+
+        /// <summary>
+        /// 将构造器设置为 { get; set; }
         /// </summary>
         /// <returns></returns>
-        public virtual TBuilder DefaultSet()
+        public virtual TBuilder WithDefault()
         {
-            GetBlock = "set;";
+            _property.GetBlock = GetBlock;
+            _property.SetBlock = SetBlock;
             return _TBuilder;
         }
 
         /// <summary>
-        /// 设置为 get 构造器为 get;
+        /// 将 set 构造器设置为 set;        
         /// </summary>
         /// <returns></returns>
-        public virtual TBuilder DefaultGet()
+        public virtual TBuilder WithDefaultSet()
         {
-            SetBlock = "get;";
+            _property.SetBlock = SetBlock;
+            return _TBuilder;
+        }
+
+        /// <summary>
+        /// 将 get 构造器设置为 get;
+        /// </summary>
+        /// <returns></returns>
+        public virtual TBuilder WithDefaultGet()
+        {
+            _property.GetBlock = GetBlock;
             return _TBuilder;
         }
 
@@ -38,7 +75,9 @@ namespace CZGL.Roslyn.Templates
         /// <returns></returns>
         public virtual TBuilder SetInitializer(string blockCode)
         {
-            SetBlock = blockCode;
+            if (string.IsNullOrWhiteSpace(blockCode))
+                throw new ArgumentNullException(nameof(blockCode));
+            _property.SetBlock = blockCode;
             return _TBuilder;
         }
 
@@ -50,29 +89,35 @@ namespace CZGL.Roslyn.Templates
         /// <returns></returns>
         public virtual TBuilder GetInitializer(string blockCode)
         {
-            GetBlock = blockCode;
+            if (string.IsNullOrWhiteSpace(blockCode))
+                throw new ArgumentNullException(nameof(blockCode));
+
+            _property.GetBlock = blockCode;
             return _TBuilder;
         }
 
         /// <summary>
-        /// 删除 set 构造器
+        /// 不设置 Set 构造器
         /// </summary>
         /// <returns></returns>
-        public virtual TBuilder DeleteSet()
+        public virtual TBuilder WithNullSet()
         {
-            SetBlock = string.Empty;
+            _property.SetBlock = string.Empty;
             return _TBuilder;
         }
 
 
         /// <summary>
-        /// 删除 get 构造器
+        /// 不设置 Get 构造器
         /// </summary>
         /// <returns></returns>
-        public virtual TBuilder DeleteGet()
+        public virtual TBuilder WithNullGet()
         {
-            GetBlock = string.Empty;
+            _property.GetBlock = string.Empty;
             return _TBuilder;
         }
+
+        #endregion
+
     }
 }

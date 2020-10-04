@@ -40,9 +40,9 @@ namespace RoslynTests
         {
             DelegateBuilder builder = new DelegateBuilder();
             var field = builder
-                .SetVisibility(MemberVisibilityType.Public)
-                .SetReturnType("void")
-                .SetName("T1").Build();
+                .WithAccess(MemberVisibilityType.Public)
+                .WithReturnType("void")
+                .WithName("T1").Build();
             var result = field.NormalizeWhitespace().ToFullString();
 #if Log
             _tempOutput.WriteLine(result);
@@ -55,9 +55,9 @@ namespace RoslynTests
         {
             DelegateBuilder builder = new DelegateBuilder();
             var field = builder
-                .SetVisibility(MemberVisibilityType.Public)
-                .SetReturnType("string")
-                .SetName("T2").Build();
+                .WithAccess(MemberVisibilityType.Public)
+                .WithReturnType("string")
+                .WithName("T2").Build();
             var result = field.NormalizeWhitespace().ToFullString();
 #if Log
             _tempOutput.WriteLine(result);
@@ -70,10 +70,10 @@ namespace RoslynTests
         {
             DelegateBuilder builder = new DelegateBuilder();
             var field = builder
-                .SetVisibility(MemberVisibilityType.Public)
-                .SetReturnType("string")
-                .SetParams("string a")
-                .SetName("T3").Build();
+                .WithAccess(MemberVisibilityType.Public)
+                .WithReturnType("string")
+                .WithParams("string a")
+                .WithName("T3").Build();
             var result = field.NormalizeWhitespace().ToFullString();
 #if Log
             _tempOutput.WriteLine(result);
@@ -86,10 +86,10 @@ namespace RoslynTests
         {
             DelegateBuilder builder = new DelegateBuilder();
             var field = builder
-                .SetAttributeLists(new string[] { @"[Test(""1"", ""2"", A = ""3"", B = ""4"")]" })
-                .SetVisibility(MemberVisibilityType.Public)
-                .SetReturnType("void")
-                .SetName("T4").Build();
+                .WithAttributes(new string[] { @"[Test(""1"", ""2"", A = ""3"", B = ""4"")]" })
+                .WithAccess(MemberVisibilityType.Public)
+                .WithReturnType("void")
+                .WithName("T4").Build();
             var result = field.NormalizeWhitespace().ToFullString();
 #if Log
             _tempOutput.WriteLine(result);

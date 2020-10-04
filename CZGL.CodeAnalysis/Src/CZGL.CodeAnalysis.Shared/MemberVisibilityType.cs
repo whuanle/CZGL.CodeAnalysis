@@ -7,9 +7,10 @@ namespace CZGL.CodeAnalysis.Shared
 
     /// <summary>
     /// 类成员访问修饰符
-    /// <para>请不要组合枚举</para>
+    /// <para>可组合枚举</para>
     /// <para>嵌套类、属性、字段、方法</para>
     /// </summary>
+    [Flags]
     public enum MemberVisibilityType
     {
         [MemberDefineName(Name = "internal")]
@@ -19,12 +20,18 @@ namespace CZGL.CodeAnalysis.Shared
         Public = 1,
 
         [MemberDefineName(Name = "protected")]
-        Protected = 2,
+        Protected = 1 << 1,
 
         [MemberDefineName(Name = "private")]
-        Private = 4,
+        Private = 1 << 2,
 
         [MemberDefineName(Name = "protected internal")]
-        ProtectedInternal = 8
+        ProtectedInternal = Protected | Internal,
+
+        /// <summary>
+        // 只允许 C# 7.2 以上项目使用(C# 7.2 新增)
+        /// </summary>
+        [MemberDefineName(Name = "private protected")]
+        PrivateProtected = Private | Protected
     }
 }

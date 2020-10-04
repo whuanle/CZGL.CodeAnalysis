@@ -12,20 +12,19 @@ namespace CZGL.CodeAnalysis.Shared
         [MemberDefineName(Name = " ")]
         Default = 0,
 
-        [MemberDefineName(Name ="const")]
+        [MemberDefineName(Name = "const")]
         Const = 1,
 
         [MemberDefineName(Name = "static")]
-        Static = 2,
+        Static = 1 << 1,
 
         [MemberDefineName(Name = "readonly")]
-        Readonly = 4,
+        Readonly = 1 << 2,
 
         [MemberDefineName(Name = "abstract")]
-        Abstract = 8,
+        Abstract = 1 << 3,
 
         [MemberDefineName(Name = "static readonly")]
-        StaticReadonly = 6,
-
+        StaticReadonly = Static | Readonly
     }
 }

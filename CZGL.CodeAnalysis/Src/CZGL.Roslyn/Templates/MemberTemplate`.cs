@@ -1,41 +1,56 @@
 ﻿using CZGL.CodeAnalysis.Shared;
+using CZGL.Roslyn.States;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace CZGL.Roslyn.Templates
 {
-    public abstract class MemberTemplate<TBuilder> where TBuilder : MemberTemplate<TBuilder>
+    /// <summary>
+    /// 命名空间内的成员共有的操作
+    /// <para>
+    /// * {枚举}
+    /// * {委托}
+    /// * {事件}
+    /// * {结构体}
+    /// * {接口}
+    /// * {类}
+    /// *   -{字段}
+    /// *   -{属性}
+    /// *   -{方法}
+    /// *   -{其它成员}
+    /// </para>
+    /// </summary>
+    /// <typeparam name="TBuilder"></typeparam>
+    public abstract class MemberTemplate<TBuilder> : BaseTemplate where TBuilder : MemberTemplate<TBuilder>
     {
-        protected internal string MemberVisibility;
-        protected internal string MemberQualifier;
-
-        protected internal readonly List<string> MemberAttrs = new List<string>();
-        protected internal readonly List<AttributeSyntax> MemberAttrSyntaxs = new List<AttributeSyntax>();
-
-        protected internal string MemberName = string.Empty;
+        /// <summary>
+        /// 命名空间成员共有属性
+        /// </summary>
+        protected internal MemberState _member = new MemberState();
 
         protected internal TBuilder _TBuilder;
 
-        #region 特性
+        #region 特性注解
 
         /// <summary>
         /// 设置成员的特性注解
         /// <para>
         /// <code>
         /// string[] codes = new string[]{"[Key]","[Display( Name = \"YouName\")]"};
+        /// .SetAttributeLists(code);
         /// </code>
         /// </para>
         /// </summary>
         /// <param name="attrs"></param>
         /// <returns></returns>
-        public virtual TBuilder SetAttributeLists(string[] attrs = null)
+        public virtual TBuilder WithAttributes(params string[] attrs)
         {
-            MemberAttrs.Clear();
             if (attrs != null)
-                MemberAttrs.AddRange(attrs);
+                _ = attrs.SelectMany(str => { _member.Atributes.Add(str); return str; });
             return _TBuilder;
         }
 
@@ -50,55 +65,45 @@ namespace CZGL.Roslyn.Templates
         /// </summary>
         /// <param name="attr">attr 不能为空</param>
         /// <returns></returns>
-        public virtual TBuilder AddAttribute(string attr)
+        public virtual TBuilder WithAttribute(string attr)
         {
             if (string.IsNullOrEmpty(attr))
                 throw new ArgumentNullException(nameof(attr));
-            MemberAttrs.Add(attr);
+            _member.Atributes.Add(attr);
             return _TBuilder;
         }
 
-        /// <summary>
-        /// 添加一个特性
-        /// </summary>
-        /// <param name="builder">特性构建器</param>
-        /// <returns></returns>
-        public virtual TBuilder AddAttribute(Action<AttrbuteTemplate<AttributeBuilder>> builder)
-        {
-            AttributeBuilder attributeBuilder = new AttributeBuilder();
-            builder.Invoke(attributeBuilder);
-            MemberAttrSyntaxs.Add(attributeBuilder.Build());
-            return _TBuilder;
-        }
 
         #endregion
 
         #region 访问权限
 
         /// <summary>
-        /// 设置成员的访问权限,public 、private
+        /// 设置访问修饰符(Access Modifiers)
         /// </summary>
         /// <param name="visibilityType">标记</param>
         /// <returns></returns>
-        public virtual TBuilder SetVisibility(MemberVisibilityType visibilityType = MemberVisibilityType.Internal)
+        public virtual TBuilder WithAccess(MemberVisibilityType visibilityType = MemberVisibilityType.Internal)
         {
-            MemberVisibility = RoslynHelper.GetName(visibilityType);
+            _member.Access = RoslynHelper.GetName(visibilityType);
             return _TBuilder;
         }
 
         /// <summary>
-        /// 设置成员的访问权限,public 、private
+        /// 设置访问修饰符(Access Modifiers)
+        /// <para><b>注意，如果填写不正确，将导致代码错误</b></para>
         /// </summary>
-        /// <param name="code">不能为空</param>
+        /// <param name="code"></param>
         /// <returns></returns>
-        public virtual TBuilder SetVisibility(string code)
+        public virtual TBuilder WithAccess(string code)
         {
             if (string.IsNullOrEmpty(code))
                 throw new ArgumentNullException(nameof(code));
 
-            MemberVisibility = code;
+            _member.Access = code;
             return _TBuilder;
         }
+
 
         #endregion
 
@@ -109,34 +114,41 @@ namespace CZGL.Roslyn.Templates
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public virtual TBuilder SetName(string name)
+        public virtual TBuilder WithName(string name)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException(nameof(name));
 
-            MemberName = name;
+            _base.Name = name;
             return _TBuilder;
         }
 
         /// <summary>
-        /// 随机设置一个名称
+        /// 随机生成一个名称
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public virtual TBuilder SetRondomName()
+        public virtual TBuilder WithRondomName()
         {
-            MemberName = "N" + new Guid().ToString("N");
+            _base.Name = "N" + Guid.NewGuid().ToString("N");
             return _TBuilder;
         }
 
+        #endregion
 
 
-        #endregion 
+        #region clear
 
         /// <summary>
-        /// 获得格式化代码
+        /// 清除已经添加的特性
         /// </summary>
         /// <returns></returns>
-        public abstract string FullCode();
+        public virtual TBuilder ClearAttribute()
+        {
+            _member.Atributes.Clear();
+            return _TBuilder;
+        }
+
+        #endregion
     }
 }

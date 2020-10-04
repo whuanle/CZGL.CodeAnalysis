@@ -17,10 +17,6 @@ namespace CZGL.Roslyn
 
         /// <summary>
         /// 通过字符串代码直接生成方法
-        /// </summary>
-        /// <param name="Code"></param>
-        /// <param name="attrs"></param>
-        /// <returns></returns>
         /// <example>
         /// <code>
         /// public int A 
@@ -30,6 +26,10 @@ namespace CZGL.Roslyn
         ///   }
         /// </code>
         /// </example>
+        /// </summary>
+        /// <param name="Code"></param>
+        /// <param name="attrs"></param>
+        /// <returns></returns>
         public static MethodDeclarationSyntax Build(string Code, string[] attrs = null)
         {
             MethodDeclarationSyntax memberDeclaration;

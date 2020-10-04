@@ -58,48 +58,52 @@ namespace CZGL.Roslyn
         /// <returns></returns>
         public DelegateDeclarationSyntax Build()
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            // StringBuilder stringBuilder = new StringBuilder();
 
-            stringBuilder.Append(MemberVisibility);
+            // stringBuilder.Append(MemberVisibility);
 
-            stringBuilder.Append(" ");
-            stringBuilder.Append("delegate");
+            // stringBuilder.Append(" ");
+            // stringBuilder.Append("delegate");
 
-            stringBuilder.Append(" ");
-            stringBuilder.Append(FuncReturnType);
+            // stringBuilder.Append(" ");
+            // stringBuilder.Append(FuncReturnType);
 
-            stringBuilder.Append(" ");
-            stringBuilder.Append(MemberName);
+            // stringBuilder.Append(" ");
+            // stringBuilder.Append(MemberName);
 
-            stringBuilder.AppendLine($"({FuncParams})");
+            // stringBuilder.AppendLine($"({FuncParams})");
 
-            stringBuilder.AppendLine(";");
-            DelegateDeclarationSyntax memberDeclaration = default;
-            var syntaxNodes = CSharpSyntaxTree.ParseText(stringBuilder.ToString())
-                .GetRoot()
-                .DescendantNodes();
+            // stringBuilder.AppendLine(";");
+            // DelegateDeclarationSyntax memberDeclaration = default;
+            // var syntaxNodes = CSharpSyntaxTree.ParseText(stringBuilder.ToString())
+            //     .GetRoot()
+            //     .DescendantNodes();
 
-            memberDeclaration = syntaxNodes
-           .OfType<DelegateDeclarationSyntax>().Single();
+            // memberDeclaration = syntaxNodes
+            //.OfType<DelegateDeclarationSyntax>().Single();
 
-            // 添加特性
-            if (MemberAttrs.Count != 0)
-            {
-                var tmp = AttributeBuilder.CreateAttributeList(MemberAttrs.ToArray());
-                memberDeclaration = memberDeclaration.WithAttributeLists(tmp);
-            }
+            // // 添加特性
+            // if (MemberAttrs.Count != 0)
+            // {
+            //     var tmp = AttributeBuilder.CreateAttributeList(MemberAttrs.ToArray());
+            //     memberDeclaration = memberDeclaration.WithAttributeLists(tmp);
+            // }
 
-            return memberDeclaration;
+            // return memberDeclaration;
+
+            return null;
         }
 
-        /// <summary>
-        /// 获得格式化代码
-        /// </summary>
-        /// <returns></returns>
-        public override string FullCode()
+
+
+        public override string ToFullCode()
         {
-            return Build().NormalizeWhitespace().ToFullString();
+            throw new NotImplementedException();
         }
 
+        public override string ToFormatCode()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

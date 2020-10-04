@@ -14,7 +14,7 @@ namespace CZGL.Roslyn.Templates
         /// </summary>
         /// <param name="str">无法更改</param>
         /// <returns></returns>
-        public override TBuilder SetReturnType(string str = "void")
+        public override TBuilder WithReturnType(string str = "void")
         {
             return _TBuilder;
         }

@@ -52,11 +52,11 @@ protected internal static readonly int i
         {
             PropertyBuilder builder = new PropertyBuilder();
             var field = builder
-                .SetVisibility(MemberVisibilityType.ProtectedInternal)
+                .WithAccess(MemberVisibilityType.ProtectedInternal)
                 .SetQualifier(MemberQualifierType.Static | MemberQualifierType.Readonly)
-                .SetType("int")
-                .SetName("i")
-                .Initializer("int.Parse(\"1\")")
+                .WithType("int")
+                .WithName("i")
+                .WithInit("int.Parse(\"1\")")
                 .Build();
             var result = field.NormalizeWhitespace().ToFullString();
 
@@ -81,13 +81,13 @@ protected internal static readonly int i
         {
             PropertyBuilder builder = new PropertyBuilder();
             var field = builder
-                .SetVisibility(MemberVisibilityType.ProtectedInternal)
+                .WithAccess(MemberVisibilityType.ProtectedInternal)
                 .SetQualifier(MemberQualifierType.Static | MemberQualifierType.Readonly)
-                .SetType("int")
-                .SetName("i")
+                .WithType("int")
+                .WithName("i")
                 .GetInitializer("get{return tmp+1;}")
                 .SetInitializer("set{tmp+=1;}")
-                .Initializer("int.Parse(\"1\")")
+                .WithInit("int.Parse(\"1\")")
                 .Build();
             var result = field.NormalizeWhitespace().ToFullString();
 

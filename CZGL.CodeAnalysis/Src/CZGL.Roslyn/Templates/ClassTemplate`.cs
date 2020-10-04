@@ -144,6 +144,17 @@ namespace CZGL.Roslyn.Templates
             return _TBuilder;
         }
 
+        /// <summary>
+        /// 随机设置一个名称
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public virtual TBuilder SetRondomName()
+        {
+            MemberName = "N" + Guid.NewGuid().ToString("N");
+            return _TBuilder;
+        }
+
         #endregion
 
         #region 继承
@@ -249,6 +260,7 @@ namespace CZGL.Roslyn.Templates
 
 
         #region 类的成员，字段、事件、委托、属性、方法
+
 
         /// <summary>
         /// 统计字段、属性、方法、委托、事件等

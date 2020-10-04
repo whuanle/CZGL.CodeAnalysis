@@ -13,6 +13,10 @@ namespace CZGL.Roslyn
         {
             _TBuilder = this;
         }
+        public ClassBuilder(string name):this()
+        {
+            base.SetName(name);
+        }
 
         /// <summary>
         /// 通过字符串代码生成类

@@ -2,9 +2,6 @@ using CZGL.CodeAnalysis.Shared;
 using CZGL.Roslyn;
 using Microsoft.CodeAnalysis;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Reflection;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -35,9 +32,9 @@ namespace RoslynTests
         public void 构造函数_T1()
         {
             CtorBuilder methodBuilder = new CtorBuilder();
-            var method = methodBuilder.SetVisibility(MemberVisibilityType.Public)
-                .SetName("T2")
-                .SetBlock(@"Console.WriteLine(""666"");")
+            var method = methodBuilder.WithAccess(MemberVisibilityType.Public)
+                .WithName("T2")
+                .WithBlock(@"Console.WriteLine(""666"");")
                 .Build();
             var result= method.NormalizeWhitespace().ToFullString();
 #if Log
@@ -53,9 +50,9 @@ namespace RoslynTests
         public void 构造函数_T2()
         {
             CtorBuilder methodBuilder = new CtorBuilder();
-            var method = methodBuilder.SetVisibility(MemberVisibilityType.Public)
-                .SetName("T2")
-                .SetParams("string a")
+            var method = methodBuilder.WithAccess(MemberVisibilityType.Public)
+                .WithName("T2")
+                .WithParams("string a")
                 .SetThisCtor("this()")
                 .Build();
             var result = method.NormalizeWhitespace().ToFullString();
@@ -72,9 +69,9 @@ namespace RoslynTests
         public void 构造函数_T3()
         {
             CtorBuilder methodBuilder = new CtorBuilder();
-            var method = methodBuilder.SetVisibility(MemberVisibilityType.Public)
-                .SetName("T2")
-                .SetParams("string a,string b")
+            var method = methodBuilder.WithAccess(MemberVisibilityType.Public)
+                .WithName("T2")
+                .WithParams("string a,string b")
                 .SetBaseCtor("base(a)")
                 .Build();
             var result = method.NormalizeWhitespace().ToFullString();

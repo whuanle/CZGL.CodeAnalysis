@@ -35,8 +35,8 @@ namespace RoslynTests
         {
             FieldBuilder builder = new FieldBuilder();
             var field = builder
-                .SetType("int")
-                .SetName("i").Build();
+                .WithType("int")
+                .WithName("i").Build();
             var result = field.NormalizeWhitespace().ToFullString();
 #if Log
             _tempOutput.WriteLine(result);
@@ -48,9 +48,9 @@ namespace RoslynTests
         public void 定义字段_T2_初始化值()
         {
             FieldBuilder builder = new FieldBuilder();
-            var field = builder.SetType("int")
-                .SetName("i")
-                .Initializer("0")
+            var field = builder.WithType("int")
+                .WithName("i")
+                .WithInit("0")
                 .Build();
             var result = field.NormalizeWhitespace().ToFullString();
 #if Log
@@ -64,9 +64,9 @@ namespace RoslynTests
         public void 定义字段_T3_表达式初始化值()
         {
             FieldBuilder builder = new FieldBuilder();
-            var field = builder.SetType("int")
-                .SetName("i")
-                .Initializer("int.Parse(\"1\")")
+            var field = builder.WithType("int")
+                .WithName("i")
+                .WithInit("int.Parse(\"1\")")
                 .Build();
             var result = field.NormalizeWhitespace().ToFullString();
 #if Log
@@ -80,9 +80,9 @@ namespace RoslynTests
         public void 定义字段_T4_访问修饰符()
         {
             var field1 = new FieldBuilder()
-                .SetVisibility(MemberVisibilityType.Public)
-                .SetType("int")
-                .SetName("i").Build();
+                .WithAccess(MemberVisibilityType.Public)
+                .WithType("int")
+                .WithName("i").Build();
             var result = field1.NormalizeWhitespace().ToFullString();
 #if Log
             _tempOutput.WriteLine(result);
@@ -106,11 +106,11 @@ namespace RoslynTests
         {
             FieldBuilder builder = new FieldBuilder();
             var field = builder
-                .SetVisibility(MemberVisibilityType.ProtectedInternal)
+                .WithAccess(MemberVisibilityType.ProtectedInternal)
                 .SetQualifier(MemberQualifierType.Static|MemberQualifierType.Readonly)
-                .SetType("int")
-                .SetName("i")
-                .Initializer("int.Parse(\"1\")")
+                .WithType("int")
+                .WithName("i")
+                .WithInit("int.Parse(\"1\")")
                 .Build();
             var result = field.NormalizeWhitespace().ToFullString();
 #if Log
@@ -125,9 +125,9 @@ namespace RoslynTests
         {
             FieldBuilder builder = new FieldBuilder();
             var field = builder
-                .SetType("List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>")
-                .SetName("i")
-                .Initializer("new List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>()")
+                .WithType("List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>")
+                .WithName("i")
+                .WithInit("new List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>()")
                 .Build();
             var result = field.NormalizeWhitespace().ToFullString();
 #if Log
@@ -168,10 +168,10 @@ namespace RoslynTests
         {
             FieldBuilder builder = new FieldBuilder();
             var field = builder
-                .SetAttributeLists(new string[] { @"[Display(Name = ""a"")]", @"[Key]" })
-                .SetVisibility(MemberVisibilityType.Public)
-                .SetType("int")
-                .SetName("i")
+                .WithAttributes(new string[] { @"[Display(Name = ""a"")]", @"[Key]" })
+                .WithAccess(MemberVisibilityType.Public)
+                .WithType("int")
+                .WithName("i")
                 .Build();
             var result = field.NormalizeWhitespace().ToFullString();
 #if Log

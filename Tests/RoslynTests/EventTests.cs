@@ -29,10 +29,10 @@ namespace RoslynTests
         {
             EventBuilder builder = new EventBuilder();
             var field = builder
-                .SetVisibility(MemberVisibilityType.Public)
+                .WithAccess(MemberVisibilityType.Public)
                 .SetDelegateType("T")
-                .SetName("t1")
-                .Initializer("AAA")
+                .WithName("t1")
+                .WithInit("AAA")
                 .Build();
 
             var result = field.NormalizeWhitespace().ToFullString();
@@ -48,8 +48,8 @@ namespace RoslynTests
             EventBuilder builder = new EventBuilder();
             var field = builder
                 .SetDelegateType("T")
-                .SetName("t1")
-                .Initializer("AAA")
+                .WithName("t1")
+                .WithInit("AAA")
                 .Build();
 
             var result = field.NormalizeWhitespace().ToFullString();
@@ -65,11 +65,11 @@ namespace RoslynTests
         {
             EventBuilder builder = new EventBuilder();
             var field = builder
-                 .SetAttributeLists(new string[] { @"[Display(Name = ""a"")]", @"[Key]" })
-                .SetVisibility(MemberVisibilityType.Public)
+                 .WithAttributes(new string[] { @"[Display(Name = ""a"")]", @"[Key]" })
+                .WithAccess(MemberVisibilityType.Public)
                 .SetDelegateType("T")
-                .SetName("t1")
-                .Initializer("AAA")
+                .WithName("t1")
+                .WithInit("AAA")
                 .Build();
 
             var result = field.NormalizeWhitespace().ToFullString();

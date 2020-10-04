@@ -177,5 +177,19 @@ internal
         {
             return Build().NormalizeWhitespace().ToFullString();
         }
+
+        // protected internal readonly List<AttributeSyntax> MemberAttrSyntaxs = new List<AttributeSyntax>();
+        ///// <summary>
+        ///// 添加一个特性
+        ///// </summary>
+        ///// <param name="builder">特性构建器</param>
+        ///// <returns></returns>
+        //public virtual TBuilder AddAttribute(Action<AttrbuteTemplate<AttributeBuilder>> builder)
+        //{
+        //    AttributeBuilder attributeBuilder = new AttributeBuilder();
+        //    builder.Invoke(attributeBuilder);
+        //    MemberAttrSyntaxs.Add(attributeBuilder.Build());
+        //    return _TBuilder;
+        //}
     }
 }

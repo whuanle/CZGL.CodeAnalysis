@@ -37,10 +37,10 @@ namespace RoslynTests
         public void 方法_T1()
         {
             MethodBuilder methodBuilder = new MethodBuilder();
-            var method = methodBuilder.SetVisibility(MemberVisibilityType.Public)
+            var method = methodBuilder.WithAccess(MemberVisibilityType.Public)
                 //.SetReturnParam("void")
-                .SetName("T1")
-                .SetBlock(@"Console.WriteLine(""666"");")
+                .WithName("T1")
+                .WithBlock(@"Console.WriteLine(""666"");")
                 .Build();
             var result= method.NormalizeWhitespace().ToFullString();
 #if Log
@@ -56,10 +56,10 @@ namespace RoslynTests
         public void 方法_T2()
         {
             MethodBuilder methodBuilder = new MethodBuilder();
-            var method = methodBuilder.SetVisibility(MemberVisibilityType.Public)
-                .SetReturnType("string")
-                .SetName("T2")
-                .SetBlock(@"return ""666"";")
+            var method = methodBuilder.WithAccess(MemberVisibilityType.Public)
+                .WithReturnType("string")
+                .WithName("T2")
+                .WithBlock(@"return ""666"";")
                 .Build();
             var result = method.NormalizeWhitespace().ToFullString();
 #if Log
@@ -76,10 +76,10 @@ namespace RoslynTests
         public void 方法_T3()
         {
             MethodBuilder methodBuilder = new MethodBuilder();
-            var method = methodBuilder.SetVisibility(MemberVisibilityType.Public)
-                .SetReturnType("List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>")
-                .SetName("T3")
-                .SetBlock(@"return new List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>();")
+            var method = methodBuilder.WithAccess(MemberVisibilityType.Public)
+                .WithReturnType("List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>")
+                .WithName("T3")
+                .WithBlock(@"return new List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>();")
                 .Build();
             var result = method.NormalizeWhitespace().ToFullString();
 #if Log
@@ -96,10 +96,10 @@ namespace RoslynTests
         public void 方法_T4()
         {
             MethodBuilder methodBuilder = new MethodBuilder();
-            var method = methodBuilder.SetVisibility(MemberVisibilityType.Public)
+            var method = methodBuilder.WithAccess(MemberVisibilityType.Public)
                 //.SetReturnParam("void")
-                .SetName("T4")
-                .SetParams("int a, int b, string c")
+                .WithName("T4")
+                .WithParams("int a, int b, string c")
                 .Build();
             var result = method.NormalizeWhitespace().ToFullString();
 #if Log
@@ -114,10 +114,10 @@ namespace RoslynTests
         public void 方法_T5()
         {
             MethodBuilder methodBuilder = new MethodBuilder();
-            var method = methodBuilder.SetVisibility(MemberVisibilityType.Public)
+            var method = methodBuilder.WithAccess(MemberVisibilityType.Public)
                 //.SetReturnParam("void")
-                .SetName("T5")
-                .SetParams("List<Dictionary<int, Dictionary<string, List<FieldInfo>>>> a")
+                .WithName("T5")
+                .WithParams("List<Dictionary<int, Dictionary<string, List<FieldInfo>>>> a")
                 .Build();
             var result = method.NormalizeWhitespace().ToFullString();
 #if Log

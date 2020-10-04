@@ -13,6 +13,8 @@ namespace CZGL.Roslyn
 {
     public static class RoslynHelper
     {
+        // 后面创建缓存，不需要运行时动态反射获取枚举信息，应当在启动时就缓存起来
+
         private static string runtimePath = Path.Combine(typeof(RoslynHelper).Assembly.Location,"aaa.dll");
         public static void CreateDll(ClassDeclarationSyntax classDeclaration)
         {

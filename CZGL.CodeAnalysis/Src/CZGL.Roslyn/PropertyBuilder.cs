@@ -51,51 +51,52 @@ namespace CZGL.Roslyn
 
         public PropertyDeclarationSyntax Build()
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            //StringBuilder stringBuilder = new StringBuilder();
 
-            stringBuilder.Append(MemberVisibility);
+            //stringBuilder.Append(MemberVisibility);
 
-            stringBuilder.Append(" ");
-            stringBuilder.Append(MemberQualifier);
+            //stringBuilder.Append(" ");
+            //stringBuilder.Append(MemberQualifier);
 
-            stringBuilder.Append(" ");
-            stringBuilder.Append(MemberType);
-            stringBuilder.Append(" " + MemberName);
+            //stringBuilder.Append(" ");
+            //stringBuilder.Append(MemberType);
+            //stringBuilder.Append(" " + MemberName);
 
-            stringBuilder.AppendLine("{");
+            //stringBuilder.AppendLine("{");
 
-            stringBuilder.AppendLine(GetBlock);
-            stringBuilder.AppendLine(SetBlock);
+            //stringBuilder.AppendLine(GetBlock);
+            //stringBuilder.AppendLine(SetBlock);
 
-            stringBuilder.AppendLine("}");
-            stringBuilder.Append(string.IsNullOrWhiteSpace(MemberInit) ? null : (" =" + MemberInit + ";"));
+            //stringBuilder.AppendLine("}");
+            //stringBuilder.Append(string.IsNullOrWhiteSpace(MemberInit) ? null : (" =" + MemberInit + ";"));
 
-            PropertyDeclarationSyntax memberDeclaration;
-            var syntaxNodes = CSharpSyntaxTree.ParseText(stringBuilder.ToString())
-                .GetRoot()
-                .DescendantNodes();
-            memberDeclaration = syntaxNodes
-            .OfType<PropertyDeclarationSyntax>()
-            .Single();
+            //PropertyDeclarationSyntax memberDeclaration;
+            //var syntaxNodes = CSharpSyntaxTree.ParseText(stringBuilder.ToString())
+            //    .GetRoot()
+            //    .DescendantNodes();
+            //memberDeclaration = syntaxNodes
+            //.OfType<PropertyDeclarationSyntax>()
+            //.Single();
 
-            // 添加特性
-            if (MemberAttrs.Count != 0)
-            {
-                var tmp = AttributeBuilder.CreateAttributeList(MemberAttrs.ToArray());
-                memberDeclaration = memberDeclaration.WithAttributeLists(tmp);
-            }
+            //// 添加特性
+            //if (MemberAttrs.Count != 0)
+            //{
+            //    var tmp = AttributeBuilder.CreateAttributeList(MemberAttrs.ToArray());
+            //    memberDeclaration = memberDeclaration.WithAttributeLists(tmp);
+            //}
 
-            return memberDeclaration;
+            //return memberDeclaration;
+            return null;
         }
 
-        /// <summary>
-        /// 获得格式化代码
-        /// </summary>
-        /// <returns></returns>
-        public override string FullCode()
+        public override string ToFormatCode()
         {
-            return Build().NormalizeWhitespace().ToFullString();
+            throw new NotImplementedException();
         }
 
+        public override string ToFullCode()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
