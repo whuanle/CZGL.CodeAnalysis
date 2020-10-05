@@ -1,23 +1,19 @@
-﻿using System;
+﻿using CZGL.Roslyn.States;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace CZGL.Roslyn.Templates
 {
+    /// <summary>
+    /// 构造函数构建器
+    /// </summary>
+    /// <typeparam name="TBuilder"></typeparam>
     public abstract class CtorTemplate<TBuilder> : MethodTemplate<TBuilder> where TBuilder : CtorTemplate<TBuilder>
     {
-        protected internal string BaseCtor;
-        protected internal string ThisCtor;
+        protected internal readonly CtorState _ctor = new CtorState();
 
-        /// <summary>
-        /// 此设置对构造函数无效
-        /// </summary>
-        /// <param name="str">无法更改</param>
-        /// <returns></returns>
-        public override TBuilder WithReturnType(string str = "void")
-        {
-            return _TBuilder;
-        }
+
 
         /// <summary>
         /// 调用父类构造函数
@@ -29,9 +25,9 @@ namespace CZGL.Roslyn.Templates
         /// base("test")
         /// </code>
         /// </example>
-        public virtual TBuilder SetBaseCtor(string Code)
+        public virtual TBuilder WithBaseCtor(string Code)
         {
-            BaseCtor = Code;
+            _ctor.BaseCtor = Code;
             return _TBuilder;
         }
 
@@ -40,9 +36,9 @@ namespace CZGL.Roslyn.Templates
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        public virtual TBuilder SetThisCtor(string Code)
+        public virtual TBuilder WithThisCtor(string Code)
         {
-            ThisCtor = Code;
+            _ctor.ThisCtor = Code;
             return _TBuilder;
         }
     }

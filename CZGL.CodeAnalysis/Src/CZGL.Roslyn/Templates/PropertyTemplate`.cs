@@ -73,7 +73,7 @@ namespace CZGL.Roslyn.Templates
         /// </summary>
         /// <param name="blockCode"></param>
         /// <returns></returns>
-        public virtual TBuilder SetInitializer(string blockCode)
+        public virtual TBuilder WithSetInit(string blockCode)
         {
             if (string.IsNullOrWhiteSpace(blockCode))
                 throw new ArgumentNullException(nameof(blockCode));
@@ -87,7 +87,7 @@ namespace CZGL.Roslyn.Templates
         /// </summary>
         /// <param name="blockCode"></param>
         /// <returns></returns>
-        public virtual TBuilder GetInitializer(string blockCode)
+        public virtual TBuilder WithGetInit(string blockCode)
         {
             if (string.IsNullOrWhiteSpace(blockCode))
                 throw new ArgumentNullException(nameof(blockCode));

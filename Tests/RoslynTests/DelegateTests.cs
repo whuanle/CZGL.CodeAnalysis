@@ -40,7 +40,7 @@ namespace RoslynTests
         {
             DelegateBuilder builder = new DelegateBuilder();
             var field = builder
-                .WithAccess(MemberVisibilityType.Public)
+                .WithAccess(MemberAccess.Public)
                 .WithReturnType("void")
                 .WithName("T1").Build();
             var result = field.NormalizeWhitespace().ToFullString();
@@ -55,7 +55,7 @@ namespace RoslynTests
         {
             DelegateBuilder builder = new DelegateBuilder();
             var field = builder
-                .WithAccess(MemberVisibilityType.Public)
+                .WithAccess(MemberAccess.Public)
                 .WithReturnType("string")
                 .WithName("T2").Build();
             var result = field.NormalizeWhitespace().ToFullString();
@@ -70,7 +70,7 @@ namespace RoslynTests
         {
             DelegateBuilder builder = new DelegateBuilder();
             var field = builder
-                .WithAccess(MemberVisibilityType.Public)
+                .WithAccess(MemberAccess.Public)
                 .WithReturnType("string")
                 .WithParams("string a")
                 .WithName("T3").Build();
@@ -87,7 +87,7 @@ namespace RoslynTests
             DelegateBuilder builder = new DelegateBuilder();
             var field = builder
                 .WithAttributes(new string[] { @"[Test(""1"", ""2"", A = ""3"", B = ""4"")]" })
-                .WithAccess(MemberVisibilityType.Public)
+                .WithAccess(MemberAccess.Public)
                 .WithReturnType("void")
                 .WithName("T4").Build();
             var result = field.NormalizeWhitespace().ToFullString();

@@ -14,7 +14,8 @@ namespace CZGL.Roslyn
     /// <typeparam name="TBuilder"></typeparam>
     public abstract class FieldTemplate<TBuilder> : VariableTemplate<TBuilder> where TBuilder : FieldTemplate<TBuilder>
     {
-        //protected internal readonly FieldState _field = new FieldState();
+        protected internal ClassBuilder _this;
+
 
         /// <summary>
         /// 设置字段的关键字，如 static，readonly 等
@@ -26,5 +27,7 @@ namespace CZGL.Roslyn
             _variable.Keyword = RoslynHelper.GetName(keyword);
             return _TBuilder;
         }
+
+        internal TBuilder 
     }
 }

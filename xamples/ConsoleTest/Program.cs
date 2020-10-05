@@ -1,5 +1,4 @@
-using CZGL.CodeAnalysis.Shared;
-using CZGL.Roslyn;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -22,6 +21,7 @@ namespace ConsoleTest
         public event A1 a1;
         static void Main(string[] args)
         {
+
             //var a = DependencyContext.Default.CompileLibraries;
             //var b = a.Count;
 

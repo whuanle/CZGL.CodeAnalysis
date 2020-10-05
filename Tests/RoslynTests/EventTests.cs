@@ -29,7 +29,7 @@ namespace RoslynTests
         {
             EventBuilder builder = new EventBuilder();
             var field = builder
-                .WithAccess(MemberVisibilityType.Public)
+                .WithAccess(MemberAccess.Public)
                 .SetDelegateType("T")
                 .WithName("t1")
                 .WithInit("AAA")
@@ -66,7 +66,7 @@ namespace RoslynTests
             EventBuilder builder = new EventBuilder();
             var field = builder
                  .WithAttributes(new string[] { @"[Display(Name = ""a"")]", @"[Key]" })
-                .WithAccess(MemberVisibilityType.Public)
+                .WithAccess(MemberAccess.Public)
                 .SetDelegateType("T")
                 .WithName("t1")
                 .WithInit("AAA")

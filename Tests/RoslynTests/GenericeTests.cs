@@ -71,7 +71,7 @@ namespace RoslynTests
             generic.AddBaseClassConstarint("T7", "IEnumerable<int>");
             generic.AddTUConstarint("T8","T2");
             generic.AddClassConstarint("T9").AddNewNullConstarint("T9");
-            var syntax =  generic.Build();
+            var syntax =  generic.BuildSyntax();
             var result = syntax.ToFullString();
 #if Log
             _tempOutput.WriteLine(result);

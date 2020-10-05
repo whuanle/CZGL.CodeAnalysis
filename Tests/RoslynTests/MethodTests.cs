@@ -37,7 +37,7 @@ namespace RoslynTests
         public void 方法_T1()
         {
             MethodBuilder methodBuilder = new MethodBuilder();
-            var method = methodBuilder.WithAccess(MemberVisibilityType.Public)
+            var method = methodBuilder.WithAccess(MemberAccess.Public)
                 //.SetReturnParam("void")
                 .WithName("T1")
                 .WithBlock(@"Console.WriteLine(""666"");")
@@ -56,7 +56,7 @@ namespace RoslynTests
         public void 方法_T2()
         {
             MethodBuilder methodBuilder = new MethodBuilder();
-            var method = methodBuilder.WithAccess(MemberVisibilityType.Public)
+            var method = methodBuilder.WithAccess(MemberAccess.Public)
                 .WithReturnType("string")
                 .WithName("T2")
                 .WithBlock(@"return ""666"";")
@@ -76,7 +76,7 @@ namespace RoslynTests
         public void 方法_T3()
         {
             MethodBuilder methodBuilder = new MethodBuilder();
-            var method = methodBuilder.WithAccess(MemberVisibilityType.Public)
+            var method = methodBuilder.WithAccess(MemberAccess.Public)
                 .WithReturnType("List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>")
                 .WithName("T3")
                 .WithBlock(@"return new List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>();")
@@ -96,7 +96,7 @@ namespace RoslynTests
         public void 方法_T4()
         {
             MethodBuilder methodBuilder = new MethodBuilder();
-            var method = methodBuilder.WithAccess(MemberVisibilityType.Public)
+            var method = methodBuilder.WithAccess(MemberAccess.Public)
                 //.SetReturnParam("void")
                 .WithName("T4")
                 .WithParams("int a, int b, string c")
@@ -114,7 +114,7 @@ namespace RoslynTests
         public void 方法_T5()
         {
             MethodBuilder methodBuilder = new MethodBuilder();
-            var method = methodBuilder.WithAccess(MemberVisibilityType.Public)
+            var method = methodBuilder.WithAccess(MemberAccess.Public)
                 //.SetReturnParam("void")
                 .WithName("T5")
                 .WithParams("List<Dictionary<int, Dictionary<string, List<FieldInfo>>>> a")

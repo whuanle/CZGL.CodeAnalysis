@@ -20,7 +20,18 @@ namespace CZGL.Roslyn.States
         /// <summary>
         /// 泛型参数以及泛型参数约束
         /// </summary>
-        public Dictionary<string, HashSet<string>> GenericParams { get; set; } = new Dictionary<string, HashSet<string>>();
+        public GenericBuilder GenericParams { get; set; } = new GenericBuilder();
+
+
+        /// <summary>
+        /// 使用代码直接生成
+        /// </summary>
+        public bool UseCode { get; set; } = false;
+
+        /// <summary>
+        /// 使用代码
+        /// </summary>
+        public string Code { get; set; }
 
     }
 }

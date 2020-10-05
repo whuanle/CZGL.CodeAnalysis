@@ -151,12 +151,12 @@ namespace CZGL.CodeAnalysis
         /// <para>不能识别嵌套类的访问权限，使用前请先检查</para>
         /// </summary>
         /// <returns></returns>
-        public ClassVisibilityType ClassVisibilityShared()
+        public ClassAccess ClassVisibilityShared()
         {
             if (_thisTypeInfo.ClassType.IsNested)
                 throw new ArgumentNullException($"当前类型 {_thisTypeInfo.ClassType.Name} 为嵌套类");
 
-            return _thisTypeInfo.ClassType.IsPublic ? ClassVisibilityType.Public : ClassVisibilityType.Internal;
+            return _thisTypeInfo.ClassType.IsPublic ? ClassAccess.Public : ClassAccess.Internal;
         }
 
 
@@ -178,16 +178,16 @@ namespace CZGL.CodeAnalysis
         /// 嵌套类的访问权限
         /// </summary>
         /// <returns></returns>
-        public MemberVisibilityType NestedClassVisibilityShared()
+        public MemberAccess NestedClassVisibilityShared()
         {
             if (!_thisTypeInfo.ClassType.IsNested)
                 throw new ArgumentNullException($"当前类型 {_thisTypeInfo.ClassType.Name} 不是嵌套类");
             return
-                _thisTypeInfo.ClassType.IsNestedPublic ? MemberVisibilityType.Public :
-                _thisTypeInfo.ClassType.IsNestedPrivate ? MemberVisibilityType.Private :
-                _thisTypeInfo.ClassType.IsNestedAssembly ? MemberVisibilityType.Internal :
-                _thisTypeInfo.ClassType.IsNestedFamily ? MemberVisibilityType.Protected :
-                _thisTypeInfo.ClassType.IsNestedFamORAssem ? MemberVisibilityType.ProtectedInternal : throw new ArgumentNullException($"未能识别当前类型的访问权限");
+                _thisTypeInfo.ClassType.IsNestedPublic ? MemberAccess.Public :
+                _thisTypeInfo.ClassType.IsNestedPrivate ? MemberAccess.Private :
+                _thisTypeInfo.ClassType.IsNestedAssembly ? MemberAccess.Internal :
+                _thisTypeInfo.ClassType.IsNestedFamily ? MemberAccess.Protected :
+                _thisTypeInfo.ClassType.IsNestedFamORAssem ? MemberAccess.ProtectedInternal : throw new ArgumentNullException($"未能识别当前类型的访问权限");
         }
 
 
@@ -211,12 +211,12 @@ namespace CZGL.CodeAnalysis
         /// 检查类是否为密封类、抽象类、静态类、接口
         /// </summary>
         /// <returns>如果都不是，则返回 string.Empty </returns>
-        public ClassQualifierType QualifierShared()
+        public ClassKeyword QualifierShared()
         {
             return
-                _thisTypeInfo.IsSealed ? ClassQualifierType.Sealed :
-                _thisTypeInfo.IsAbstract ? ClassQualifierType.Abstract :
-                _thisTypeInfo.IsStatic ? ClassQualifierType.Static : ClassQualifierType.Default;
+                _thisTypeInfo.IsSealed ? ClassKeyword.Sealed :
+                _thisTypeInfo.IsAbstract ? ClassKeyword.Abstract :
+                _thisTypeInfo.IsStatic ? ClassKeyword.Static : ClassKeyword.Default;
         }
 
         #endregion

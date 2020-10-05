@@ -10,11 +10,20 @@ using System.Text;
 
 namespace CZGL.Roslyn
 {
+
+    /// <summary>
+    /// 属性构建器
+    /// </summary>
     public sealed class PropertyBuilder : PropertyTemplate<PropertyBuilder>
     {
-        public PropertyBuilder()
+        internal PropertyBuilder()
         {
             _TBuilder = this;
+        }
+
+        internal PropertyBuilder(string name) : this()
+        {
+            _base.Name = name;
         }
 
         /// <summary>
@@ -44,59 +53,56 @@ namespace CZGL.Roslyn
 
             if (attrs != null)
                 memberDeclaration = memberDeclaration
-                    .WithAttributeLists(AttributeBuilder.CreateAttributeList(attrs));
+                    .WithAttributeLists(CodeSyntax.CreateAttributeList(attrs));
 
             return memberDeclaration;
         }
 
-        public PropertyDeclarationSyntax Build()
+        public PropertyDeclarationSyntax BuildSyntax()
         {
-            //StringBuilder stringBuilder = new StringBuilder();
 
-            //stringBuilder.Append(MemberVisibility);
+            PropertyDeclarationSyntax memberDeclaration;
+            var syntaxNodes = CSharpSyntaxTree.ParseText(ToFullCode())
+                .GetRoot()
+                .DescendantNodes();
+            memberDeclaration = syntaxNodes
+            .OfType<PropertyDeclarationSyntax>()
+            .Single();
 
-            //stringBuilder.Append(" ");
-            //stringBuilder.Append(MemberQualifier);
+            // 添加特性
+            if (_member.Atributes.Count != 0)
+            {
+                var tmp = CodeSyntax.CreateAttributeList(_member.Atributes.ToArray());
+                memberDeclaration = memberDeclaration.WithAttributeLists(tmp);
+            }
 
-            //stringBuilder.Append(" ");
-            //stringBuilder.Append(MemberType);
-            //stringBuilder.Append(" " + MemberName);
-
-            //stringBuilder.AppendLine("{");
-
-            //stringBuilder.AppendLine(GetBlock);
-            //stringBuilder.AppendLine(SetBlock);
-
-            //stringBuilder.AppendLine("}");
-            //stringBuilder.Append(string.IsNullOrWhiteSpace(MemberInit) ? null : (" =" + MemberInit + ";"));
-
-            //PropertyDeclarationSyntax memberDeclaration;
-            //var syntaxNodes = CSharpSyntaxTree.ParseText(stringBuilder.ToString())
-            //    .GetRoot()
-            //    .DescendantNodes();
-            //memberDeclaration = syntaxNodes
-            //.OfType<PropertyDeclarationSyntax>()
-            //.Single();
-
-            //// 添加特性
-            //if (MemberAttrs.Count != 0)
-            //{
-            //    var tmp = AttributeBuilder.CreateAttributeList(MemberAttrs.ToArray());
-            //    memberDeclaration = memberDeclaration.WithAttributeLists(tmp);
-            //}
-
-            //return memberDeclaration;
-            return null;
+            return memberDeclaration;
         }
 
         public override string ToFormatCode()
         {
-            throw new NotImplementedException();
+            return BuildSyntax().NormalizeWhitespace().ToFullString();
         }
 
         public override string ToFullCode()
         {
-            throw new NotImplementedException();
+            const string Template = @"{Attributes} {Access} {Keyword} {Type} {Name} 
+{
+{get}
+{set}
+} {InitCode}";
+
+            var code = Template
+                .Replace("{Attributes}", _member.Atributes.Join("\n").CodeNewLine())
+                .Replace("{Access", _member.Access.CodeNewSpace())
+                .Replace("{Keyword}", _variable.Keyword.CodeNewSpace())
+                .Replace("{Type}", _variable.MemberType)
+                .Replace("{Name}", _base.Name)
+                .Replace("{get}",_property.GetBlock)
+                .Replace("{set}", _property.SetBlock)
+                .Replace("{InitCode}", _variable.InitCode.CodeNewBefore(" = "));
+
+            return code;
         }
     }
 }

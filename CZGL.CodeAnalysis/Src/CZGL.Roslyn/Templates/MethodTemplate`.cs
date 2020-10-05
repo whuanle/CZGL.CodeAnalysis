@@ -7,6 +7,10 @@ using System.Text;
 
 namespace CZGL.Roslyn.Templates
 {
+    /// <summary>
+    /// 构造函数和方法构建模板
+    /// </summary>
+    /// <typeparam name="TBuilder"></typeparam>
     public abstract class MethodTemplate<TBuilder> : FuncTemplate<TBuilder> where TBuilder : MethodTemplate<TBuilder>
     {
         protected internal MethodState _method = new MethodState();

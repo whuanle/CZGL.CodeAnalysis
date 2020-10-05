@@ -5,6 +5,9 @@ using System.Text;
 
 namespace CZGL.Roslyn
 {
+    /// <summary>
+    /// 拼接代码拓展
+    /// </summary>
     public static class CodeExtensions
     {
         /// <summary>
@@ -28,7 +31,7 @@ namespace CZGL.Roslyn
         /// </summary>
         /// <param name="list"></param>
         /// <returns></returns>
-        public static string Join(this HashSet<string> list)=> string.Join("\n", list);
+        public static string Join(this HashSet<string> list) => string.Join("\n", list);
 
         /// <summary>
         /// 代码换行；如果源字符串为空，则不改变
@@ -40,6 +43,42 @@ namespace CZGL.Roslyn
             if (string.IsNullOrEmpty(source))
                 return source;
             return source + "\n";
+        }
+
+        /// <summary>
+        /// 代码加一个空格；如果源字符串为空，则不改变
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static string CodeNewSpace(this string source)
+        {
+            if (string.IsNullOrEmpty(source))
+                return source;
+            return source + "\n";
+        }
+
+        /// <summary>
+        /// 如果源字符串为空，则不改变，如果不为空，则再前面加上符号
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static string CodeNewBefore(this string source, string separator = " ")
+        {
+            if (string.IsNullOrEmpty(source))
+                return source;
+            return separator + source;
+        }
+
+        /// <summary>
+        /// 如果源字符串为空，则不改变，如果不为空，则再后面面加上符号
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static string CodeNewAfter(this string source, string separator = " ")
+        {
+            if (string.IsNullOrEmpty(source))
+                return source;
+            return source + separator;
         }
     }
 }

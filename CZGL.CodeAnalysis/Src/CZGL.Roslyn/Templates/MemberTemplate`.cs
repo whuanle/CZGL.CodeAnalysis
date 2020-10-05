@@ -12,7 +12,7 @@ namespace CZGL.Roslyn.Templates
     /// <summary>
     /// 命名空间内的成员共有的操作
     /// <para>
-    /// * {枚举}
+    /// * {枚举}<br />
     /// * {委托}
     /// * {事件}
     /// * {结构体}
@@ -33,6 +33,9 @@ namespace CZGL.Roslyn.Templates
         protected internal MemberState _member = new MemberState();
 
         protected internal TBuilder _TBuilder;
+
+
+        public string Name { get { return _base.Name; } }
 
         #region 特性注解
 
@@ -83,7 +86,7 @@ namespace CZGL.Roslyn.Templates
         /// </summary>
         /// <param name="visibilityType">标记</param>
         /// <returns></returns>
-        public virtual TBuilder WithAccess(MemberVisibilityType visibilityType = MemberVisibilityType.Internal)
+        public virtual TBuilder WithAccess(MemberAccess visibilityType = MemberAccess.Internal)
         {
             _member.Access = RoslynHelper.GetName(visibilityType);
             return _TBuilder;
@@ -114,12 +117,9 @@ namespace CZGL.Roslyn.Templates
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public virtual TBuilder WithName(string name)
+        public new virtual TBuilder WithName(string name)
         {
-            if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException(nameof(name));
-
-            _base.Name = name;
+            base.WithName(name);
             return _TBuilder;
         }
 
@@ -128,14 +128,13 @@ namespace CZGL.Roslyn.Templates
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public virtual TBuilder WithRondomName()
+        public new virtual TBuilder WithRondomName()
         {
-            _base.Name = "N" + Guid.NewGuid().ToString("N");
+            base.WithRondomName();
             return _TBuilder;
         }
 
         #endregion
-
 
         #region clear
 

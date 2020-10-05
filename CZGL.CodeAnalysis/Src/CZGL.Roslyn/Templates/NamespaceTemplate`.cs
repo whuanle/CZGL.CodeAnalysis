@@ -20,16 +20,31 @@ namespace CZGL.Roslyn.Templates
             _base.Name = namespaceName;
         }
 
+        #region 名称
+
         /// <summary>
-        /// 设置命名空间的名称
+        /// 设置名称
         /// </summary>
-        /// <param name="namespaceName">命名空间的名称</param>
+        /// <param name="name"></param>
         /// <returns></returns>
-        public virtual TBuilder WithName(string namespaceName)
+        public new virtual TBuilder WithName(string name)
         {
-            _base.Name = namespaceName;
+            base.WithName(name);
             return _TBuilder;
         }
+
+        /// <summary>
+        /// 随机生成一个名称
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public new virtual TBuilder WithRondomName()
+        {
+            base.WithRondomName();
+            return _TBuilder;
+        }
+
+        #endregion
 
         /// <summary>
         /// 添加一个命名空间引用
@@ -61,9 +76,27 @@ namespace CZGL.Roslyn.Templates
 
         #region 创建成员
 
+        /// <summary>
+        /// 创建枚举
+        /// </summary>
+        /// <returns></returns>
         public virtual EnumBuilder CreateEnum()
         {
-            return new EnumBuilder();
+            var builder= new EnumBuilder();
+            _namespace.Enums.Add(builder);
+            return builder;
+        }
+
+        /// <summary>
+        /// 创建枚举
+        /// </summary>
+        /// <param name="name">枚举名称</param>
+        /// <returns></returns>
+        public virtual EnumBuilder CreateEnum(string name)
+        {
+            var builder = new EnumBuilder(name);
+            _namespace.Enums.Add(builder);
+            return builder;
         }
 
         public virtual StructBuilder CreateStruct()
@@ -94,8 +127,31 @@ namespace CZGL.Roslyn.Templates
 
         #region 引入成员
 
+        /// <summary>
+        /// 加入枚举
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
         public virtual TBuilder With(EnumBuilder builder)
         {
+            _namespace.Enums.Add(builder);
+            return _TBuilder;
+        }
+
+        /// <summary>
+        /// 加入枚举
+        /// </summary>
+        /// <param name="name">枚举名称</param>
+        /// <param name="action">构建枚举</param>
+        /// <returns></returns>
+        public virtual TBuilder With(string name,Action<EnumBuilder> action)
+        {
+            if (action is null)
+                throw new ArgumentNullException(nameof(action));
+
+            EnumBuilder builder = new EnumBuilder(name); 
+            action.Invoke(builder);
+            _namespace.Enums.Add(builder);
             return _TBuilder;
         }
 

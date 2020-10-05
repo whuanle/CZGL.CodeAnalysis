@@ -52,7 +52,7 @@ protected internal static readonly int i
         {
             PropertyBuilder builder = new PropertyBuilder();
             var field = builder
-                .WithAccess(MemberVisibilityType.ProtectedInternal)
+                .WithAccess(MemberAccess.ProtectedInternal)
                 .SetQualifier(MemberQualifierType.Static | MemberQualifierType.Readonly)
                 .WithType("int")
                 .WithName("i")
@@ -81,7 +81,7 @@ protected internal static readonly int i
         {
             PropertyBuilder builder = new PropertyBuilder();
             var field = builder
-                .WithAccess(MemberVisibilityType.ProtectedInternal)
+                .WithAccess(MemberAccess.ProtectedInternal)
                 .SetQualifier(MemberQualifierType.Static | MemberQualifierType.Readonly)
                 .WithType("int")
                 .WithName("i")

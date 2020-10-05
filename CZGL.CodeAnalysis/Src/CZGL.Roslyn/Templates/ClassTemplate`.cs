@@ -1,161 +1,74 @@
 using CZGL.CodeAnalysis.Shared;
+using CZGL.Roslyn.States;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace CZGL.Roslyn.Templates
 {
-    public abstract class ClassTemplate<TBuilder> where TBuilder : ClassTemplate<TBuilder>
+    /// <summary>
+    /// 类构建器
+    /// </summary>
+    /// <typeparam name="TBuilder"></typeparam>
+    public abstract class ClassTemplate<TBuilder> : MemberTemplate<TBuilder> where TBuilder : ClassTemplate<TBuilder>
     {
-        protected internal TBuilder _TBuilder;
-        protected internal bool IsNested = false;
-
-        protected internal readonly List<string> MemberAttrs = new List<string>();
-        protected internal string Visibility = string.Empty;
-        protected internal string Qualifier;
-        protected internal string MemberName = "YourName";
-        protected internal string BaseTypeName;
-        protected internal List<string> BaseInterfaces = new List<string>();
-        protected internal string Constraint;
-
-        protected internal List<MemberDeclarationSyntax> Members = new List<MemberDeclarationSyntax>();
-
-        protected internal List<ConstructorDeclarationSyntax> Ctors = new List<ConstructorDeclarationSyntax>();
-
-
-
-
-        #region 特性注解
-
-        /// <summary>
-        /// 添加一些特性
-        /// <para>会清除已存在的特性</para>
-        /// </summary>
-        /// <param name="attrs"></param>
-        /// <returns></returns>
-        public virtual TBuilder SetAttributeLists(string[] attrs = null)
-        {
-            MemberAttrs.Clear();
-            MemberAttrs.AddRange(attrs);
-            return _TBuilder;
-        }
-
-
-
-        /// <summary>
-        /// 添加一个特性
-        /// </summary>
-        /// <param name="attr"></param>
-        /// <returns></returns>
-        public virtual TBuilder AddAttribute(string attr)
-        {
-            MemberAttrs.Add(attr);
-            return _TBuilder;
-        }
-
-        #endregion
-
-        #region 访问权限
-
-        /// <summary>
-        /// 访问权限
-        /// </summary>
-        /// <param name="visibilityType"></param>
-        /// <returns></returns>
-        public virtual TBuilder SetVisibility(ClassVisibilityType visibilityType = ClassVisibilityType.Internal)
-        {
-            Visibility = RoslynHelper.GetName(visibilityType);
-            return _TBuilder;
-        }
-
-        /// <summary>
-        /// 访问权限
-        /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
-        public virtual TBuilder SetVisibility(string str = null)
-        {
-            Visibility = str;
-            return _TBuilder;
-        }
-
-        /// <summary>
-        /// 定义当前类为嵌套类，并设置访问修饰符
-        /// </summary>
-        /// <param name="visibilityType"></param>
-        /// <returns></returns>
-        public virtual TBuilder SetNestedVisibility(MemberVisibilityType visibilityType)
-        {
-            Visibility = RoslynHelper.GetName(visibilityType);
-            return _TBuilder;
-        }
-
-        #endregion
+        protected internal readonly ClassState _class = new ClassState();
 
         #region 修饰符
 
         /// <summary>
-        /// 修饰符
+        /// 类的修饰符关键字，如 static，sealed
         /// </summary>
-        /// <param name="qualifierType"></param>
+        /// <param name="keyword"></param>
         /// <returns></returns>
-        public virtual TBuilder SetQualifier(ClassQualifierType qualifierType)
+        public virtual TBuilder WithKeyword(ClassKeyword keyword)
         {
-            Qualifier = RoslynHelper.GetName(qualifierType);
+            _class.Keyword = RoslynHelper.GetName(keyword);
             return _TBuilder;
         }
 
         /// <summary>
-        /// 修饰符
+        /// 类的修饰符关键字，如 static，sealed
+        /// <para>关键字拼写错误，可能会导致代码有严重错误</para>
         /// </summary>
-        /// <param name="str">static... </param>
+        /// <param name="keyword">static... </param>
         /// <returns></returns>
-        public virtual TBuilder SetQualifier(string str = "")
+        public virtual TBuilder WithKeyword(string keyword = "")
         {
-            Qualifier = str;
+            _class.Keyword = keyword;
             return _TBuilder;
         }
 
         #endregion
 
-        #region 命名
+        #region 名称
 
         /// <summary>
         /// 设置名称
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public virtual TBuilder SetName(string name)
+        public new virtual TBuilder WithName(string name)
         {
-            MemberName = name;
+            base.WithName(name);
             return _TBuilder;
         }
 
         /// <summary>
-        /// 定义类的名称并设置泛型
-        /// </summary>
-        /// <param name="name">类的名称</param>
-        /// <param name="genericParams">泛型参数列表,如果不为泛型类,则此为 null </param>
-        /// <returns></returns>
-        public virtual TBuilder SetClassName(string name, string[] genericParams = null)
-        {
-            MemberName = (string.Concat(name, "<", string.Join(",", genericParams), ">"));
-            return _TBuilder;
-        }
-
-        /// <summary>
-        /// 随机设置一个名称
+        /// 随机生成一个名称
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public virtual TBuilder SetRondomName()
+        public new virtual TBuilder WithRondomName()
         {
-            MemberName = "N" + Guid.NewGuid().ToString("N");
+            base.WithRondomName();
             return _TBuilder;
         }
 
         #endregion
+
 
         #region 继承
 
@@ -163,23 +76,33 @@ namespace CZGL.Roslyn.Templates
         /// <summary>
         /// 继承基类
         /// </summary>
-        /// <param name="baseName"></param>
+        /// <param name="baseName">基类名称</param>
         /// <returns></returns>
-        public virtual TBuilder SetBaseType(string baseName)
+        public virtual TBuilder WithBaseClass(string baseName)
         {
-            BaseTypeName = baseName;
+            _class.BaseClass = baseName;
             return _TBuilder;
         }
-
 
         /// <summary>
         /// 继承接口
         /// </summary>
-        /// <param name="baseName"></param>
+        /// <param name="interfaceName"></param>
         /// <returns></returns>
-        public virtual TBuilder SetInterfaces(string[] names)
+        public virtual TBuilder WithInterface(string interfaceName)
         {
-            BaseInterfaces.AddRange(names);
+            _class.Interfaces.Add(interfaceName);
+            return _TBuilder;
+        }
+
+        /// <summary>
+        /// 继承接口
+        /// </summary>
+        /// <param name="interfaceNames"></param>
+        /// <returns></returns>
+        public virtual TBuilder WithInterfaces(params string[] interfaceNames)
+        {
+            _ = interfaceNames.SelectMany(item => { _class.Interfaces.Add(item); ; return item; });
             return _TBuilder;
         }
 
@@ -188,41 +111,58 @@ namespace CZGL.Roslyn.Templates
 
         #region 泛型约束
 
-        /// <summary>
-        /// 添加泛型约束
-        /// <para>
-        /// <example>
-        /// <code>
-        /// string Code = @"
-        ///         where T1 : struct
-        ///         where T2 : class
-        ///         where T3 : notnull
-        ///         where T4 : unmanaged
-        ///         where T5 : new()
-        ///         where T6 : Model_泛型类4
-        ///         where T7 : IEnumerable<int>
-        ///         where T8 : T2
-        /// "; 
-        /// SetConstraint(Code);
-        /// </code>
-        /// </example>
-        /// </para>
-        /// </summary>
-        /// <param name="Code"></param>
-        /// <returns></returns>
-        public virtual TBuilder SetConstraint(string Code)
-        {
-            Constraint = Code;
-            return _TBuilder;
-        }
 
-        public virtual TBuilder SetConstraint(Action<GenericTemplate<GenericBuilder>> builder)
+        /// <summary>
+        /// 为此类构建泛型
+        /// </summary>
+        /// <param name="builder">泛型构建器</param>
+        /// <returns></returns>
+        public virtual TBuilder WithGeneric(Action<GenericTemplate<GenericBuilder>> builder)
         {
             GenericBuilder generic = new GenericBuilder();
             builder.Invoke(generic);
-            Constraint = generic.FullCode();
+            _class.GenericParams = generic;
             return _TBuilder;
         }
+
+        /// <summary>
+        /// 为此类构建泛型
+        /// </summary>
+        /// <param name="builder">构建器</param>
+        /// <returns></returns>
+        public virtual TBuilder WithGeneric(GenericBuilder builder)
+        {
+            _class.GenericParams = builder;
+            return _TBuilder;
+        }
+
+        /// <summary>
+        /// 为此类构建泛型
+        /// </summary>
+        /// <param name="paramList">泛型参数</param>
+        /// <param name="constraintList">泛型参数约束</param>
+        /// <returns></returns>
+        public virtual TBuilder WithGeneric(string paramList, string constraintList)
+        {
+            _class.GenericParams = GenericBuilder.WithFromCode(paramList, constraintList);
+            return _TBuilder;
+        }
+
+        /// <summary>
+        /// 为此类构建泛型
+        /// </summary>
+        /// <param name="paramList">泛型参数</param>
+        /// <param name="constraintList">泛型参数约束</param>
+        /// <param name="builder">构建器</param>
+        /// <returns></returns>
+        public virtual TBuilder WithGeneric(string paramList, string constraintList, out GenericBuilder builder)
+        {
+            var generic = GenericBuilder.WithFromCode(paramList, constraintList);
+            _class.GenericParams = generic;
+            builder = generic;
+            return _TBuilder;
+        }
+
 
         #endregion
 
@@ -230,64 +170,165 @@ namespace CZGL.Roslyn.Templates
         #region 构造函数
 
         /// <summary>
-        /// 
+        /// 添加一个构造函数
         /// </summary>
-        /// <param name="Code"></param>
+        /// <param name="name"></param>
         /// <returns></returns>
-        public virtual TBuilder AddCtor(string Code)
+        public virtual CtorBuilder WithCtor()
         {
-            Ctors.Add(CtorBuilder.Build(Code));
-            return _TBuilder;
+            string name = _base.Name;
+            var builder = new CtorBuilder(name);
+            _class.Ctors.Add(builder);
+            return builder;
         }
 
-
-        public virtual TBuilder AddCtor(ConstructorDeclarationSyntax syntax)
+        /// <summary>
+        /// 添加一个构造函数
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
+        public virtual TBuilder WithCtor(Action<CtorBuilder> builder)
         {
-            Ctors.Add(syntax);
-            return _TBuilder;
-        }
-
-
-        public virtual TBuilder AddCtor(Action<CtorBuilder> builder)
-        {
-            CtorBuilder ctor = new CtorBuilder();
+            CtorBuilder ctor = new CtorBuilder(_base.Name);
             builder.Invoke(ctor);
-            Ctors.Add(ctor.Build());
+            _class.Ctors.Add(ctor);
+            return _TBuilder;
+        }
+
+
+        /// <summary>
+        /// 添加一个构造函数
+        /// </summary>
+        /// <param name="Code">构造函数代码</param>
+        /// <returns></returns>
+        public virtual TBuilder WithCtorFromCode(string Code)
+        {
+            _class.Ctors.Add(CtorBuilder.FromCode(Code));
+            return _TBuilder;
+        }
+
+
+        #endregion
+
+        /// <summary>
+        /// 获得构建器
+        /// </summary>
+        /// <returns></returns>
+        public TBuilder GetBuilder()
+        {
+            return _TBuilder;
+        }
+
+
+        #region 类的成员，字段、事件、委托、属性、方法
+
+        #region 字段
+        
+        /// <summary>
+        /// 添加一个字段
+        /// </summary>
+        /// <returns></returns>
+        public virtual FieldBuilder WithField()
+        {
+            FieldBuilder member = new FieldBuilder();
+            _class.Fields.Add(member);
+            return member;
+        }
+
+        /// <summary>
+        /// 添加一个字段
+        /// </summary>
+        /// <param name="name">字段名称</param>
+        /// <returns></returns>
+        public virtual FieldBuilder WithField(string name)
+        {
+            FieldBuilder member = new FieldBuilder(name);
+            _class.Fields.Add(member);
+            return member;
+        }
+
+        /// <summary>
+        /// 添加一个字段
+        /// </summary>
+        /// <param name="builder">字段构建器</param>
+        /// <returns></returns>
+        public virtual TBuilder WithField(Action<FieldBuilder> builder)
+        {
+            FieldBuilder member = new FieldBuilder();
+            builder.Invoke(member);
+            _class.Fields.Add(member);
+            return _TBuilder;
+        }
+
+        /// <summary>
+        /// 添加一个字段
+        /// </summary>
+        /// <param name="builder">字段构建器</param>
+        /// <returns></returns>
+        public virtual TBuilder WithField(FieldBuilder builder)
+        {
+            _class.Fields.Add(builder);
             return _TBuilder;
         }
 
         #endregion
 
-
-        #region 类的成员，字段、事件、委托、属性、方法
-
+        #region 属性
 
         /// <summary>
-        /// 统计字段、属性、方法、委托、事件等
+        /// 添加一个属性
         /// </summary>
         /// <returns></returns>
-        public virtual TBuilder AddMember<TMember>(TMember member)where TMember: MemberDeclarationSyntax
+        public virtual PropertyBuilder WithProperty()
         {
-            Members.Add(member);
-            return _TBuilder;
+            PropertyBuilder member = new PropertyBuilder();
+            _class.Propertys.Add(member);
+            return member;
         }
 
-        public virtual TBuilder AddFieldMember(Action<FieldBuilder> builder) 
+        /// <summary>
+        /// 添加一个属性
+        /// </summary>
+        /// <param name="name">属性名称</param>
+        /// <returns></returns>
+        public virtual PropertyBuilder WithProperty(string name)
         {
-            FieldBuilder member = new FieldBuilder();
-            builder.Invoke(member);
-            Members.Add(member.Build());
-            return _TBuilder;
+            PropertyBuilder member = new PropertyBuilder(name);
+            _class.Propertys.Add(member);
+            return member;
         }
 
-        public virtual TBuilder AddPropertyMember(Action<PropertyBuilder> builder)
+        /// <summary>
+        /// 添加一个属性
+        /// </summary>
+        /// <param name="builder">属性构建器</param>
+        /// <returns></returns>
+        public virtual TBuilder WithProperty(Action<PropertyBuilder> builder)
         {
             PropertyBuilder member = new PropertyBuilder();
             builder.Invoke(member);
-            Members.Add(member.Build());
+            _class.Propertys.Add(member);
             return _TBuilder;
         }
 
+        /// <summary>
+        /// 添加一个属性
+        /// </summary>
+        /// <param name="builder">字段构建器</param>
+        /// <returns></returns>
+        public virtual TBuilder WithProperty(PropertyBuilder builder)
+        {
+            _class.Propertys.Add(builder);
+            return _TBuilder;
+        }
+
+
+        #endregion
+
+        #region 方法
+
+
+        #endregion
 
         public virtual TBuilder AddMethodMember(Action<MethodBuilder> builder)
         {

@@ -21,7 +21,7 @@ namespace RoslynTests
         {
             AttributeBuilder builder = new AttributeBuilder();
             var field = builder
-                .SetName("Key")
+                .WithName("Key")
                 .Build();
 
             var result = field.NormalizeWhitespace().ToFullString();
@@ -38,8 +38,8 @@ namespace RoslynTests
         {
             AttributeBuilder builder = new AttributeBuilder();
             var field = builder
-                .SetName("DisplayName")
-                .SetCtor("666")
+                .WithName("DisplayName")
+                .WithCtor("666")
                 .Build();
 
             var result = field.NormalizeWhitespace().ToFullString();
@@ -56,8 +56,8 @@ namespace RoslynTests
         {
             AttributeBuilder builder = new AttributeBuilder();
             var field = builder
-                .SetName("DisplayName")
-                .SetProperty(new string[] { "Name = \"a\""})
+                .WithName("DisplayName")
+                .WithProperty(new string[] { "Name = \"a\""})
                 .Build();
 
             var result = field.NormalizeWhitespace().ToFullString();
@@ -73,9 +73,9 @@ namespace RoslynTests
         {
             AttributeBuilder builder = new AttributeBuilder();
             var field = builder
-                .SetName("DisplayName")
-                .SetCtor("666")
-                .SetProperty(new string[] { "Name = \"a\"" })
+                .WithName("DisplayName")
+                .WithCtor("666")
+                .WithProperty(new string[] { "Name = \"a\"" })
                 .Build();
 
             var result = field.NormalizeWhitespace().ToFullString();

@@ -36,7 +36,7 @@ namespace RoslynTests
             FieldBuilder builder = new FieldBuilder();
             var field = builder
                 .WithType("int")
-                .WithName("i").Build();
+                .WithName("i").BuildSyntax();
             var result = field.NormalizeWhitespace().ToFullString();
 #if Log
             _tempOutput.WriteLine(result);
@@ -51,7 +51,7 @@ namespace RoslynTests
             var field = builder.WithType("int")
                 .WithName("i")
                 .WithInit("0")
-                .Build();
+                .BuildSyntax();
             var result = field.NormalizeWhitespace().ToFullString();
 #if Log
             _tempOutput.WriteLine(result);
@@ -67,7 +67,7 @@ namespace RoslynTests
             var field = builder.WithType("int")
                 .WithName("i")
                 .WithInit("int.Parse(\"1\")")
-                .Build();
+                .BuildSyntax();
             var result = field.NormalizeWhitespace().ToFullString();
 #if Log
             _tempOutput.WriteLine(result);
@@ -80,9 +80,9 @@ namespace RoslynTests
         public void 定义字段_T4_访问修饰符()
         {
             var field1 = new FieldBuilder()
-                .WithAccess(MemberVisibilityType.Public)
+                .WithAccess(MemberAccess.Public)
                 .WithType("int")
-                .WithName("i").Build();
+                .WithName("i").BuildSyntax();
             var result = field1.NormalizeWhitespace().ToFullString();
 #if Log
             _tempOutput.WriteLine(result);
@@ -106,7 +106,7 @@ namespace RoslynTests
         {
             FieldBuilder builder = new FieldBuilder();
             var field = builder
-                .WithAccess(MemberVisibilityType.ProtectedInternal)
+                .WithAccess(MemberAccess.ProtectedInternal)
                 .SetQualifier(MemberQualifierType.Static|MemberQualifierType.Readonly)
                 .WithType("int")
                 .WithName("i")
@@ -128,7 +128,7 @@ namespace RoslynTests
                 .WithType("List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>")
                 .WithName("i")
                 .WithInit("new List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>()")
-                .Build();
+                .BuildSyntax();
             var result = field.NormalizeWhitespace().ToFullString();
 #if Log
             _tempOutput.WriteLine(result);
@@ -141,7 +141,7 @@ namespace RoslynTests
         public void 定义字段_T7_字符串整体生成()
         {
             var field = FieldBuilder
-                .Build("int i;");
+                .BuildSyntax("int i;");
             var result = field.NormalizeWhitespace().ToFullString();
 #if Log
             _tempOutput.WriteLine(result);
@@ -154,7 +154,7 @@ namespace RoslynTests
         public void 定义字段_T8_字符串整体生成()
         {
             var field = FieldBuilder
-                .Build("public int i;");
+                .BuildSyntax("public int i;");
             var result = field.NormalizeWhitespace().ToFullString();
 #if Log
             _tempOutput.WriteLine(result);
@@ -169,10 +169,10 @@ namespace RoslynTests
             FieldBuilder builder = new FieldBuilder();
             var field = builder
                 .WithAttributes(new string[] { @"[Display(Name = ""a"")]", @"[Key]" })
-                .WithAccess(MemberVisibilityType.Public)
+                .WithAccess(MemberAccess.Public)
                 .WithType("int")
                 .WithName("i")
-                .Build();
+                .BuildSyntax();
             var result = field.NormalizeWhitespace().ToFullString();
 #if Log
             _tempOutput.WriteLine(result);

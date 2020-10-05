@@ -15,7 +15,7 @@ namespace CZGL.Roslyn
         }
         public ClassBuilder(string name):this()
         {
-            base.SetName(name);
+            base.WithName(name);
         }
 
         /// <summary>

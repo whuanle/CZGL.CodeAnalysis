@@ -32,7 +32,7 @@ namespace RoslynTests
         public void 构造函数_T1()
         {
             CtorBuilder methodBuilder = new CtorBuilder();
-            var method = methodBuilder.WithAccess(MemberVisibilityType.Public)
+            var method = methodBuilder.WithAccess(MemberAccess.Public)
                 .WithName("T2")
                 .WithBlock(@"Console.WriteLine(""666"");")
                 .Build();
@@ -50,7 +50,7 @@ namespace RoslynTests
         public void 构造函数_T2()
         {
             CtorBuilder methodBuilder = new CtorBuilder();
-            var method = methodBuilder.WithAccess(MemberVisibilityType.Public)
+            var method = methodBuilder.WithAccess(MemberAccess.Public)
                 .WithName("T2")
                 .WithParams("string a")
                 .SetThisCtor("this()")
@@ -69,10 +69,10 @@ namespace RoslynTests
         public void 构造函数_T3()
         {
             CtorBuilder methodBuilder = new CtorBuilder();
-            var method = methodBuilder.WithAccess(MemberVisibilityType.Public)
+            var method = methodBuilder.WithAccess(MemberAccess.Public)
                 .WithName("T2")
                 .WithParams("string a,string b")
-                .SetBaseCtor("base(a)")
+                .WithBaseCtor("base(a)")
                 .Build();
             var result = method.NormalizeWhitespace().ToFullString();
 #if Log

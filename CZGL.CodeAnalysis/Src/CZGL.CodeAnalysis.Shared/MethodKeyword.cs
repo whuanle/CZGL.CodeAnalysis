@@ -25,6 +25,15 @@ namespace CZGL.CodeAnalysis.Shared
         Override = 1 << 5,
 
         [MemberDefineName(Name = "sealed override")]
-        SealedOverride = 1 << 6
+        SealedOverride = 1 << 6,
+
+        [MemberDefineName(Name = "new")]
+        New = 1 << 7,
+
+        [MemberDefineName(Name = "new virsual")]
+        NewVirtual = New | Virtual,
+
+        [MemberDefineName(Name = "new static")]
+        NewStatic = New | Static,
     }
 }

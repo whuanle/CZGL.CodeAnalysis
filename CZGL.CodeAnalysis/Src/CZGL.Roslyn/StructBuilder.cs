@@ -9,5 +9,10 @@ namespace CZGL.Roslyn
     /// </summary>
     public class StructBuilder
     {
+        public string Name;
+        internal ClassBuilder GetBuilder()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

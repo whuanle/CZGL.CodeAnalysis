@@ -21,7 +21,7 @@ namespace RoslynTests
         public void 只命名()
         {
             ClassBuilder classBuilder = new ClassBuilder();
-            var type = classBuilder.SetName("TestClass");
+            var type = classBuilder.WithName("TestClass");
 
             var result = type.FullCode();
 #if Log

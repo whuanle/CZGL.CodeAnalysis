@@ -17,13 +17,13 @@ namespace CZGL.Roslyn.Extensions
         public static FieldDeclarationSyntax Create(this FieldBuilder builder, FieldInfo info)
         {
             //
-            return builder.Build();
+            return builder.BuildSyntax();
         }
 
         public static FieldDeclarationSyntax Create(this FieldBuilder builder,MemberInfo info)
         {
 
-            return builder.Build();
+            return builder.BuildSyntax();
         }
 
         ///// <summary>

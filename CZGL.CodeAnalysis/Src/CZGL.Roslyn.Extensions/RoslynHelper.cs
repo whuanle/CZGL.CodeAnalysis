@@ -12,7 +12,7 @@ namespace CZGL.Roslyn
     {
 
         #region Token
-        public static SyntaxToken GetToken(MemberVisibilityType visibilityType)
+        public static SyntaxToken GetToken(MemberAccess visibilityType)
         {
             return SyntaxFactory.Token(GetKind(visibilityType));
         }
@@ -43,15 +43,15 @@ namespace CZGL.Roslyn
         #endregion
 
         #region kind
-        public static SyntaxKind GetKind(MemberVisibilityType visibilityType)
+        public static SyntaxKind GetKind(MemberAccess visibilityType)
         {
             switch (visibilityType)
             {
-                case MemberVisibilityType.Internal: return SyntaxKind.InternalKeyword;
-                case MemberVisibilityType.Public: return SyntaxKind.PublicKeyword;
-                case MemberVisibilityType.Protected: return SyntaxKind.ProtectedKeyword;
-                case MemberVisibilityType.Private: return SyntaxKind.PrivateKeyword;
-                case MemberVisibilityType.ProtectedInternal: return SyntaxKind.AssemblyKeyword;
+                case MemberAccess.Internal: return SyntaxKind.InternalKeyword;
+                case MemberAccess.Public: return SyntaxKind.PublicKeyword;
+                case MemberAccess.Protected: return SyntaxKind.ProtectedKeyword;
+                case MemberAccess.Private: return SyntaxKind.PrivateKeyword;
+                case MemberAccess.ProtectedInternal: return SyntaxKind.AssemblyKeyword;
                 default:
                     return SyntaxKind.InternalKeyword;
             }

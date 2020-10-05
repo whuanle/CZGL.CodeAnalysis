@@ -87,7 +87,7 @@ namespace CZGL.Roslyn
         /// <returns></returns>
         private void AddRed(GenericScheme scheme)
         {
-            if (scheme.Red == GenericConstraintsType.Struct)
+            if (scheme.Red == GenericKeyword.Struct)
                 AddStruct(scheme.Name);
 
             AddUnmanaged(scheme.Name);
@@ -98,9 +98,9 @@ namespace CZGL.Roslyn
         {
             switch (scheme.Yellow)
             {
-                case GenericConstraintsType.Class: AddClass(scheme.Name); break;
-                case GenericConstraintsType.Notnull: AddNotNull(scheme.Name); break;
-                case GenericConstraintsType.BaseClass: AddBaseClass(scheme.Name, scheme.BaseType.Name); break;
+                case GenericKeyword.Class: AddClass(scheme.Name); break;
+                case GenericKeyword.Notnull: AddNotNull(scheme.Name); break;
+                case GenericKeyword.BaseClass: AddBaseClass(scheme.Name, scheme.BaseType.Name); break;
             }
         }
 

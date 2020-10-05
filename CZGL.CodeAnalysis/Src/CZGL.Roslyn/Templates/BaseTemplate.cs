@@ -12,6 +12,35 @@ namespace CZGL.Roslyn.Templates
         /// </summary>
         protected internal readonly BaseState _base = new BaseState();
 
+
+        #region 名称
+
+        /// <summary>
+        /// 设置名称
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        internal void WithName(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException(nameof(name));
+
+            _base.Name = name;
+        }
+
+        /// <summary>
+        /// 随机生成一个名称
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        internal virtual void WithRondomName()
+        {
+            _base.Name = "N" + Guid.NewGuid().ToString("N");
+        }
+
+        #endregion
+
+
         /// <summary>
         /// 完整输出代码
         /// <para>不会对代码进行检查，直接输出当前已经定义的代码</para>

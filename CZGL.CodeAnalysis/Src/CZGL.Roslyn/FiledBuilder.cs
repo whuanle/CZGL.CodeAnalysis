@@ -13,9 +13,14 @@ namespace CZGL.Roslyn
     /// </summary>
     public sealed class FieldBuilder : FieldTemplate<FieldBuilder>
     {
-        public FieldBuilder()
+        internal FieldBuilder()
         {
             _TBuilder = this;
+        }
+
+        internal FieldBuilder(string name) : this()
+        {
+            _base.Name = name;
         }
 
         /// <summary>
@@ -24,7 +29,7 @@ namespace CZGL.Roslyn
         /// <param name="Code">字段</param>
         /// <param name="attrs">特性注解列表</param>
         /// <returns></returns>
-        public static FieldDeclarationSyntax Build(string Code, string[] attrs = null)
+        public static FieldDeclarationSyntax BuildSyntax(string Code, string[] attrs = null)
         {
             var syntaxNodes = CSharpSyntaxTree.ParseText(Code).GetRoot().DescendantNodes();
             FieldDeclarationSyntax memberDeclaration = syntaxNodes
@@ -35,65 +40,59 @@ namespace CZGL.Roslyn
 
             if (attrs != null)
                 memberDeclaration = memberDeclaration
-                    .WithAttributeLists(AttributeBuilder.CreateAttributeList(attrs));
+                    .WithAttributeLists(CodeSyntax.CreateAttributeList(attrs));
 
             return memberDeclaration;
         }
 
 
-        public FieldDeclarationSyntax Build()
+        public FieldDeclarationSyntax BuildSyntax()
         {
-            //StringBuilder stringBuilder = new StringBuilder();
-            //bool isCanCreate = false;
+            bool isCanCreate = false;
 
 
-            //if (!string.IsNullOrEmpty(MemberVisibility)) isCanCreate = true;
-            //stringBuilder.Append(MemberVisibility);
+            if (!string.IsNullOrEmpty(_member.Access)) isCanCreate = true;
 
-            //stringBuilder.Append(" ");
-            //stringBuilder.Append(MemberQualifier);
+            FieldDeclarationSyntax memberDeclaration;
+            var syntaxNodes = CSharpSyntaxTree.ParseText(ToFullCode())
+                .GetRoot()
+                .DescendantNodes();
+            if (isCanCreate)
+                memberDeclaration = syntaxNodes
+                .OfType<FieldDeclarationSyntax>()
+                .Single();
+            else
+                memberDeclaration = SyntaxFactory.FieldDeclaration(syntaxNodes.OfType<VariableDeclarationSyntax>().Single());
 
-            //stringBuilder.Append(" ");
-            //stringBuilder.Append(MemberType);
-
-            //stringBuilder.Append(" ");
-            //stringBuilder.Append(MemberName);
-
-            //stringBuilder.Append((string.IsNullOrWhiteSpace(MemberInit) ? null : " =" + MemberInit));
-            //stringBuilder.AppendLine(";");
-
-            //FieldDeclarationSyntax memberDeclaration;
-            //var syntaxNodes = CSharpSyntaxTree.ParseText(stringBuilder.ToString())
-            //    .GetRoot()
-            //    .DescendantNodes();
-            //if (isCanCreate)
-            //    memberDeclaration = syntaxNodes
-            //    .OfType<FieldDeclarationSyntax>()
-            //    .Single();
-            //else
-            //    memberDeclaration = SyntaxFactory.FieldDeclaration(syntaxNodes.OfType<VariableDeclarationSyntax>().Single());
-
-            //// 添加特性
-            //if (MemberAttrs.Count != 0)
-            //{
-            //    var tmp = AttributeBuilder.CreateAttributeList(MemberAttrs.ToArray());
-            //    memberDeclaration = memberDeclaration.WithAttributeLists(tmp);
-            //}
+            // 添加特性
+            if (_member.Atributes.Count != 0)
+            {
+                var tmp = CodeSyntax.CreateAttributeList(_member.Atributes.ToArray());
+                memberDeclaration = memberDeclaration.WithAttributeLists(tmp);
+            }
 
 
-            //return memberDeclaration;
-            return null;
+            return memberDeclaration;
         }
 
 
         public override string ToFormatCode()
         {
-            throw new NotImplementedException();
+            return BuildSyntax().NormalizeWhitespace().ToFullString();
         }
 
         public override string ToFullCode()
         {
-            throw new NotImplementedException();
+            const string Template = @"{Attributes} {Access} {Keyword} {Type} {Name} {InitCode};";
+            var code = Template
+                .Replace("{Attributes}", _member.Atributes.Join("\n").CodeNewLine())
+                .Replace("{Access", _member.Access.CodeNewSpace())
+                .Replace("{Keyword}", _variable.Keyword.CodeNewSpace())
+                .Replace("{Type}", _variable.MemberType)
+                .Replace("{Name}", _base.Name)
+                .Replace("{InitCode}", _variable.InitCode.CodeNewBefore(" = "));
+
+            return code;
         }
     }
 }

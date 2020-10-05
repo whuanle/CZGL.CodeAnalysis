@@ -7,15 +7,18 @@ using System.Text;
 
 namespace CZGL.Roslyn
 {
-
-    public sealed class CtorBuilder : CtorTemplate<CtorBuilder>
+    /// <summary>
+    /// 构造函数构建器
+    /// </summary>
+    public class CtorBuilder : CtorTemplate<CtorBuilder>
     {
-        public CtorBuilder()
+        internal CtorBuilder(string name)
         {
+            _base.Name = name;
             _TBuilder = this;
         }
 
-        public static ConstructorDeclarationSyntax Build(string Code, string[] attrs = null)
+        public static ConstructorDeclarationSyntax BuildSyntax(string Code, string[] attrs = null)
         {
             var syntaxNodes = CSharpSyntaxTree.ParseText(Code).GetRoot().DescendantNodes();
             ConstructorDeclarationSyntax memberDeclaration = syntaxNodes
@@ -24,38 +27,27 @@ namespace CZGL.Roslyn
 
             if (attrs != null)
                 memberDeclaration = memberDeclaration
-                    .WithAttributeLists(AttributeBuilder.CreateAttributeList(attrs));
+                    .WithAttributeLists(CodeSyntax.CreateAttributeList(attrs));
 
             return memberDeclaration;
         }
 
-        public ConstructorDeclarationSyntax Build()
+        /// <summary>
+        /// 通过代码直接生成构造函数
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public static CtorBuilder FromCode(string code)
         {
-            StringBuilder stringBuilder = new StringBuilder($"class {MemberName}");
-            stringBuilder.AppendLine("{");
-            stringBuilder.Append(MemberVisibility);
+            var ctor = new CtorBuilder(null);
+            ctor.WithFromCode(code);
+            return ctor;
+        }
 
-            stringBuilder.Append(" ");
-            stringBuilder.Append(MemberQualifier);
-
-
-            stringBuilder.Append(" ");
-            stringBuilder.Append(MemberName);
-
-            stringBuilder.Append($"({FuncParams})");
-            if (!string.IsNullOrEmpty(BaseCtor))
-                stringBuilder.Append(":" + BaseCtor);
-            else if (!string.IsNullOrEmpty(ThisCtor))
-                stringBuilder.Append(":" + ThisCtor);
-            stringBuilder.AppendLine();
-
-            stringBuilder.AppendLine("{");
-            stringBuilder.AppendLine(BlockCode);
-            stringBuilder.AppendLine("}");
-
-            stringBuilder.AppendLine("}");
+        public ConstructorDeclarationSyntax BuildSyntax()
+        {
             ConstructorDeclarationSyntax memberDeclaration = default;
-            var syntaxNodes = CSharpSyntaxTree.ParseText(stringBuilder.ToString())
+            var syntaxNodes = CSharpSyntaxTree.ParseText(ToFullCode())
                 .GetRoot()
                 .DescendantNodes();
 
@@ -63,23 +55,40 @@ namespace CZGL.Roslyn
            .OfType<ConstructorDeclarationSyntax>().Single();
 
             // 添加特性
-            if (MemberAttrs.Count != 0)
+            if (_member.Atributes.Count != 0)
             {
-                var tmp = AttributeBuilder.CreateAttributeList(MemberAttrs.ToArray());
+                var tmp = CodeSyntax.CreateAttributeList(_member.Atributes.ToArray());
                 memberDeclaration = memberDeclaration.WithAttributeLists(tmp);
             }
 
             return memberDeclaration;
         }
 
-        /// <summary>
-        /// 获得格式化代码
-        /// </summary>
-        /// <returns></returns>
-        public override string FullCode()
+
+
+        public override string ToFormatCode()
         {
-            return Build().NormalizeWhitespace().ToFullString();
+            return BuildSyntax().NormalizeWhitespace().ToFullString();
         }
+
+        public override string ToFullCode()
+        {
+            if (_func.UseCode)
+                return _func.Code;
+
+            const string Template = @"{Access} {Name}({Params})
+{
+{BlockCode}
+}";
+            var code = Template
+                .Replace("{Access}", _member.Access)
+                .Replace("{Name}", _base.Name)
+                .Replace("{{Params}}", _func.Params.Join(","))
+                .Replace("{BlockCode}", _method.BlockCode);
+            return code;
+        }
+
+
 
     }
 }
