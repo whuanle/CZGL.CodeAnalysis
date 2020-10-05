@@ -10,15 +10,19 @@ using System.Text;
 namespace CZGL.Roslyn
 {
     /// <summary>
-    /// 定义事件
+    /// 事件构建器
     /// </summary>
     public sealed class EventBuilder : EventTemplate<EventBuilder>
     {
-        public EventBuilder()
+        internal EventBuilder()
         {
             _TBuilder = this;
         }
 
+        internal EventBuilder(string name):this()
+        {
+            _base.Name = name;
+        }
 
         /// <summary>
         /// 字符串直接生成事件
@@ -26,7 +30,7 @@ namespace CZGL.Roslyn
         /// <param name="Code"></param>
         /// <param name="attrs"></param>
         /// <returns></returns>
-        public static EventFieldDeclarationSyntax Build(string Code, string[] attrs = null)
+        public static EventFieldDeclarationSyntax BuildSyntax(string Code, string[] attrs = null)
         {
             var syntaxs = CSharpSyntaxTree.ParseText(Code)
                 .GetRoot()
@@ -35,31 +39,14 @@ namespace CZGL.Roslyn
             var memberDeclaration = SyntaxFactory.EventFieldDeclaration(syntaxs.OfType<VariableDeclarationSyntax>().Single());
             if (attrs != null)
                 memberDeclaration = memberDeclaration
-                    .WithAttributeLists(AttributeBuilder.CreateAttributeList(attrs));
+                    .WithAttributeLists(CodeSyntax.CreateAttributeList(attrs));
             return memberDeclaration;
         }
 
 
-        public EventFieldDeclarationSyntax Build()
+        public EventFieldDeclarationSyntax BuildSyntax()
         {
-            StringBuilder stringBuilder = new StringBuilder();
-
-            stringBuilder.Append(MemberVisibility);
-
-            stringBuilder.Append(" ");
-            stringBuilder.Append("event");
-            
-            stringBuilder.Append(" ");
-            stringBuilder.Append(MemberType);
-
-            stringBuilder.Append(" ");
-            stringBuilder.Append(MemberName);
-
-            stringBuilder.Append((string.IsNullOrWhiteSpace(MemberInit) ? null : " =" + MemberInit));
-            stringBuilder.AppendLine(";");
-
-
-            var syntaxNodes = CSharpSyntaxTree.ParseText(stringBuilder.ToString())
+            var syntaxNodes = CSharpSyntaxTree.ParseText(ToFullCode())
                 .GetRoot()
                 .DescendantNodes();
 
@@ -70,20 +57,28 @@ namespace CZGL.Roslyn
                 .Single();
 
 
-            if (MemberAttrs.Count != 0)
+            if (_member.Atributes.Count != 0)
                 memberDeclaration = memberDeclaration
-                    .WithAttributeLists(AttributeBuilder.CreateAttributeList(MemberAttrs.ToArray()));
+                    .WithAttributeLists(CodeSyntax.CreateAttributeList(_member.Atributes.ToArray()));
             return memberDeclaration;
         }
 
-        /// <summary>
-        /// 获得格式化代码
-        /// </summary>
-        /// <returns></returns>
-        public override string FullCode()
+        public override string ToFormatCode()
         {
-            return Build().NormalizeWhitespace().ToFullString();
+            return BuildSyntax().NormalizeWhitespace().ToFullString();
         }
 
+        public override string ToFullCode()
+        {
+            const string Template = @"{Access} {Keyword} event {Delegate} {Name};";
+
+            var code = Template
+                .Replace("{Access}", _member.Access)
+                .Replace("{Keyword}", _variable.Keyword)
+                .Replace("{Delegate}", _variable.MemberType)
+                .Replace("{Name}",_base.Name);
+
+            return code;
+        }
     }
 }
