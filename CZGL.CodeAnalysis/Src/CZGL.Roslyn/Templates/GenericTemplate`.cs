@@ -21,6 +21,9 @@ namespace CZGL.Roslyn.Templates
         protected internal TBuilder _TBuilder;
         protected internal GenericState _this;
 
+        // 为哪个对象构建泛型
+        protected internal string ObjectName;
+
         /// <summary>
         /// 创建一个泛型参数
         /// </summary>

@@ -23,5 +23,10 @@ namespace CZGL.Roslyn.States
         /// 方法的代码块
         /// </summary>
         public string BlockCode { get; set; }
+
+        /// <summary>
+        /// 调用父类或本类函数
+        /// </summary>
+        public string BaseOrThis { get; set; }
     }
 }

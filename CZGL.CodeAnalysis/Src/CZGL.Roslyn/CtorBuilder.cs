@@ -76,7 +76,7 @@ namespace CZGL.Roslyn
             if (_func.UseCode)
                 return _func.Code;
 
-            const string Template = @"{Access} {Name}({Params})
+            const string Template = @"{Access} {Name}({Params}) {BaseOrThis}
 {
 {BlockCode}
 }";
@@ -84,6 +84,7 @@ namespace CZGL.Roslyn
                 .Replace("{Access}", _member.Access)
                 .Replace("{Name}", _base.Name)
                 .Replace("{{Params}}", _func.Params.Join(","))
+                .Replace("{BaseOrThis}",_method.BaseOrThis.CodeNewBefore(":"))
                 .Replace("{BlockCode}", _method.BlockCode);
             return code;
         }

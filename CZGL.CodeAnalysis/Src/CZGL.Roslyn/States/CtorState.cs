@@ -9,7 +9,6 @@ namespace CZGL.Roslyn.States
     /// </summary>
     public class CtorState
     {
-        public string BaseCtor { get; set; }
-        public string ThisCtor { get; set; }
+        public string BaseOrThis { get; set; }
     }
 }

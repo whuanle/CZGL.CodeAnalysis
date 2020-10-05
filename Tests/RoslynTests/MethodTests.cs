@@ -41,7 +41,7 @@ namespace RoslynTests
                 //.SetReturnParam("void")
                 .WithName("T1")
                 .WithBlock(@"Console.WriteLine(""666"");")
-                .Build();
+                .BuildSyntax();
             var result= method.NormalizeWhitespace().ToFullString();
 #if Log
             _tempOutput.WriteLine(result);
@@ -60,7 +60,7 @@ namespace RoslynTests
                 .WithReturnType("string")
                 .WithName("T2")
                 .WithBlock(@"return ""666"";")
-                .Build();
+                .BuildSyntax();
             var result = method.NormalizeWhitespace().ToFullString();
 #if Log
             _tempOutput.WriteLine(result);
@@ -80,7 +80,7 @@ namespace RoslynTests
                 .WithReturnType("List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>")
                 .WithName("T3")
                 .WithBlock(@"return new List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>();")
-                .Build();
+                .BuildSyntax();
             var result = method.NormalizeWhitespace().ToFullString();
 #if Log
             _tempOutput.WriteLine(result);
@@ -100,7 +100,7 @@ namespace RoslynTests
                 //.SetReturnParam("void")
                 .WithName("T4")
                 .WithParams("int a, int b, string c")
-                .Build();
+                .BuildSyntax();
             var result = method.NormalizeWhitespace().ToFullString();
 #if Log
             _tempOutput.WriteLine(result);
@@ -118,7 +118,7 @@ namespace RoslynTests
                 //.SetReturnParam("void")
                 .WithName("T5")
                 .WithParams("List<Dictionary<int, Dictionary<string, List<FieldInfo>>>> a")
-                .Build();
+                .BuildSyntax();
             var result = method.NormalizeWhitespace().ToFullString();
 #if Log
             _tempOutput.WriteLine(result);

@@ -9,6 +9,9 @@ namespace CZGL.Roslyn.States
     /// </summary>
     public class GenericState
     {
+        /// <summary>
+        /// 泛型对象、泛型方法、泛型委托的名称
+        /// </summary>
         public string Name { get; set; }
         public HashSet<string> Constraints { get; set; } = new HashSet<string>();
     }

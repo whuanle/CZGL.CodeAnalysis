@@ -19,11 +19,15 @@ namespace CZGL.Roslyn
     public sealed class GenericBuilder : GenericTemplate<GenericBuilder>
     {
 
-        public GenericBuilder()
+        internal GenericBuilder()
         {
             _TBuilder = this;
+            
         }
-
+        internal GenericBuilder(string objectName):base()
+        {
+            ObjectName = objectName;
+        }
 
 
         #region 泛型约束
@@ -232,23 +236,32 @@ namespace CZGL.Roslyn
             return memberDeclaration;
         }
 
-        public override string ToFullCode()
+        public string ToFullCodeName(string objectName)
         {
-            const string Template = "<{Params}> {where}";
-            ParamCode = _generic.Select(x => x.Name).Join(",");
-            WhereCode = string.Join("\n", _generic.Where(x => x.Constraints.Count != 0)
-               .SelectMany(gen =>
-               {
-                   return Template
-                   .Replace("{Name}", gen.Name)
-                   .Replace("{Constraints}", gen.Constraints.Join(","));
-               }));
+            const string Template = "{Name} <{Params}> {where}";
+            ParamCode = GetParamCode();
+            WhereCode = GetWhereCode();
 
             var code = Template
+                .Replace("{Name}",objectName)
                   .Replace("{Params}", ParamCode)
                   .Replace("{where}", WhereCode);
 
             return code;
+        }
+
+        internal string GetParamCode ()=> _generic.Select(x => x.Name).Join(",");
+        internal string GetWhereCode()=> string.Join("\n", _generic.Where(x => x.Constraints.Count != 0)
+               .SelectMany(gen =>
+               {
+                   return "where {Name}:{Constraints}"
+                   .Replace("{Name}", gen.Name)
+                   .Replace("{Constraints}", gen.Constraints.Join(","));
+               }));
+
+        public override string ToFullCode()
+        {
+            return ToFullCodeName(null);
         }
 
         public override string ToFormatCode()

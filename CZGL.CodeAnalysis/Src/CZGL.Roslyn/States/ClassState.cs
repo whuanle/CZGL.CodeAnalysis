@@ -42,6 +42,11 @@ namespace CZGL.Roslyn.States
         public HashSet<PropertyBuilder> Propertys { get; } = new HashSet<PropertyBuilder>();
 
         /// <summary>
+        /// 方法
+        /// </summary>
+        public HashSet<MethodBuilder> Methods { get; } = new HashSet<MethodBuilder>();
+
+        /// <summary>
         /// 委托
         /// </summary>
         public HashSet<DelegateBuilder> Delegates { get; } = new HashSet<DelegateBuilder>();

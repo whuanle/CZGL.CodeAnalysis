@@ -327,16 +327,37 @@ namespace CZGL.Roslyn.Templates
 
         #region 方法
 
+        /// <summary>
+        /// 添加一个方法
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="builder"></param>
+        /// <returns></returns>
+        public virtual TBuilder WithMethod(string name,Action<MethodBuilder> builder)
+        {
+            MethodBuilder member = new MethodBuilder(name);
+            builder.Invoke(member);
+            _class.Methods.Add(member);
+            return _TBuilder;
+        }
 
-        #endregion
-
-        public virtual TBuilder AddMethodMember(Action<MethodBuilder> builder)
+        /// <summary>
+        /// 添加一个方法
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
+        public virtual TBuilder WithMethod(Action<MethodBuilder> builder)
         {
             MethodBuilder member = new MethodBuilder();
             builder.Invoke(member);
-            Members.Add(member.Build());
+            _class.Methods.Add(member);
             return _TBuilder;
         }
+
+
+        #endregion
+
+
 
         public virtual TBuilder AddDelegateMember(Action<DelegateBuilder> builder)
         {

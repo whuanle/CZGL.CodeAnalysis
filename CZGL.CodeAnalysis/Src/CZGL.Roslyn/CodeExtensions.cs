@@ -65,7 +65,7 @@ namespace CZGL.Roslyn
         public static string CodeNewBefore(this string source, string separator = " ")
         {
             if (string.IsNullOrEmpty(source))
-                return source;
+                return null;
             return separator + source;
         }
 
@@ -77,7 +77,7 @@ namespace CZGL.Roslyn
         public static string CodeNewAfter(this string source, string separator = " ")
         {
             if (string.IsNullOrEmpty(source))
-                return source;
+                return null;
             return source + separator;
         }
     }
