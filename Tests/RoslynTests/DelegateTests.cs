@@ -42,7 +42,7 @@ namespace RoslynTests
             var field = builder
                 .WithAccess(MemberAccess.Public)
                 .WithReturnType("void")
-                .WithName("T1").Build();
+                .WithName("T1").BuildSyntax();
             var result = field.NormalizeWhitespace().ToFullString();
 #if Log
             _tempOutput.WriteLine(result);
@@ -57,7 +57,7 @@ namespace RoslynTests
             var field = builder
                 .WithAccess(MemberAccess.Public)
                 .WithReturnType("string")
-                .WithName("T2").Build();
+                .WithName("T2").BuildSyntax();
             var result = field.NormalizeWhitespace().ToFullString();
 #if Log
             _tempOutput.WriteLine(result);
@@ -73,7 +73,7 @@ namespace RoslynTests
                 .WithAccess(MemberAccess.Public)
                 .WithReturnType("string")
                 .WithParams("string a")
-                .WithName("T3").Build();
+                .WithName("T3").BuildSyntax();
             var result = field.NormalizeWhitespace().ToFullString();
 #if Log
             _tempOutput.WriteLine(result);
@@ -89,7 +89,7 @@ namespace RoslynTests
                 .WithAttributes(new string[] { @"[Test(""1"", ""2"", A = ""3"", B = ""4"")]" })
                 .WithAccess(MemberAccess.Public)
                 .WithReturnType("void")
-                .WithName("T4").Build();
+                .WithName("T4").BuildSyntax();
             var result = field.NormalizeWhitespace().ToFullString();
 #if Log
             _tempOutput.WriteLine(result);

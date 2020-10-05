@@ -358,30 +358,35 @@ namespace CZGL.Roslyn.Templates
         #endregion
 
 
-
-        public virtual TBuilder AddDelegateMember(Action<DelegateBuilder> builder)
+        #region 委托、事件
+        
+        /// <summary>
+        /// 统计一个委托
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
+        public virtual TBuilder WithDelegate(Action<DelegateBuilder> builder)
         {
             DelegateBuilder member = new DelegateBuilder();
             builder.Invoke(member);
-            Members.Add(member.Build());
+            _class.Delegates.Add(member);
             return _TBuilder;
         }
 
-
-        public virtual TBuilder AddEventMember(Action<EventBuilder> builder)
+        /// <summary>
+        /// 添加一个事件
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
+        public virtual TBuilder WithDelegate(Action<EventBuilder> builder)
         {
             EventBuilder member = new EventBuilder();
             builder.Invoke(member);
-            Members.Add(member.Build());
+            _class.Events.Add(member);
             return _TBuilder;
         }
 
-
-        /// <summary>
-        /// 获得格式化代码
-        /// </summary>
-        /// <returns></returns>
-        public abstract string FullCode();
+        #endregion
 
         #endregion
     }

@@ -15,13 +15,15 @@ namespace CZGL.Roslyn
     /// </summary>
     public sealed class DelegateBuilder : FuncTemplate<DelegateBuilder>
     {
-        public DelegateBuilder()
+        internal DelegateBuilder()
         {
             _TBuilder = this;
         }
 
-        public delegate void A();
-
+        internal DelegateBuilder(string name):base()
+        {
+            _base.Name = name;
+        }
 
 
         /// <summary>
@@ -36,7 +38,7 @@ namespace CZGL.Roslyn
         /// Build(tmp);
         /// </code>
         /// </example>
-        public static DelegateDeclarationSyntax Build(string Code, string[] attrs = null)
+        public static DelegateDeclarationSyntax BuildSyntax(string Code, string[] attrs = null)
         {
 
             var memberDeclaration = CSharpSyntaxTree.ParseText(Code)
@@ -46,7 +48,7 @@ namespace CZGL.Roslyn
 
             if (attrs != null)
                 memberDeclaration = memberDeclaration
-                    .WithAttributeLists(AttributeBuilder.CreateAttributeList(attrs));
+                    .WithAttributeLists(CodeSyntax.CreateAttributeList(attrs));
 
             return memberDeclaration;
         }
@@ -56,54 +58,47 @@ namespace CZGL.Roslyn
         /// 构建方法
         /// </summary>
         /// <returns></returns>
-        public DelegateDeclarationSyntax Build()
+        public DelegateDeclarationSyntax BuildSyntax()
         {
-            // StringBuilder stringBuilder = new StringBuilder();
+            DelegateDeclarationSyntax memberDeclaration = default;
+            var syntaxNodes = CSharpSyntaxTree.ParseText(ToFullCode())
+                .GetRoot()
+                .DescendantNodes();
 
-            // stringBuilder.Append(MemberVisibility);
+            memberDeclaration = syntaxNodes
+           .OfType<DelegateDeclarationSyntax>().Single();
 
-            // stringBuilder.Append(" ");
-            // stringBuilder.Append("delegate");
+            // 添加特性
+            if (_member.Atributes.Count != 0)
+            {
+                var tmp = CodeSyntax.CreateAttributeList(_member.Atributes.ToArray());
+                memberDeclaration = memberDeclaration.WithAttributeLists(tmp);
+            }
 
-            // stringBuilder.Append(" ");
-            // stringBuilder.Append(FuncReturnType);
-
-            // stringBuilder.Append(" ");
-            // stringBuilder.Append(MemberName);
-
-            // stringBuilder.AppendLine($"({FuncParams})");
-
-            // stringBuilder.AppendLine(";");
-            // DelegateDeclarationSyntax memberDeclaration = default;
-            // var syntaxNodes = CSharpSyntaxTree.ParseText(stringBuilder.ToString())
-            //     .GetRoot()
-            //     .DescendantNodes();
-
-            // memberDeclaration = syntaxNodes
-            //.OfType<DelegateDeclarationSyntax>().Single();
-
-            // // 添加特性
-            // if (MemberAttrs.Count != 0)
-            // {
-            //     var tmp = AttributeBuilder.CreateAttributeList(MemberAttrs.ToArray());
-            //     memberDeclaration = memberDeclaration.WithAttributeLists(tmp);
-            // }
-
-            // return memberDeclaration;
-
-            return null;
+            return memberDeclaration;
         }
 
 
 
         public override string ToFullCode()
         {
-            throw new NotImplementedException();
+            const string Template = @"{Attributes} {Access} {ReturnType} {Name}{GenericParams}({Params}) {GenericList};";
+
+            var code = Template
+                .Replace("{Attributes}", _member.Atributes.Join("\n").CodeNewLine())
+                .Replace("{Access", _member.Access.CodeNewSpace())
+                .Replace("{ReturnType}", _func.ReturnType)
+                .Replace("{Name}", _base.Name)
+                .Replace("{GenericParams}", _func.GenericParams.GetParamCode().CodeNewBefore("<").CodeNewAfter(">"))
+                .Replace("{Params}", _func.Params.Join(","))
+                .Replace("{GenericList}", _func.GenericParams.GetWhereCode());
+
+            return code;
         }
 
         public override string ToFormatCode()
         {
-            throw new NotImplementedException();
+            return BuildSyntax().NormalizeWhitespace().ToFullString();
         }
     }
 }
