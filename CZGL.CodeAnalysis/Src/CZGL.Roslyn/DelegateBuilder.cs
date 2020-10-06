@@ -25,6 +25,16 @@ namespace CZGL.Roslyn
             _base.Name = name;
         }
 
+        /// <summary>
+        /// 设置访问修饰符(Access Modifiers)
+        /// </summary>
+        /// <param name="visibilityType">标记</param>
+        /// <returns></returns>
+        public DelegateBuilder WithAccess(NamespaceAccess access = NamespaceAccess.Internal)
+        {
+            _member.Access = RoslynHelper.GetName(access);
+            return _TBuilder;
+        }
 
         /// <summary>
         /// 通过字符串直接生成委托

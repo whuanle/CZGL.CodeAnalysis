@@ -151,12 +151,12 @@ namespace CZGL.CodeAnalysis
         /// <para>不能识别嵌套类的访问权限，使用前请先检查</para>
         /// </summary>
         /// <returns></returns>
-        public ClassAccess ClassVisibilityShared()
+        public NamespaceAccess ClassVisibilityShared()
         {
             if (_thisTypeInfo.ClassType.IsNested)
                 throw new ArgumentNullException($"当前类型 {_thisTypeInfo.ClassType.Name} 为嵌套类");
 
-            return _thisTypeInfo.ClassType.IsPublic ? ClassAccess.Public : ClassAccess.Internal;
+            return _thisTypeInfo.ClassType.IsPublic ? NamespaceAccess.Public : NamespaceAccess.Internal;
         }
 
 

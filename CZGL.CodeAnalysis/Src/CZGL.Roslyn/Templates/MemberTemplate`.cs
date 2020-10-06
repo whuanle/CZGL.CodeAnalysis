@@ -84,11 +84,11 @@ namespace CZGL.Roslyn.Templates
         /// <summary>
         /// 设置访问修饰符(Access Modifiers)
         /// </summary>
-        /// <param name="visibilityType">标记</param>
+        /// <param name="access">标记</param>
         /// <returns></returns>
-        public virtual TBuilder WithAccess(MemberAccess visibilityType = MemberAccess.Internal)
+        public virtual TBuilder WithAccess(MemberAccess access = MemberAccess.Internal)
         {
-            _member.Access = RoslynHelper.GetName(visibilityType);
+            _member.Access = RoslynHelper.GetName(access);
             return _TBuilder;
         }
 

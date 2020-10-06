@@ -11,7 +11,7 @@ namespace CZGL.Roslyn.Templates
     /// <summary>
     /// 类构建器
     /// </summary>
-    /// <typeparam name="TBuilder"></typeparam>
+    /// <typeparam name="TBuilder"><see cref="ClassBuilder"/></typeparam>
     public abstract class ClassTemplate<TBuilder> : MemberTemplate<TBuilder> where TBuilder : ClassTemplate<TBuilder>
     {
         protected internal readonly ClassState _class = new ClassState();

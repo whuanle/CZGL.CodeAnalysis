@@ -12,6 +12,16 @@ namespace CZGL.Roslyn.Templates
     /// <typeparam name="TBuilder"></typeparam>
     public abstract class EventTemplate<TBuilder> : VariableTemplate<TBuilder> where TBuilder : EventTemplate<TBuilder>
     {
+        /// <summary>
+        /// 设置访问修饰符(Access Modifiers)
+        /// </summary>
+        /// <param name="access"><see cref="NamespaceAccess"/></param>
+        /// <returns></returns>
+        public virtual TBuilder WithAccess(NamespaceAccess access = NamespaceAccess.Internal)
+        {
+            _member.Access = RoslynHelper.GetName(access);
+            return _TBuilder;
+        }
 
         /// <summary>
         /// 事件关键字

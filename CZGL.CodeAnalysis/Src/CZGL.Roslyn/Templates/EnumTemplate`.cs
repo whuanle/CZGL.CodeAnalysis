@@ -1,4 +1,5 @@
-﻿using CZGL.Roslyn.States;
+﻿using CZGL.CodeAnalysis.Shared;
+using CZGL.Roslyn.States;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,6 +13,17 @@ namespace CZGL.Roslyn.Templates
     public abstract class EnumTemplate<TBuilder> : MemberTemplate<TBuilder> where TBuilder : EnumTemplate<TBuilder>
     {
         protected internal EnumState _enum = new EnumState();
+
+        /// <summary>
+        /// 设置访问修饰符(Access Modifiers)
+        /// </summary>
+        /// <param name="visibilityType">标记</param>
+        /// <returns></returns>
+        public virtual TBuilder WithAccess(NamespaceAccess access = NamespaceAccess.Internal)
+        {
+            _member.Access = RoslynHelper.GetName(access);
+            return _TBuilder;
+        }
 
         /// <summary>
         /// 添加一个枚举字段

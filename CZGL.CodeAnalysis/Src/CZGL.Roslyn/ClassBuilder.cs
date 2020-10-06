@@ -3,17 +3,25 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security.Claims;
 using System.Text;
+using System.Transactions;
 
 namespace CZGL.Roslyn
 {
+
+    /// <summary>
+    /// 类构建器
+    /// </summary>
     public sealed class ClassBuilder : ClassTemplate<ClassBuilder>
     {
-        public ClassBuilder()
+        internal ClassBuilder()
         {
             _TBuilder = this;
         }
-        public ClassBuilder(string name):this()
+
+        internal ClassBuilder(string name) : this()
         {
             base.WithName(name);
         }
@@ -35,86 +43,69 @@ namespace CZGL.Roslyn
 
             if (attrs != null)
                 memberDeclaration = memberDeclaration
-                    .WithAttributeLists(AttributeBuilder.CreateAttributeList(attrs));
+                    .WithAttributeLists(CodeSyntax.CreateAttributeList(attrs));
 
             return memberDeclaration;
         }
 
 
-        public ClassDeclarationSyntax Build()
+        public ClassDeclarationSyntax BuildSyntax()
         {
-            StringBuilder stringBuilder = new StringBuilder();
             ClassDeclarationSyntax memberDeclaration;
-
-            stringBuilder.Append(Visibility);
-
-            stringBuilder.Append(" ");
-            stringBuilder.Append(Qualifier);
-
-            stringBuilder.Append(" ");
-            stringBuilder.Append("class");
-
-            stringBuilder.Append(" ");
-            stringBuilder.Append(MemberName);
-
-            bool isBase = false;
-            bool isInterfaces = false;
-
-            if (!string.IsNullOrEmpty(BaseTypeName))
-                isBase = true;
-            if (BaseInterfaces.Count != 0)
-                isInterfaces = true;
-            if (isBase || isInterfaces)
-                stringBuilder.Append(":");
-            if (isBase)
-            {
-                stringBuilder.Append(BaseTypeName);
-                if (isInterfaces)
-                {
-                    stringBuilder.Append(",");
-                    stringBuilder.Append(string.Join(",", BaseInterfaces));
-                }
-            }
-
-            else if (isInterfaces)
-                stringBuilder.Append(string.Join(",", BaseInterfaces));
-
-            stringBuilder.Append(Constraint);
-
-            stringBuilder.AppendLine("{");
-            stringBuilder.AppendLine("}");
-
-
-            memberDeclaration = CSharpSyntaxTree.ParseText(stringBuilder.ToString())
+            memberDeclaration = CSharpSyntaxTree.ParseText(ToFullCode())
                .GetRoot()
                .DescendantNodes()
                .OfType<ClassDeclarationSyntax>()
                .Single();
 
-            if (MemberAttrs.Count != 0)
-                memberDeclaration = memberDeclaration
-                    .WithAttributeLists(AttributeBuilder.CreateAttributeList(MemberAttrs.ToArray()));
-
-            if (Ctors.Count != 0)
-                memberDeclaration = memberDeclaration.WithMembers(SyntaxFactory.List<MemberDeclarationSyntax>(Ctors));
-
-
-            if (Members.Count != 0)
-                memberDeclaration = memberDeclaration.WithMembers(SyntaxFactory.List(Members));
+            //if (_member.Atributes.Count != 0)
+            //    memberDeclaration = memberDeclaration
+            //        .WithAttributeLists(CodeSyntax.CreateAttributeList(_member.Atributes.ToArray()));
 
 
             return memberDeclaration;
 
         }
 
-        /// <summary>
-        /// 获得格式化代码
-        /// </summary>
-        /// <returns></returns>
-        public override string FullCode()
+        public override string ToFormatCode()
         {
-            return Build().NormalizeWhitespace().ToFullString();
+            return BuildSyntax().NormalizeWhitespace().ToFullString();
         }
 
+        public override string ToFullCode()
+        {
+            const string Template = @"{Attributes}{Access} {Keyword} class {Name} {:}{BaseClass}{,}{Interfaces}
+{
+{Fields}
+
+{Properties}
+
+{Delegates}
+
+{Events}
+
+{Methods}
+
+{Others}
+}";
+
+            var code = Template
+                .Replace("{Attributes}", _member.Atributes.Join("\n").CodeNewAfter("\n"))
+                .Replace("{Access}", _member.Access)
+                .Replace("{Keyword}", _class.Keyword)
+                .Replace("{Name}", _base.Name)
+                .Replace("{:}", string.IsNullOrEmpty(_class.BaseClass) && _class.Interfaces.Count == 0 ? "" : ":")
+                .Replace("{BaseClass}", _class.BaseClass)
+                .Replace("{,}", (string.IsNullOrEmpty(_class.BaseClass) || _class.Interfaces.Count == 0) ? "" : ",")
+                .Replace("{Interfaces}", _class.Interfaces.Join(","))
+                .Replace("{Fields}", _class.Fields.Select(item => item.ToFullCode()).Join("\n"))
+                .Replace("{Properties}", _class.Propertys.Select(item => item.ToFullCode()).Join("\n"))
+                .Replace("{Delegates}", _class.Delegates.Select(item => item.ToFullCode()).Join("\n"))
+                .Replace("{Events}", _class.Events.Select(item => item.ToFullCode()).Join("\n"))
+                .Replace("{Methods}", _class.Methods.Select(item => item.ToFullCode()).Join("\n"))
+                .Replace("{Others}", _class.Others.OfType<BaseTemplate>().Select(item => item.ToFullCode()).Join("\n"));
+
+            return code;
+        }
     }
 }
