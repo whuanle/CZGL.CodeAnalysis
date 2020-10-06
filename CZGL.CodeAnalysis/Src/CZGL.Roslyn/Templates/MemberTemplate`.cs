@@ -1,6 +1,7 @@
 ﻿using CZGL.CodeAnalysis.Shared;
 using CZGL.Roslyn.States;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
@@ -53,7 +54,11 @@ namespace CZGL.Roslyn.Templates
         public virtual TBuilder WithAttributes(params string[] attrs)
         {
             if (attrs != null)
-                _ = attrs.SelectMany(str => { _member.Atributes.Add(str); return str; });
+                _ = attrs.SelectMany(str =>
+                {
+                    _member.Atributes.Add(str);
+                    return str;
+                }).ToList();
             return _TBuilder;
         }
 
@@ -76,6 +81,25 @@ namespace CZGL.Roslyn.Templates
             return _TBuilder;
         }
 
+        /// <summary>
+        /// 获取当前以定义代码的特性列表
+        /// </summary>
+        /// <returns></returns>
+        public virtual IEnumerable<AttributeSyntax> GetAttributes()
+        {
+            string code;
+            if (_base.UseCode)
+                code = _base.Code;
+            else code = ToFullCode();
+
+            var syntaxNodes = CSharpSyntaxTree.ParseText(code).GetRoot().DescendantNodes();
+            var memberDeclarations = syntaxNodes
+                .OfType<AttributeSyntax>()
+                .ToList();
+
+            return memberDeclarations;
+        }
+
 
         #endregion
 
@@ -86,7 +110,7 @@ namespace CZGL.Roslyn.Templates
         /// </summary>
         /// <param name="access">标记</param>
         /// <returns></returns>
-        public virtual TBuilder WithAccess(MemberAccess access = MemberAccess.Internal)
+        public virtual TBuilder WithAccess(MemberAccess access = MemberAccess.Default)
         {
             _member.Access = RoslynHelper.GetName(access);
             return _TBuilder;
@@ -149,5 +173,21 @@ namespace CZGL.Roslyn.Templates
         }
 
         #endregion
+
+        /// <summary>
+        /// 通过代码直接生成
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        internal TBuilder WithFromCode(string code)
+        {
+            if (string.IsNullOrEmpty(code))
+                throw new ArgumentNullException(nameof(code));
+
+            _base.UseCode = true;
+            _base.Code = code;
+
+            return _TBuilder;
+        }
     }
 }

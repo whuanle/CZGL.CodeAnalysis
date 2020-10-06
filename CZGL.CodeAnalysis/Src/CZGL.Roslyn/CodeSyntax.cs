@@ -63,13 +63,9 @@ namespace CZGL.Roslyn
         /// </summary>
         /// <param name="attrCode"></param>
         /// <returns></returns>
-#if DEBUG
-        public
-#else
-internal
-#endif
-         static SyntaxList<AttributeListSyntax> CreateAttributeList(params string[] attrsCode)
+        public static SyntaxList<AttributeListSyntax> CreateAttributeList(params string[] attrsCode)
         {
+
             List<AttributeListSyntax> syntaxes = new List<AttributeListSyntax>();
 
             foreach (var item in attrsCode)
@@ -84,6 +80,17 @@ internal
         }
 
         /// <summary>
+        /// 生成特性列表
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public static SyntaxList<AttributeListSyntax> CreateAttributeList(IEnumerable<AttributeListSyntax> list)
+        {
+            return SyntaxFactory.List<AttributeListSyntax>(list.ToArray());
+        }
+
+
+        /// <summary>
         /// 字符串生成特性
         /// </summary>
         /// <param name="attrCode"></param>
@@ -93,12 +100,7 @@ internal
         /// "[Display(Name = \"a\")]"
         /// </code>
         /// </example>
-#if DEBUG
-        public
-#else
-internal
-#endif
-         static AttributeListSyntax CreateAttributeList(string attrCode)
+        public static AttributeListSyntax CreateAttributeList(string attrCode)
         {
             var result = CreateAttribute(attrCode);
 
@@ -116,12 +118,7 @@ internal
         /// "[Display(Name = \"a\")]"
         /// </code>
         /// </example>
-#if DEBUG
-        public
-#else
-internal
-#endif
-            static AttributeListSyntax CreateAttributeList(AttributeSyntax attrbuteSyntax)
+        public static AttributeListSyntax CreateAttributeList(AttributeSyntax attrbuteSyntax)
         {
             return SyntaxFactory.AttributeList(
                   SyntaxFactory.SingletonSeparatedList<AttributeSyntax>(attrbuteSyntax));
@@ -137,12 +134,7 @@ internal
         /// "[Display(Name = \"a\")]"
         /// </code>
         /// </example>
-#if DEBUG
-        public
-#else
-internal
-#endif
-            static AttributeSyntax CreateAttribute(string attrCode)
+        public static AttributeSyntax CreateAttribute(string attrCode)
         {
             var syntaxNodes = CSharpSyntaxTree.ParseText(attrCode).GetRoot().DescendantNodes();
             var member = syntaxNodes.OfType<AttributeSyntax>().FirstOrDefault();
@@ -204,5 +196,26 @@ internal
         {
             return GenericBuilder.WithFromCode(paramList, constraintList);
         }
+
+        /// <summary>
+        /// 创建字段
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static FieldBuilder CreateField(string name)
+        {
+            return new FieldBuilder(name);
+        }
+
+        /// <summary>
+        /// 创建字段
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static PropertyBuilder CreateProperty(string name)
+        {
+            return new PropertyBuilder(name);
+        }
+
     }
 }

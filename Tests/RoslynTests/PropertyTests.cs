@@ -45,20 +45,177 @@ protected internal static readonly int i
 = int.Parse("1");
          */
 
+        [Fact]
+        public void 定义属性_T1_简单型()
+        {
+            PropertyBuilder builder = CodeSyntax.CreateProperty("i")
+                .WithType("int");
+
+            var result = builder.ToFormatCode();
+#if Log
+            _tempOutput.WriteLine(result);
+#endif
+            Assert.Equal(@"int i
+{
+    get;
+    set;
+}", result);
+        }
+
+        [Fact]
+        public void 定义属性_T2_常量初始化值()
+        {
+            PropertyBuilder builder = CodeSyntax.CreateProperty("i")
+                .WithType("int")
+                .WithInit("0");
+
+            var result = builder.ToFormatCode();
+#if Log
+            _tempOutput.WriteLine(result);
+#endif
+            Assert.Equal(@"int i
+{
+    get;
+    set;
+}
+
+= 0;", result);
+        }
+
+
+        [Fact]
+        public void 定义属性_T3_表达式初始化值()
+        {
+            PropertyBuilder builder = CodeSyntax.CreateProperty("i")
+                .WithType("int")
+                .WithInit("int.Parse(\"1\")");
+
+            var result = builder.ToFormatCode();
+#if Log
+            _tempOutput.WriteLine(result);
+#endif
+            Assert.Equal(@"int i
+{
+    get;
+    set;
+}
+
+= int.Parse(""1"");", result);
+        }
+
+
+        [Fact]
+        public void 定义属性_T4_访问修饰符()
+        {
+            var field1 = CodeSyntax.CreateProperty("i")
+                .WithAccess(MemberAccess.Public)
+                .WithType("int")
+                .WithName("i");
+
+            var result = field1.ToFormatCode();
+#if Log
+            _tempOutput.WriteLine(result);
+#endif
+            Assert.Equal(@"public int i
+{
+    get;
+    set;
+}", result);
+        }
+
+        [Fact]
+        public void 定义属性_T5_修饰符()
+        {
+            PropertyBuilder builder = CodeSyntax.CreateProperty("i")
+                .WithAccess(MemberAccess.ProtectedInternal)
+                .WithKeyword(PropertyKeyword.Static)
+                .WithType("int");
+
+            var result = builder.ToFormatCode();
+#if Log
+            _tempOutput.WriteLine(result);
+#endif
+            Assert.Equal(@"protected internal static int i
+{
+    get;
+    set;
+}", result);
+        }
+
+
+        [Fact]
+        public void 定义属性_T6_超长的泛型()
+        {
+            PropertyBuilder builder = CodeSyntax.CreateProperty("i")
+                .WithType("List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>")
+                .WithName("i")
+                .WithInit("new List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>()");
+
+            var result = builder.ToFormatCode();
+#if Log
+            _tempOutput.WriteLine(result);
+#endif
+            Assert.Equal(@"List<Dictionary<int, Dictionary<string, List<FieldInfo>>>> i
+{
+    get;
+    set;
+}
+
+= new List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>();", result);
+        }
+
+        [Fact]
+        public void 定义属性_T7_字符串整体生成()
+        {
+            var builder = PropertyBuilder.FromCode(@"[Display(Name = ""a"")]
+public int a{get;set;}");
+
+            var result = builder.ToFormatCode();
+#if Log
+            _tempOutput.WriteLine(result);
+#endif
+            Assert.Equal(@"[Display(Name = ""a"")]
+public int a
+{
+    get;
+    set;
+}", result);
+        }
+
+
+        [Fact]
+        public void 定义属性_T8_特性注解()
+        {
+            PropertyBuilder builder = CodeSyntax.CreateProperty("i")
+                .WithAttributes(new string[] { @"[Display(Name = ""a"")]", @"[Key]" })
+                .WithAccess(MemberAccess.Public)
+                .WithType("int");
+
+            var result = builder.ToFormatCode();
+#if Log
+            _tempOutput.WriteLine(result);
+#endif
+            Assert.Equal(@"[Display(Name = ""a"")]
+[Key]
+public int i
+{
+    get;
+    set;
+}", result);
+        }
 
 
         [Fact]
         public void 属性_T1()
         {
-            PropertyBuilder builder = new PropertyBuilder();
-            var field = builder
+            PropertyBuilder builder = CodeSyntax.CreateProperty("i")
                 .WithAccess(MemberAccess.ProtectedInternal)
-                .SetQualifier(MemberQualifierType.Static | MemberQualifierType.Readonly)
+               .WithKeyword(PropertyKeyword.Static | PropertyKeyword.Readonly)
                 .WithType("int")
                 .WithName("i")
-                .WithInit("int.Parse(\"1\")")
-                .Build();
-            var result = field.NormalizeWhitespace().ToFullString();
+                .WithInit("int.Parse(\"1\")");
+
+            var result = builder.ToFormatCode();
 
 #if Log
             _tempOutput.WriteLine(result);
@@ -66,8 +223,8 @@ protected internal static readonly int i
 
             Assert.Equal(@"protected internal static readonly int i
 {
-    set;
     get;
+    set;
 }
 
 = int.Parse(""1"");", result);
@@ -79,17 +236,17 @@ protected internal static readonly int i
         [Fact]
         public void 属性_T2()
         {
-            PropertyBuilder builder = new PropertyBuilder();
+            PropertyBuilder builder = CodeSyntax.CreateProperty("i");
             var field = builder
                 .WithAccess(MemberAccess.ProtectedInternal)
-                .SetQualifier(MemberQualifierType.Static | MemberQualifierType.Readonly)
+                .WithKeyword(PropertyKeyword.Static | PropertyKeyword.Readonly)
                 .WithType("int")
                 .WithName("i")
-                .GetInitializer("get{return tmp+1;}")
-                .SetInitializer("set{tmp+=1;}")
-                .WithInit("int.Parse(\"1\")")
-                .Build();
-            var result = field.NormalizeWhitespace().ToFullString();
+                .WithGetInit("get{return tmp+1;}")
+                .WithSetInit("set{tmp+=1;}")
+                .WithInit("int.Parse(\"1\")");
+
+            var result = builder.ToFormatCode();
 
 #if Log
             _tempOutput.WriteLine(result);

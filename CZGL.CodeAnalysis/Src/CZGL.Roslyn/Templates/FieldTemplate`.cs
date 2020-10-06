@@ -27,7 +27,5 @@ namespace CZGL.Roslyn
             _variable.Keyword = RoslynHelper.GetName(keyword);
             return _TBuilder;
         }
-
-        internal TBuilder 
     }
 }

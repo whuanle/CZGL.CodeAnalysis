@@ -3,9 +3,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace CZGL.Roslyn.Templates
 {
@@ -207,11 +205,11 @@ namespace CZGL.Roslyn.Templates
 
         public override string ToFormatCode()
         {
-            var code = Build().NormalizeWhitespace().ToFullString();
+            var code = BuildSyntax().NormalizeWhitespace().ToFullString();
             return code;
         }
 
 
-        internal abstract NamespaceDeclarationSyntax Build();
+        public abstract NamespaceDeclarationSyntax BuildSyntax();
     }
 }

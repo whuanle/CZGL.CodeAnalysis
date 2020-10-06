@@ -33,11 +33,10 @@ namespace RoslynTests
         [Fact]
         public void 定义字段_T1_简单型()
         {
-            FieldBuilder builder = new FieldBuilder();
-            var field = builder
-                .WithType("int")
-                .WithName("i").BuildSyntax();
-            var result = field.NormalizeWhitespace().ToFullString();
+            FieldBuilder builder = CodeSyntax.CreateField("i")
+                .WithType("int");
+
+            var result = builder.ToFormatCode();
 #if Log
             _tempOutput.WriteLine(result);
 #endif
@@ -45,14 +44,13 @@ namespace RoslynTests
         }
 
         [Fact]
-        public void 定义字段_T2_初始化值()
+        public void 定义字段_T2_常量初始化值()
         {
-            FieldBuilder builder = new FieldBuilder();
-            var field = builder.WithType("int")
-                .WithName("i")
-                .WithInit("0")
-                .BuildSyntax();
-            var result = field.NormalizeWhitespace().ToFullString();
+            FieldBuilder builder = CodeSyntax.CreateField("i")
+                .WithType("int")
+                .WithInit("0");
+
+            var result = builder.ToFormatCode();
 #if Log
             _tempOutput.WriteLine(result);
 #endif
@@ -63,12 +61,11 @@ namespace RoslynTests
         [Fact]
         public void 定义字段_T3_表达式初始化值()
         {
-            FieldBuilder builder = new FieldBuilder();
-            var field = builder.WithType("int")
-                .WithName("i")
-                .WithInit("int.Parse(\"1\")")
-                .BuildSyntax();
-            var result = field.NormalizeWhitespace().ToFullString();
+            FieldBuilder builder = CodeSyntax.CreateField("i")
+                .WithType("int")
+                .WithInit("int.Parse(\"1\")");
+
+            var result = builder.ToFormatCode();
 #if Log
             _tempOutput.WriteLine(result);
 #endif
@@ -79,101 +76,73 @@ namespace RoslynTests
         [Fact]
         public void 定义字段_T4_访问修饰符()
         {
-            var field1 = new FieldBuilder()
+            var field1 = CodeSyntax.CreateField("i")
                 .WithAccess(MemberAccess.Public)
                 .WithType("int")
-                .WithName("i").BuildSyntax();
-            var result = field1.NormalizeWhitespace().ToFullString();
+                .WithName("i");
+
+            var result = field1.ToFormatCode();
 #if Log
             _tempOutput.WriteLine(result);
 #endif
-            Assert.Equal("public int i;", result);
-
-             var field2 = new FieldBuilder()
-                .SetVisibility("public")
-                .SetType("int")
-                .SetName("i").Build();
-             result = field2.NormalizeWhitespace().ToFullString();
-#if Log
-            _tempOutput.WriteLine(result);
-#endif
-
             Assert.Equal("public int i;", result);
         }
 
         [Fact]
-        public void 定义字段_T5_访问修饰符和限定修饰符()
+        public void 定义字段_T5_修饰符()
         {
-            FieldBuilder builder = new FieldBuilder();
-            var field = builder
+            FieldBuilder builder = CodeSyntax.CreateField("i")
                 .WithAccess(MemberAccess.ProtectedInternal)
-                .SetQualifier(MemberQualifierType.Static|MemberQualifierType.Readonly)
-                .WithType("int")
-                .WithName("i")
-                .WithInit("int.Parse(\"1\")")
-                .Build();
-            var result = field.NormalizeWhitespace().ToFullString();
+                .WithKeyword(FieldKeyword.Static)
+                .WithType("int");
+
+            var result = builder.ToFormatCode();
 #if Log
             _tempOutput.WriteLine(result);
 #endif
-            Assert.Equal("protected internal static readonly int i = int.Parse(\"1\");", result);
+            Assert.Equal("protected internal static int i;", result);
         }
 
 
         [Fact]
         public void 定义字段_T6_超长的泛型()
         {
-            FieldBuilder builder = new FieldBuilder();
-            var field = builder
+            FieldBuilder builder = CodeSyntax.CreateField("i")
                 .WithType("List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>")
                 .WithName("i")
-                .WithInit("new List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>()")
-                .BuildSyntax();
-            var result = field.NormalizeWhitespace().ToFullString();
+                .WithInit("new List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>()");
+
+            var result = builder.ToFormatCode();
 #if Log
             _tempOutput.WriteLine(result);
 #endif
             Assert.Equal("List<Dictionary<int, Dictionary<string, List<FieldInfo>>>> i = new List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>();", result);
         }
 
-
         [Fact]
         public void 定义字段_T7_字符串整体生成()
         {
-            var field = FieldBuilder
-                .BuildSyntax("int i;");
-            var result = field.NormalizeWhitespace().ToFullString();
+            var builder = FieldBuilder.FromCode(@"[Display(Name = ""a"")]
+public int a;");
+
+            var result = builder.ToFormatCode();
 #if Log
             _tempOutput.WriteLine(result);
 #endif
-            Assert.Equal("int i;", result);
+            Assert.Equal(@"[Display(Name = ""a"")]
+public int a;", result);
         }
 
 
         [Fact]
-        public void 定义字段_T8_字符串整体生成()
+        public void 定义字段_T8_特性注解()
         {
-            var field = FieldBuilder
-                .BuildSyntax("public int i;");
-            var result = field.NormalizeWhitespace().ToFullString();
-#if Log
-            _tempOutput.WriteLine(result);
-#endif
-            Assert.Equal("public int i;", result);
-        }
-
-
-        [Fact]
-        public void 定义字段_T9_特性注解()
-        {
-            FieldBuilder builder = new FieldBuilder();
-            var field = builder
+            FieldBuilder builder = CodeSyntax.CreateField("i")
                 .WithAttributes(new string[] { @"[Display(Name = ""a"")]", @"[Key]" })
                 .WithAccess(MemberAccess.Public)
-                .WithType("int")
-                .WithName("i")
-                .BuildSyntax();
-            var result = field.NormalizeWhitespace().ToFullString();
+                .WithType("int");
+
+            var result = builder.ToFormatCode();
 #if Log
             _tempOutput.WriteLine(result);
 #endif

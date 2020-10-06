@@ -13,5 +13,8 @@ namespace CZGL.Roslyn.States
         /// 名称
         /// </summary>
         public string Name { get; set; }
+
+        public bool UseCode { get; set; } = false;
+        public string Code { get; set; }
     }
 }

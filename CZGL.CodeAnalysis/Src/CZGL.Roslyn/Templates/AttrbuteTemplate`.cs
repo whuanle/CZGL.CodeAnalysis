@@ -10,7 +10,7 @@ namespace CZGL.Roslyn.Templates
     /// <typeparam name="TBuilder"></typeparam>
     public abstract class AttrbuteTemplate<TBuilder> where TBuilder : AttrbuteTemplate<TBuilder>
     {
-        protected internal AttributeState _attribute;
+        protected internal readonly AttributeState _attribute = new AttributeState();
 
         protected internal TBuilder _TBuilder;
 

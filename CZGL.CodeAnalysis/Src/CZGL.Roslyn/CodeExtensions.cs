@@ -54,7 +54,7 @@ namespace CZGL.Roslyn
         {
             if (string.IsNullOrEmpty(source))
                 return source;
-            return source + "\n";
+            return source + " ";
         }
 
         /// <summary>

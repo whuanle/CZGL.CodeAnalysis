@@ -1,4 +1,6 @@
 
+using CZGL.CodeAnalysis.Shared;
+using CZGL.Roslyn;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -21,7 +23,13 @@ namespace ConsoleTest
         public event A1 a1;
         static void Main(string[] args)
         {
+            PropertyBuilder builder = CodeSyntax.CreateProperty("i")
+                .WithAttributes(new string[] { @"[Display(Name = ""a"")]", @"[Key]" })
+                .WithAccess(MemberAccess.Public)
+                .WithType("int");
 
+            var result = builder.ToFormatCode();
+            Console.WriteLine(result);
             //var a = DependencyContext.Default.CompileLibraries;
             //var b = a.Count;
 

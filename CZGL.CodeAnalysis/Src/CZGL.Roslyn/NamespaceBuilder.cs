@@ -23,12 +23,12 @@ namespace CZGL.Roslyn
         /// 创建命名空间
         /// </summary>
         /// <param name="namespaceName">命名空间名称</param>
-        public NamespaceBuilder(string namespaceName):base(namespaceName)
+        public NamespaceBuilder(string namespaceName) : base(namespaceName)
         {
             _TBuilder = this;
         }
 
-        internal override NamespaceDeclarationSyntax Build()
+        public override NamespaceDeclarationSyntax BuildSyntax()
         {
             NamespaceDeclarationSyntax memberDeclaration;
 

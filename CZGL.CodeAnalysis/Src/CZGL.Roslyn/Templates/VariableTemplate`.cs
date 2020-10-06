@@ -15,7 +15,6 @@ namespace CZGL.Roslyn.Templates
     {
         protected internal readonly VariableState _variable = new VariableState();
 
-
         /// <summary>
         /// 设置字段的关键字，如 static，readonly 等
         /// <para>注意，关键字拼写错误，会导致代码出现严重错误</para>
@@ -37,9 +36,10 @@ namespace CZGL.Roslyn.Templates
         {
             if (string.IsNullOrEmpty(typeName))
                 throw new ArgumentNullException(nameof(typeName));
-            _variable.InitCode = typeName;
+            _variable.MemberType = typeName;
             return _TBuilder;
         }
+
 
 
         /// <summary>

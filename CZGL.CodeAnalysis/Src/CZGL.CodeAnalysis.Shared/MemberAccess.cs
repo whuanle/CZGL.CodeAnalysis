@@ -12,17 +12,20 @@ namespace CZGL.CodeAnalysis.Shared
     [Flags]
     public enum MemberAccess
     {
+        [MemberDefineName(Name = "")]
+        Default = 0,
+
         [MemberDefineName(Name = "internal")]
-        Internal = 0,
+        Internal = 1,
 
         [MemberDefineName(Name = "public")]
-        Public = 1,
+        Public = 1 << 1,
 
         [MemberDefineName(Name = "protected")]
-        Protected = 1 << 1,
+        Protected = 1 << 2,
 
         [MemberDefineName(Name = "private")]
-        Private = 1 << 2,
+        Private = 1 << 3,
 
         [MemberDefineName(Name = "protected internal")]
         ProtectedInternal = Protected | Internal,
