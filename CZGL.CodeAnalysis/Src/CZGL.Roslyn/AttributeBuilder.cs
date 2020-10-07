@@ -9,35 +9,33 @@ namespace CZGL.Roslyn
     /// <summary>
     /// 成员特性构建器
     /// </summary>
-    public class AttributeBuilder : AttrbuteTemplate<AttributeBuilder>
+    public sealed class AttributeBuilder : AttrbuteTemplate<AttributeBuilder>
     {
-        public AttributeBuilder()
+        internal AttributeBuilder()
         {
             _TBuilder = this;
         }
-
+        internal AttributeBuilder(string name) : this()
+        {
+            _attribute.Name = name;
+        }
 
         /// <summary>
         /// 构建 AttributeSyntax
         /// </summary>
         /// <returns></returns>
-        public AttributeSyntax Build()
+        public AttributeSyntax BuildSyntax()
         {
-            return CodeSyntax.CreateAttribute(ToFullCode());
+            return CodeSyntax.CreateCodeAttribute(ToFullCode());
         }
 
         /// <summary>
         /// 构建特性注解
         /// </summary>
         /// <returns></returns>
-#if DEBUG
-        public
-#else
-internal
-#endif   
-        AttributeListSyntax BuildAttributeListSyntax()
+        public AttributeListSyntax BuildAttributeListSyntax()
         {
-            return CodeSyntax.CreateAttributeList(Build());
+            return CodeSyntax.CreateAttributeList(BuildSyntax());
         }
 
         public override string ToFullCode()
@@ -52,20 +50,20 @@ internal
             {
                 if (_attribute.Propertys.Count == 0)
                 {
-                    code = Template1;
+                    code = Template1.Replace("{Name}", _attribute.Name);
                 }
                 else
-                    code = Template3.Replace("{Propertys}",_attribute.Propertys.Join(","));
+                    code = Template3.Replace("{Name}", _attribute.Name).Replace("{Propertys}", _attribute.Propertys.Join(","));
             }
             else
             {
                 if (_attribute.Propertys.Count == 0)
                 {
-                    code = Template2.Replace("{Ctor})",_attribute.Ctor);
+                    code = Template2.Replace("{Name}", _attribute.Name).Replace("{Ctor}", _attribute.Ctor);
                 }
                 else
-                    code = Template4
-                        .Replace("{Ctor})", _attribute.Ctor)
+                    code = Template4.Replace("{Name}", _attribute.Name)
+                        .Replace("{Ctor}", _attribute.Ctor)
                         .Replace("{Propertys}", _attribute.Propertys.Join(","));
             }
 
@@ -74,7 +72,7 @@ internal
 
         public override string ToFormatCode()
         {
-            return Build().NormalizeWhitespace().ToFullString();
+            return BuildSyntax().NormalizeWhitespace().ToFullString();
         }
 
         // protected internal readonly List<AttributeSyntax> MemberAttrSyntaxs = new List<AttributeSyntax>();

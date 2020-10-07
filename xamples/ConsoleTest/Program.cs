@@ -23,10 +23,7 @@ namespace ConsoleTest
         public event A1 a1;
         static void Main(string[] args)
         {
-            CtorBuilder builder = CodeSyntax.CreateCtor("T2")
-                .WithAccess(MemberAccess.Public)
-                .WithParams("string a")
-                .WithThis("this()");
+            AttributeBuilder builder = CodeSyntax.CreateAttribute("Key");
 
             var result = builder.ToFormatCode();
 

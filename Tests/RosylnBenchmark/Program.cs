@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BenchmarkDotNet.Running;
+using System;
 
 namespace RosylnBenchmark
 {
@@ -6,7 +7,8 @@ namespace RosylnBenchmark
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var summary = BenchmarkRunner.Run(typeof(Program).Assembly);
+            Console.ReadKey();
         }
     }
 }

@@ -70,7 +70,7 @@ namespace CZGL.Roslyn
 
             foreach (var item in attrsCode)
             {
-                var tmp = CreateAttribute(item);
+                var tmp = CreateCodeAttribute(item);
                 syntaxes.Add(
                     SyntaxFactory.AttributeList(
                         SyntaxFactory.SingletonSeparatedList<AttributeSyntax>(tmp)));
@@ -102,7 +102,7 @@ namespace CZGL.Roslyn
         /// </example>
         public static AttributeListSyntax CreateAttributeList(string attrCode)
         {
-            var result = CreateAttribute(attrCode);
+            var result = CreateCodeAttribute(attrCode);
 
             return SyntaxFactory.AttributeList(
                   SyntaxFactory.SingletonSeparatedList<AttributeSyntax>(result));
@@ -134,9 +134,12 @@ namespace CZGL.Roslyn
         /// "[Display(Name = \"a\")]"
         /// </code>
         /// </example>
-        public static AttributeSyntax CreateAttribute(string attrCode)
+        public static AttributeSyntax CreateCodeAttribute(string attrCode)
         {
             var syntaxNodes = CSharpSyntaxTree.ParseText(attrCode).GetRoot().DescendantNodes();
+            _ = syntaxNodes.Execute(item => 
+            item.NormalizeWhitespace().ToFullString()
+            );
             var member = syntaxNodes.OfType<AttributeSyntax>().FirstOrDefault();
             return member;
         }
@@ -257,5 +260,14 @@ namespace CZGL.Roslyn
             return new CtorBuilder(name);
         }
 
+        /// <summary>
+        /// 创建特性
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static AttributeBuilder CreateAttribute(string name)
+        {
+            return new AttributeBuilder(name);
+        }
     }
 }
