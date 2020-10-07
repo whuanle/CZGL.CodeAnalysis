@@ -20,7 +20,7 @@ namespace CZGL.Roslyn
             _TBuilder = this;
         }
 
-        internal DelegateBuilder(string name):base()
+        internal DelegateBuilder(string name):this()
         {
             _base.Name = name;
         }
@@ -65,7 +65,7 @@ namespace CZGL.Roslyn
 
 
         /// <summary>
-        /// 构建方法
+        /// 构建委托
         /// </summary>
         /// <returns></returns>
         public DelegateDeclarationSyntax BuildSyntax()
@@ -76,7 +76,10 @@ namespace CZGL.Roslyn
                 .DescendantNodes();
 
             memberDeclaration = syntaxNodes
-           .OfType<DelegateDeclarationSyntax>().Single();
+           .OfType<DelegateDeclarationSyntax>().FirstOrDefault();
+
+            if (memberDeclaration is null)
+                throw new InvalidOperationException("请检查代码语法是否有错误！");
 
             // 添加特性
             if (_member.Atributes.Count != 0)
@@ -89,19 +92,32 @@ namespace CZGL.Roslyn
         }
 
 
+        /// <summary>
+        /// 通过代码构建委托
+        /// </summary>
+        /// <returns></returns>
+        public DelegateDeclarationSyntax BuildCodeSyntax()
+        {
+            return BuildSyntax();
+        }
+
+
 
         public override string ToFullCode()
         {
-            const string Template = @"{Attributes} {Access} {ReturnType} {Name}{GenericParams}({Params}) {GenericList};";
+            if (_base.UseCode)
+                return _base.Code;
+
+            const string Template = @"{Attributes}{Access}delegate {ReturnType} {Name}{GenericParams}({Params}){GenericList};";
 
             var code = Template
                 .Replace("{Attributes}", _member.Atributes.Join("\n").CodeNewLine())
-                .Replace("{Access", _member.Access.CodeNewSpace())
+                .Replace("{Access}", _member.Access.CodeNewSpace())
                 .Replace("{ReturnType}", _func.ReturnType)
                 .Replace("{Name}", _base.Name)
                 .Replace("{GenericParams}", _func.GenericParams.GetParamCode().CodeNewBefore("<").CodeNewAfter(">"))
                 .Replace("{Params}", _func.Params.Join(","))
-                .Replace("{GenericList}", _func.GenericParams.GetWhereCode());
+                .Replace("{GenericList}", _func.GenericParams.GetWhereCode().CodeNewBefore());
 
             return code;
         }

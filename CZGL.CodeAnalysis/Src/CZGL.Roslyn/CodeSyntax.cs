@@ -208,13 +208,23 @@ namespace CZGL.Roslyn
         }
 
         /// <summary>
-        /// 创建字段
+        /// 创建属性
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
         public static PropertyBuilder CreateProperty(string name)
         {
             return new PropertyBuilder(name);
+        }
+
+        /// <summary>
+        /// 创建属性
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static DelegateBuilder CreateDelegate(string name)
+        {
+            return  new DelegateBuilder(name);
         }
 
     }

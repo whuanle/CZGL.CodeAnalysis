@@ -23,12 +23,15 @@ namespace ConsoleTest
         public event A1 a1;
         static void Main(string[] args)
         {
-            PropertyBuilder builder = CodeSyntax.CreateProperty("i")
-                .WithAttributes(new string[] { @"[Display(Name = ""a"")]", @"[Key]" })
+            DelegateBuilder builder = CodeSyntax.CreateDelegate("T1")
                 .WithAccess(MemberAccess.Public)
-                .WithType("int");
+                .WithReturnType("void")
+                .WithName("T1");
 
-            var result = builder.ToFormatCode();
+            Console.WriteLine(builder.ToFullCode());
+
+            var result = builder.BuildCodeSyntax().NormalizeWhitespace().ToFullString();
+
             Console.WriteLine(result);
             //var a = DependencyContext.Default.CompileLibraries;
             //var b = a.Count;
