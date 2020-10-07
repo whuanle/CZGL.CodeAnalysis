@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
 using System.Linq;
 using System.Text;
 
@@ -14,7 +15,7 @@ namespace CZGL.Roslyn
             _TBuilder = this;
         }
 
-        internal MethodBuilder(string name):this()
+        internal MethodBuilder(string name) : this()
         {
             _base.Name = name;
         }
@@ -67,7 +68,10 @@ namespace CZGL.Roslyn
                 .DescendantNodes();
 
             memberDeclaration = syntaxNodes
-           .OfType<MethodDeclarationSyntax>().Single();
+           .OfType<MethodDeclarationSyntax>().FirstOrDefault();
+
+            if (memberDeclaration is null)
+                throw new InvalidOperationException("未能构建方法，请检查代码是否有语法错误！");
 
             // 添加特性
             if (_member.Atributes.Count != 0)
@@ -79,6 +83,16 @@ namespace CZGL.Roslyn
             return memberDeclaration;
         }
 
+        /// <summary>
+        /// 此方法代码体为空
+        /// <para>如果方法体中没有任何代码，请使用此函数指定</para>
+        /// </summary>
+        /// <returns></returns>
+        public MethodBuilder WithDefaultBlock()
+        {
+            _method.BlockCode = "\n";
+            return this;
+        }
 
         public override string ToFormatCode()
         {
@@ -87,19 +101,21 @@ namespace CZGL.Roslyn
 
         public override string ToFullCode()
         {
-            const string Template = @"{Attributes} {Access} {Keyword} {ReturnType} {Name}{GenericParams}({Params}) {BaseOrThis} {GenericList} {BlockCode}";
+            if (_base.UseCode)
+                return _base.Code;
+
+            const string Template = @"{Attributes}{Access}{Keyword}{ReturnType} {Name}{GenericParams}({Params}){GenericList} {BlockCode}";
 
             var code = Template
                 .Replace("{Attributes}", _member.Atributes.Join("\n").CodeNewLine())
-                .Replace("{Access", _member.Access.CodeNewSpace())
+                .Replace("{Access}", _member.Access.CodeNewSpace())
                 .Replace("{Keyword}", _method.Keyword.CodeNewSpace())
                 .Replace("{ReturnType}", _func.ReturnType)
                 .Replace("{Name}", _base.Name)
-                .Replace("{GenericParams}",_func.GenericParams.GetParamCode().CodeNewBefore("<").CodeNewAfter(">"))
+                .Replace("{GenericParams}", _func.GenericParams.GetParamCode().CodeNewBefore("<").CodeNewAfter(">"))
                 .Replace("{Params}", _func.Params.Join(","))
-                .Replace("{BaseOrThis}",_method.BaseOrThis.CodeNewBefore(":"))
-                .Replace("{GenericList}", _func.GenericParams.GetWhereCode())
-                .Replace("{BlockCode}", _method.BlockCode.CodeNewBefore("\n{").CodeNewAfter("\n}")??";");
+                .Replace("{GenericList}", _func.GenericParams.GetWhereCode(true).CodeNewBefore("\n"))
+                .Replace("{BlockCode}", _method.BlockCode.CodeNewBefore("\n{").CodeNewAfter("\n}") ?? @";");
 
             return code;
         }

@@ -240,7 +240,13 @@ namespace CZGL.Roslyn
             return code;
         }
 
-        internal string GetParamCode() => _generic.Select(x => x.Name).Join(",");
+        internal string GetParamCode()
+        {
+            if (!string.IsNullOrEmpty(ParamCode))
+                return ParamCode;
+
+            return _generic.Select(x => x.Name).Join(",");
+        }
 
         /// <summary>
         /// 泛型约束是否换行
@@ -249,6 +255,9 @@ namespace CZGL.Roslyn
         /// <returns></returns>
         internal string GetWhereCode(bool isNewLine = false)
         {
+            if (!string.IsNullOrEmpty(WhereCode))
+                return WhereCode;
+
             const string Template = @"where {Name}:{Constraints}";
 
             var query = _generic.Where(x => x.Constraints.Count != 0).

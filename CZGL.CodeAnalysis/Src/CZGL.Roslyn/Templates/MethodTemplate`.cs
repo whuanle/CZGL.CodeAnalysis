@@ -78,7 +78,7 @@ namespace CZGL.Roslyn.Templates
         /// base("test")
         /// </code>
         /// </example>
-        public virtual TBuilder WithBase(string Code)
+        internal virtual TBuilder WithBase(string Code)
         {
             _method.BaseOrThis = Code;
             return _TBuilder;
@@ -89,7 +89,7 @@ namespace CZGL.Roslyn.Templates
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        public virtual TBuilder WithThis(string Code)
+        internal virtual TBuilder WithThis(string Code)
         {
             _method.BaseOrThis = Code;
             return _TBuilder;

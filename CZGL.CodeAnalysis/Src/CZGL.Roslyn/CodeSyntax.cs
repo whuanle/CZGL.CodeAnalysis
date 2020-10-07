@@ -218,7 +218,7 @@ namespace CZGL.Roslyn
         }
 
         /// <summary>
-        /// 创建属性
+        /// 创建委托
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -228,13 +228,23 @@ namespace CZGL.Roslyn
         }
 
         /// <summary>
-        /// 创建属性
+        /// 创建事件
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
         public static EventBuilder CreateEvent(string name)
         {
             return new EventBuilder(name);
+        }
+
+        /// <summary>
+        /// 创建方法
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static MethodBuilder CreateMethod(string name)
+        {
+            return new MethodBuilder(name);
         }
 
     }
