@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
 using System.Linq;
 using System.Text;
 
@@ -30,7 +31,7 @@ namespace CZGL.Roslyn
         /// </example>
         public new CtorBuilder WithBase(string Code)
         {
-            return WithThis(Code);
+            return base.WithThis(Code);
         }
 
         /// <summary>
@@ -40,7 +41,7 @@ namespace CZGL.Roslyn
         /// <returns></returns>
         public new CtorBuilder WithThis(string Code)
         {
-            return WithThis(Code);
+            return base.WithThis(Code);
         }
 
 
@@ -72,13 +73,22 @@ namespace CZGL.Roslyn
 
         public ConstructorDeclarationSyntax BuildSyntax()
         {
+            var code = $@"public class {Name}
+{{
+                {ToFullCode()}
+}}";
+
             ConstructorDeclarationSyntax memberDeclaration = default;
-            var syntaxNodes = CSharpSyntaxTree.ParseText(ToFullCode())
+            var syntaxNodes = CSharpSyntaxTree.ParseText(code)
                 .GetRoot()
                 .DescendantNodes();
 
+
             memberDeclaration = syntaxNodes
-           .OfType<ConstructorDeclarationSyntax>().Single();
+           .OfType<ConstructorDeclarationSyntax>().FirstOrDefault();
+
+            if (memberDeclaration is null)
+                throw new InvalidOperationException("未能构建构造函数，请检查代码是否有语法错误！");
 
             // 添加特性
             if (_member.Atributes.Count != 0)
@@ -109,7 +119,7 @@ namespace CZGL.Roslyn
             var code = Template
                 .Replace("{Access}", _member.Access)
                 .Replace("{Name}", _base.Name)
-                .Replace("{{Params}}", _func.Params.Join(","))
+                .Replace("{Params}", _func.Params.Join(","))
                 .Replace("{BaseOrThis}",_method.BaseOrThis.CodeNewBefore(":"))
                 .Replace("{BlockCode}", _method.BlockCode);
             return code;

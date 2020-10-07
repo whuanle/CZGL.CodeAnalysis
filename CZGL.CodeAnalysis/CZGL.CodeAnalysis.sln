@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CZGL.RoslynTool", "Src\CZGL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CZGL.Reflect", "Src\CZGL.Reflect\CZGL.Reflect.csproj", "{42B9940B-C5D1-4C45-924B-F202D2EAD50B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RosylnBenchmark", "..\Tests\RosylnBenchmark\RosylnBenchmark.csproj", "{4D57E550-4E91-4201-9DDB-3C2C2C12CEFA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{42B9940B-C5D1-4C45-924B-F202D2EAD50B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42B9940B-C5D1-4C45-924B-F202D2EAD50B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42B9940B-C5D1-4C45-924B-F202D2EAD50B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D57E550-4E91-4201-9DDB-3C2C2C12CEFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D57E550-4E91-4201-9DDB-3C2C2C12CEFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D57E550-4E91-4201-9DDB-3C2C2C12CEFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D57E550-4E91-4201-9DDB-3C2C2C12CEFA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,6 +82,7 @@ Global
 		{4313A55F-8858-4572-8A72-33F2A64E4310} = {A9BD8E4E-35E2-4813-903D-3527D8E5E3B9}
 		{F7D2F4F3-7A2D-42FB-855E-428A8E17A0F9} = {A9BD8E4E-35E2-4813-903D-3527D8E5E3B9}
 		{42B9940B-C5D1-4C45-924B-F202D2EAD50B} = {A9BD8E4E-35E2-4813-903D-3527D8E5E3B9}
+		{4D57E550-4E91-4201-9DDB-3C2C2C12CEFA} = {065C6A67-FC60-49C2-B1E0-1C1E872E1F77}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3A846AD7-C6DD-4276-809C-CBD360DDC5E0}

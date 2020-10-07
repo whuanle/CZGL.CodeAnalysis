@@ -247,5 +247,15 @@ namespace CZGL.Roslyn
             return new MethodBuilder(name);
         }
 
+        /// <summary>
+        /// 创建构造函数
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static CtorBuilder CreateCtor(string name)
+        {
+            return new CtorBuilder(name);
+        }
+
     }
 }

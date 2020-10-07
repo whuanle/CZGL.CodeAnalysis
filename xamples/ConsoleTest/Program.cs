@@ -23,18 +23,10 @@ namespace ConsoleTest
         public event A1 a1;
         static void Main(string[] args)
         {
-            DelegateBuilder builder = CodeSyntax.CreateDelegate("Test")
+            CtorBuilder builder = CodeSyntax.CreateCtor("T2")
                 .WithAccess(MemberAccess.Public)
-                .WithReturnType("T2")
-                .WithGeneric(builder =>
-                {
-                    builder
-                    .WithCreate("T1").WithEnd()
-                    .WithCreate("T2").WithStruct().WithEnd()
-                    .WithCreate("T3").WithClass().WithEnd()
-                    .WithCreate("T4").WithNotnull().WithEnd()
-                    .WithCreate("T5").WithInterface("IEnumerable<int>", "IQueryable<int>").WithEnd();
-                });
+                .WithParams("string a")
+                .WithThis("this()");
 
             var result = builder.ToFormatCode();
 
