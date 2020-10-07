@@ -227,5 +227,15 @@ namespace CZGL.Roslyn
             return  new DelegateBuilder(name);
         }
 
+        /// <summary>
+        /// 创建属性
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static EventBuilder CreateEvent(string name)
+        {
+            return new EventBuilder(name);
+        }
+
     }
 }

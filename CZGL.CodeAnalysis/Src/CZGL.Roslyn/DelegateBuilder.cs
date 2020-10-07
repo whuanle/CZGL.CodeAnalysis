@@ -37,6 +37,19 @@ namespace CZGL.Roslyn
         }
 
         /// <summary>
+        /// 通过代码直接生成
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public static DelegateBuilder FromCode(string code)
+        {
+            if (string.IsNullOrEmpty(code))
+                throw new ArgumentNullException(nameof(code));
+
+            return new DelegateBuilder().WithFromCode(code);
+        }
+
+        /// <summary>
         /// 通过字符串直接生成委托
         /// </summary>
         /// <param name="Code"></param>
@@ -54,7 +67,10 @@ namespace CZGL.Roslyn
             var memberDeclaration = CSharpSyntaxTree.ParseText(Code)
                 .GetRoot()
                 .DescendantNodes()
-                .OfType<DelegateDeclarationSyntax>().Single();
+                .OfType<DelegateDeclarationSyntax>().FirstOrDefault();
+
+            if (memberDeclaration is null)
+                throw new InvalidOperationException("请检查代码语法是否有错误！");
 
             if (attrs != null)
                 memberDeclaration = memberDeclaration
@@ -90,17 +106,6 @@ namespace CZGL.Roslyn
 
             return memberDeclaration;
         }
-
-
-        /// <summary>
-        /// 通过代码构建委托
-        /// </summary>
-        /// <returns></returns>
-        public DelegateDeclarationSyntax BuildCodeSyntax()
-        {
-            return BuildSyntax();
-        }
-
 
 
         public override string ToFullCode()

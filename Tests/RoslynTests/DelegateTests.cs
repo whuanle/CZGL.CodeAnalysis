@@ -109,6 +109,19 @@ namespace RoslynTests
 public delegate void T4();", result);
         }
 
+        [Fact]
+        public void 委托_T5_通过字符串生成()
+        {
+            DelegateBuilder builder = DelegateBuilder.FromCode(@"[Test(""1"", ""2"", A = ""3"", B = ""4"")]
+public delegate void T5();");
 
+            var result = builder.ToFormatCode();
+
+#if Log
+            _tempOutput.WriteLine(result);
+#endif
+            Assert.Equal(@"[Test(""1"", ""2"", A = ""3"", B = ""4"")]
+public delegate void T5();", result);
+        }
     }
 }

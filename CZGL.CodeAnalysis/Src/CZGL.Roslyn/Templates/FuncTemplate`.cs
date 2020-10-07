@@ -167,10 +167,5 @@ namespace CZGL.Roslyn.Templates
 
         #endregion
 
-        internal void WithFromCode(string Code)
-        {
-            _func.UseCode = true;
-            _func.Code = Code;
-        }
     }
 }

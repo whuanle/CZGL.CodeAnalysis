@@ -25,6 +25,19 @@ namespace CZGL.Roslyn
         }
 
         /// <summary>
+        /// 通过代码直接生成
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public static EventBuilder FromCode(string code)
+        {
+            if (string.IsNullOrEmpty(code))
+                throw new ArgumentNullException(nameof(code));
+
+            return new EventBuilder().WithFromCode(code);
+        }
+
+        /// <summary>
         /// 字符串直接生成事件
         /// </summary>
         /// <param name="Code"></param>
@@ -54,7 +67,10 @@ namespace CZGL.Roslyn
 
                 memberDeclaration = syntaxNodes
                 .OfType<EventFieldDeclarationSyntax>()
-                .Single();
+                .FirstOrDefault();
+
+            if (memberDeclaration is null)
+                throw new InvalidOperationException("请检查代码语法是否有错误！");
 
 
             if (_member.Atributes.Count != 0)
@@ -70,13 +86,17 @@ namespace CZGL.Roslyn
 
         public override string ToFullCode()
         {
-            const string Template = @"{Access} {Keyword} event {Delegate} {Name};";
+            if (_base.UseCode)
+                return _base.Code;
+
+            const string Template = @"{Access}{Keyword} event {Delegate} {Name}{InitCode};";
 
             var code = Template
-                .Replace("{Access}", _member.Access)
-                .Replace("{Keyword}", _variable.Keyword)
+                .Replace("{Access}", _member.Access.CodeNewAfter())
+                .Replace("{Keyword}", _variable.Keyword.CodeNewAfter())
                 .Replace("{Delegate}", _variable.MemberType)
-                .Replace("{Name}",_base.Name);
+                .Replace("{Name}",_base.Name)
+                .Replace("{InitCode}", _variable.InitCode.CodeNewBefore(" = "));
 
             return code;
         }

@@ -34,5 +34,15 @@ namespace CZGL.Roslyn.Templates
             return _TBuilder;
         }
 
+        /// <summary>
+        /// 设置委托类型的名称
+        /// </summary>
+        /// <param name="delegateName"></param>
+        /// <returns></returns>
+        public TBuilder WithDelegate(string delegateName)
+        {
+            WithType(delegateName);
+            return _TBuilder;
+        }
     }
 }

@@ -23,14 +23,11 @@ namespace ConsoleTest
         public event A1 a1;
         static void Main(string[] args)
         {
-            DelegateBuilder builder = CodeSyntax.CreateDelegate("T1")
-                .WithAccess(MemberAccess.Public)
-                .WithReturnType("void")
-                .WithName("T1");
+            EventBuilder builder = EventBuilder.FromCode(@"[Display(Name = ""a"")]
+[Key]
+public event T t1 = AAA;");
 
-            Console.WriteLine(builder.ToFullCode());
-
-            var result = builder.BuildCodeSyntax().NormalizeWhitespace().ToFullString();
+            var result = builder.ToFormatCode();
 
             Console.WriteLine(result);
             //var a = DependencyContext.Default.CompileLibraries;
