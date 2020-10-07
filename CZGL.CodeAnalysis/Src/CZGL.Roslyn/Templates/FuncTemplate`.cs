@@ -95,11 +95,7 @@ namespace CZGL.Roslyn.Templates
         /// </example>
         public virtual TBuilder WithParams(params string[] paramsCode)
         {
-            _ = paramsCode.SelectMany(cl =>
-            {
-                _func.Params.Add(cl);
-                return cl;
-            });
+            _ = paramsCode.Execute(cl =>_func.Params.Add(cl));
 
             return _TBuilder;
         }
@@ -120,6 +116,20 @@ namespace CZGL.Roslyn.Templates
             GenericBuilder generic = new GenericBuilder();
             builder.Invoke(generic);
             _func.GenericParams = generic;
+            return _TBuilder;
+        }
+
+        /// <summary>
+        /// 为此函数构建泛型
+        /// <para>构造函数无泛型参数</para>
+        /// </summary>
+        /// <param name="builder">泛型构建器</param>
+        /// <returns></returns>
+        public virtual TBuilder WithGeneric(Func<GenericTemplate<GenericBuilder>, GenericTemplate<GenericBuilder>> builder)
+        {
+            GenericBuilder generic = new GenericBuilder();
+
+            _func.GenericParams = builder.Invoke(generic).GetBuilder();
             return _TBuilder;
         }
 

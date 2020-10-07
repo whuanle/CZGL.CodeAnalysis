@@ -68,7 +68,7 @@ namespace CZGL.Roslyn.Templates
         /// <returns></returns>
         public virtual TBuilder WithUsing(params string[] usingNames)
         {
-            _ = usingNames.SelectMany(cl => { _namespace.Usings.Add($"using {cl};"); return cl; });
+            _ = usingNames.Execute(cl =>  _namespace.Usings.Add($"using {cl};"));
             return _TBuilder;
         }
 

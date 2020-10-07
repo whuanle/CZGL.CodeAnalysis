@@ -54,11 +54,7 @@ namespace CZGL.Roslyn.Templates
         public virtual TBuilder WithAttributes(params string[] attrs)
         {
             if (attrs != null)
-                _ = attrs.SelectMany(str =>
-                {
-                    _member.Atributes.Add(str);
-                    return str;
-                }).ToList();
+                _ = attrs.Execute(str => _member.Atributes.Add(str));
             return _TBuilder;
         }
 

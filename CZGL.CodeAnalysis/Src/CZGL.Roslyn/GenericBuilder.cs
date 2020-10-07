@@ -1,4 +1,5 @@
 ﻿using CZGL.CodeAnalysis.Shared;
+using CZGL.Roslyn.States;
 using CZGL.Roslyn.Templates;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -22,26 +23,15 @@ namespace CZGL.Roslyn
         internal GenericBuilder()
         {
             _TBuilder = this;
-            
+
         }
-        internal GenericBuilder(string objectName):base()
+        internal GenericBuilder(string objectName) : base()
         {
             ObjectName = objectName;
         }
 
 
         #region 泛型约束
-
-        /// <summary>
-        /// 添加一个泛型参数
-        /// </summary>
-        /// <param name="name">泛型参数名称</param>
-        /// <returns></returns>
-        public GenericBuilder With(string name)
-        {
-            _this.Name = name;
-            return this;
-        }
 
         /// <summary>
         /// 为泛型参数添加结构体约束
@@ -84,7 +74,7 @@ namespace CZGL.Roslyn
         /// <para>必须放在开头，不能与 class、{基类} 约束一起使用</para>
         /// </summary>
         /// <returns></returns>
-        public GenericBuilder WitNotnull()
+        public GenericBuilder WithNotnull()
         {
             const string Template = "notnull";
             _this.Constraints.Add(Template);
@@ -130,7 +120,7 @@ namespace CZGL.Roslyn
         {
             if (interfaceNames is null)
                 throw new ArgumentNullException(nameof(interfaceNames));
-            _ = interfaceNames.SelectMany(str => { _this.Constraints.Add(str); return str; });
+           interfaceNames.Execute(str => { _this.Constraints.Add(str);}).ToArray();
 
             return this;
         }
@@ -243,21 +233,32 @@ namespace CZGL.Roslyn
             WhereCode = GetWhereCode();
 
             var code = Template
-                .Replace("{Name}",objectName)
+                .Replace("{Name}", objectName)
                   .Replace("{Params}", ParamCode)
                   .Replace("{where}", WhereCode);
 
             return code;
         }
 
-        internal string GetParamCode ()=> _generic.Select(x => x.Name).Join(",");
-        internal string GetWhereCode()=> string.Join("\n", _generic.Where(x => x.Constraints.Count != 0)
-               .SelectMany(gen =>
-               {
-                   return "where {Name}:{Constraints}"
-                   .Replace("{Name}", gen.Name)
-                   .Replace("{Constraints}", gen.Constraints.Join(","));
-               }));
+        internal string GetParamCode() => _generic.Select(x => x.Name).Join(",");
+
+        /// <summary>
+        /// 泛型约束是否换行
+        /// </summary>
+        /// <param name="isNewLine"></param>
+        /// <returns></returns>
+        internal string GetWhereCode(bool isNewLine = false)
+        {
+            const string Template = @"where {Name}:{Constraints}";
+
+            var query = _generic.Where(x => x.Constraints.Count != 0).
+                Select(gen => Template
+                    .Replace("{Name}", gen.Name)
+                    .Replace("{Constraints}", gen.Constraints.Join(",")));
+
+            string code = query.Join(isNewLine ? "\n" : " ");
+            return code;
+        }
 
         public override string ToFullCode()
         {

@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Reflection;
 using Xunit;
 using Xunit.Abstractions;
@@ -122,6 +123,55 @@ public delegate void T5();");
 #endif
             Assert.Equal(@"[Test(""1"", ""2"", A = ""3"", B = ""4"")]
 public delegate void T5();", result);
+        }
+
+        public delegate T2 Test<T1, T2, T3, T4, T5>(string a, string b)
+                    where T2 : struct
+                    where T3 : class
+                    where T4 : notnull
+                    where T5 : IEnumerable<int>, IQueryable<int>;
+
+        [Fact]
+        public void 委托_T5_泛型委托()
+        {
+            DelegateBuilder builder = CodeSyntax.CreateDelegate("Test")
+                .WithAccess(MemberAccess.Public)
+                .WithReturnType("T2")
+                .WithGeneric(builder =>
+                {
+                    builder
+                    .WithCreate("T1").WithEnd()
+                    .WithCreate("T2").WithStruct().WithEnd()
+                    .WithCreate("T3").WithClass().WithEnd()
+                    .WithCreate("T4").WithNotnull().WithEnd()
+                    .WithCreate("T5").WithInterface("IEnumerable<int>", "IQueryable<int>").WithEnd();
+                });
+
+            var result = builder.ToFormatCode();
+
+#if Log
+            _tempOutput.WriteLine(result);
+#endif
+            Assert.Equal(@"public delegate T2 Test<T1, T2, T3, T4, T5>()
+    where T2 : struct where T3 : class where T4 : notnull where T5 : IEnumerable<int>, IQueryable<int>;", result);
+        }
+
+        [Fact]
+        public void 委托_T5_泛型委托代码生成()
+        {
+            DelegateBuilder builder = DelegateBuilder.FromCode(@"public delegate T2 Test<T1, T2, T3, T4, T5>(string a, string b)
+                    where T2 : struct
+                    where T3 : class
+                    where T4 : notnull
+                    where T5 : IEnumerable<int>, IQueryable<int>;");
+
+            var result = builder.ToFormatCode();
+
+#if Log
+            _tempOutput.WriteLine(result);
+#endif
+            Assert.Equal(@"public delegate T2 Test<T1, T2, T3, T4, T5>(string a, string b)
+    where T2 : struct where T3 : class where T4 : notnull where T5 : IEnumerable<int>, IQueryable<int>;", result);
         }
     }
 }

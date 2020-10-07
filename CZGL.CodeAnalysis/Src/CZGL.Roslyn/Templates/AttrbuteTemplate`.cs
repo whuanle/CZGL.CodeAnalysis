@@ -72,10 +72,7 @@ namespace CZGL.Roslyn.Templates
         /// <returns></returns>
         public virtual TBuilder WithProperty(params string[] propertys)
         {
-            _ = propertys.SelectMany(str =>
-            {
-                _attribute.Propertys.Add(str); return str;
-            });
+            _ = propertys.Execute(str => _attribute.Propertys.Add(str));
 
             return _TBuilder;
         }

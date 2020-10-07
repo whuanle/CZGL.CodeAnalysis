@@ -122,7 +122,7 @@ namespace CZGL.Roslyn
                 .Replace("{Name}", _base.Name)
                 .Replace("{GenericParams}", _func.GenericParams.GetParamCode().CodeNewBefore("<").CodeNewAfter(">"))
                 .Replace("{Params}", _func.Params.Join(","))
-                .Replace("{GenericList}", _func.GenericParams.GetWhereCode().CodeNewBefore());
+                .Replace("{GenericList}", _func.GenericParams.GetWhereCode(true).CodeNewBefore("\n"));
 
             return code;
         }

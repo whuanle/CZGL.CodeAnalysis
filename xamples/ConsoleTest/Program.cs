@@ -23,9 +23,18 @@ namespace ConsoleTest
         public event A1 a1;
         static void Main(string[] args)
         {
-            EventBuilder builder = EventBuilder.FromCode(@"[Display(Name = ""a"")]
-[Key]
-public event T t1 = AAA;");
+            DelegateBuilder builder = CodeSyntax.CreateDelegate("Test")
+                .WithAccess(MemberAccess.Public)
+                .WithReturnType("T2")
+                .WithGeneric(builder =>
+                {
+                    builder
+                    .WithCreate("T1").WithEnd()
+                    .WithCreate("T2").WithStruct().WithEnd()
+                    .WithCreate("T3").WithClass().WithEnd()
+                    .WithCreate("T4").WithNotnull().WithEnd()
+                    .WithCreate("T5").WithInterface("IEnumerable<int>", "IQueryable<int>").WithEnd();
+                });
 
             var result = builder.ToFormatCode();
 

@@ -102,7 +102,7 @@ namespace CZGL.Roslyn.Templates
         /// <returns></returns>
         public virtual TBuilder WithInterfaces(params string[] interfaceNames)
         {
-            _ = interfaceNames.SelectMany(item => { _class.Interfaces.Add(item); ; return item; });
+            _ = interfaceNames.Execute(item =>  _class.Interfaces.Add(item));
             return _TBuilder;
         }
 

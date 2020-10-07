@@ -80,5 +80,22 @@ namespace CZGL.Roslyn
                 return null;
             return source + separator;
         }
+
+        /// <summary>
+        /// 每次等待时都执行任务
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="selector">要执行的任务</param>
+        /// <returns></returns>
+        public static IEnumerable<TSource> Execute<TSource>(this IEnumerable<TSource> source, Action<TSource> selector)
+        {
+            var tor = source.GetEnumerator();
+            while (tor.MoveNext())
+            {
+                selector.Invoke(tor.Current);
+            }
+            return source;
+        }
     }
 }

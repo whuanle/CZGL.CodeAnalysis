@@ -28,9 +28,10 @@ namespace CZGL.Roslyn.Templates
         /// 创建一个泛型参数
         /// </summary>
         /// <returns></returns>
-        public virtual TBuilder WithCreate()
+        public virtual TBuilder WithCreate(string name)
         {
             _this = new GenericState();
+            _this.Name = name;
             _generic.Add(_this);
             return _TBuilder;
         }
