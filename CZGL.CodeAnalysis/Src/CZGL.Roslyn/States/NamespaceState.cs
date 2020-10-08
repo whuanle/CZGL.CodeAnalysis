@@ -9,13 +9,13 @@ namespace CZGL.Roslyn.States
     /// </summary>
     public class NamespaceState
     {
-        public HashSet<string> Usings { get; set; } = new HashSet<string>();
+        public HashSet<string> Usings { get; } = new HashSet<string>();
 
-        public List<InterfaceBuilder> Interfaces { get; set; }
-        public List<StructBuilder> Structs { get; set; }
-        public List<ClassBuilder> Classes { get; set; }
-        public List<EnumBuilder> Enums { get; set; }
-        public List<DelegateBuilder> Delegates { get; set; }
-        public List<EventBuilder> Events { get; set; }
+        public HashSet<InterfaceBuilder> Interfaces { get; } = new HashSet<InterfaceBuilder>();
+        public HashSet<StructBuilder> Structs { get; } = new HashSet<StructBuilder>();
+        public HashSet<ClassBuilder> Classes { get; } = new HashSet<ClassBuilder>();
+        public HashSet<EnumBuilder> Enums { get; } = new HashSet<EnumBuilder>();
+        public HashSet<DelegateBuilder> Delegates { get; } = new HashSet<DelegateBuilder>();
+        public HashSet<EventBuilder> Events { get; } = new HashSet<EventBuilder>();
     }
 }

@@ -12,9 +12,9 @@ namespace CZGL.Roslyn
     /// <summary>
     /// 构建命名空间
     /// </summary>
-    public class NamespaceBuilder : NamespaceTemplate<NamespaceBuilder>
+    public sealed class NamespaceBuilder : NamespaceTemplate<NamespaceBuilder>
     {
-        public NamespaceBuilder()
+        internal NamespaceBuilder()
         {
             _TBuilder = this;
         }
@@ -23,9 +23,9 @@ namespace CZGL.Roslyn
         /// 创建命名空间
         /// </summary>
         /// <param name="namespaceName">命名空间名称</param>
-        public NamespaceBuilder(string namespaceName) : base(namespaceName)
+        internal NamespaceBuilder(string namespaceName) : this()
         {
-            _TBuilder = this;
+            _base.Name = namespaceName;
         }
 
         public override NamespaceDeclarationSyntax BuildSyntax()

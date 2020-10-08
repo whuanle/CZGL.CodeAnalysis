@@ -23,12 +23,19 @@ namespace ConsoleTest
         public event A1 a1;
         static void Main(string[] args)
         {
-            var builder = ClassBuilder.BuildSyntax(@"[A]
-public class Test{}");
+            var builder = CodeSyntax.CreateNamespace("MySpace");
+            builder
+                .WithUsing("System")
+                .WithUsing(
+                "System.Collections.Generic",
+                "System.ComponentModel",
+                "System.Linq",
+                "System.Security.Cryptography",
+                "System.Threading");
 
-            var result = builder.NormalizeWhitespace().ToFullString();
+            var code = builder.ToFullCode();
+            Console.WriteLine(code);
 
-            Console.WriteLine(result);
             //var a = DependencyContext.Default.CompileLibraries;
             //var b = a.Count;
 

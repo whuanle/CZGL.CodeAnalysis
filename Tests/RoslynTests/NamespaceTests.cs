@@ -21,16 +21,14 @@ namespace RoslynTests
         [Fact]
         public void 设置名字()
         {
-            const string constCode = @"
-namespace MySpace
+            const string constCode = @"namespace MySpace
 {
 }";
 
             string name = "MySpace";
-            var builder = CodeSyntax.CreateNamespace();
-            builder.WithName(name);
+            var builder = CodeSyntax.CreateNamespace(name);
 
-            var code = builder.ToFullCode();
+            var code = builder.ToFormatCode();
 #if Log
             _tempOutput.WriteLine(code);
 #endif
@@ -38,7 +36,7 @@ namespace MySpace
 
 
 
-            builder = new NamespaceBuilder(name);
+            builder = CodeSyntax.CreateNamespace(name);
             code = builder.ToFormatCode();
 #if Log
             _tempOutput.WriteLine(code);
@@ -52,15 +50,7 @@ namespace MySpace
         [Fact]
         public void 添加命名空间()
         {
-            const string constCode = @"
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Threading;
-
-namespace MySpace
+            const string constCode = @"namespace MySpace
 {
 }";
 
@@ -74,7 +64,7 @@ namespace MySpace
                 "System.Security.Cryptography",
                 "System.Threading");
 
-            var code = builder.ToFullCode();
+            var code = builder.ToFormatCode();
 
 #if Log
             _tempOutput.WriteLine(code);

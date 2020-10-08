@@ -27,6 +27,9 @@ namespace CZGL.Roslyn.Templates
         /// <returns></returns>
         public new virtual TBuilder WithName(string name)
         {
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException(nameof(name));
+
             base.WithName(name);
             return _TBuilder;
         }
@@ -57,6 +60,9 @@ namespace CZGL.Roslyn.Templates
         /// <returns></returns>
         public virtual TBuilder WithUsing(string usingName)
         {
+            if (string.IsNullOrEmpty(usingName))
+                throw new ArgumentNullException(nameof(usingName));
+
             _namespace.Usings.Add($"using {usingName};");
             return _TBuilder;
         }
@@ -68,7 +74,7 @@ namespace CZGL.Roslyn.Templates
         /// <returns></returns>
         public virtual TBuilder WithUsing(params string[] usingNames)
         {
-            _ = usingNames.Execute(cl =>  _namespace.Usings.Add($"using {cl};"));
+            _ = usingNames.Execute(cl => _namespace.Usings.Add($"using {cl};"));
             return _TBuilder;
         }
 
@@ -80,7 +86,7 @@ namespace CZGL.Roslyn.Templates
         /// <returns></returns>
         public virtual EnumBuilder CreateEnum()
         {
-            var builder= new EnumBuilder();
+            var builder = new EnumBuilder();
             _namespace.Enums.Add(builder);
             return builder;
         }
@@ -142,12 +148,12 @@ namespace CZGL.Roslyn.Templates
         /// <param name="name">枚举名称</param>
         /// <param name="action">构建枚举</param>
         /// <returns></returns>
-        public virtual TBuilder With(string name,Action<EnumBuilder> action)
+        public virtual TBuilder With(string name, Action<EnumBuilder> action)
         {
             if (action is null)
                 throw new ArgumentNullException(nameof(action));
 
-            EnumBuilder builder = new EnumBuilder(name); 
+            EnumBuilder builder = new EnumBuilder(name);
             action.Invoke(builder);
             _namespace.Enums.Add(builder);
             return _TBuilder;
@@ -180,6 +186,9 @@ namespace CZGL.Roslyn.Templates
 
         public override string ToFullCode()
         {
+            if (_base.UseCode)
+                return _base.Code;
+
             /*
              * {usings}
              * {enums}
@@ -190,19 +199,35 @@ namespace CZGL.Roslyn.Templates
              * {events}
             */
 
-            const string Template = @"
-{usings}namespace {name}
+            const string Template = @"{usings}namespace {name}
 {
-
+{interfaces}
+{enums}
+{structs}
+{classes}
+{deletages}
+{events}
 }";
+
             var code = Template
-                .Replace("{usings}", _namespace.Usings.Join().CodeNewLine())
+                .Replace("{usings}", _namespace.Usings.Join("\n").CodeNewLine())
                 .Replace("{name}", _base.Name)
+                .Replace("{interfaces}", _namespace.Interfaces.Select(x => x.ToFullCode()).Join("\n"))
+                .Replace("{enums}", _namespace.Enums.Select(x => x.ToFullCode()).Join("\n"))
+                .Replace("{structs}", _namespace.Structs.Select(x => x.ToFullCode()).Join("\n"))
+                .Replace("{classes}", _namespace.Classes.Select(x => x.ToFullCode()).Join("\n"))
+                .Replace("{deletages}", _namespace.Delegates.Select(x => x.ToFullCode()).Join("\n"))
+                .Replace("{events}", _namespace.Events.Select(x => x.ToFullCode()).Join("\n"))
                 ;
 
             return code;
         }
 
+        /// <summary>
+        /// 使用语法树格式化代码
+        /// <para>命名空间的格式化代码不包括 using 部分</para>
+        /// </summary>
+        /// <returns></returns>
         public override string ToFormatCode()
         {
             var code = BuildSyntax().NormalizeWhitespace().ToFullString();

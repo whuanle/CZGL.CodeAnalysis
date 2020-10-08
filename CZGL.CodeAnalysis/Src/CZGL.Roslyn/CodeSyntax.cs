@@ -20,16 +20,6 @@ namespace CZGL.Roslyn
         /// <summary>
         /// 创建一个命名空间
         /// </summary>
-        /// <returns></returns>
-        public static NamespaceBuilder CreateNamespace()
-        {
-            return new NamespaceBuilder();
-        }
-
-
-        /// <summary>
-        /// 创建一个命名空间
-        /// </summary>
         /// <param name="namespaceName">命名空间名称</param>
         /// <returns></returns>
         public static NamespaceBuilder CreateNamespace(string namespaceName)
@@ -280,6 +270,16 @@ namespace CZGL.Roslyn
         public static StructBuilder CreateStruct(string name)
         {
             return new StructBuilder(name);
+        }
+
+        /// <summary>
+        /// 构建接口
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static InterfaceBuilder CreateInterface(string name)
+        {
+            return new InterfaceBuilder(name);
         }
     }
 }
