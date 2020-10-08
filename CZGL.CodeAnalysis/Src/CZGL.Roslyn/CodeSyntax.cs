@@ -281,5 +281,14 @@ namespace CZGL.Roslyn
         {
             return new InterfaceBuilder(name);
         }
+
+        /// <summary>
+        /// 生成编译器
+        /// </summary>
+        /// <returns></returns>
+        public static CompilationBuilder CreateCompilation(string assemblyName)
+        {
+            return new CompilationBuilder(assemblyName);
+        }
     }
 }

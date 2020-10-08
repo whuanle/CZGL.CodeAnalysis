@@ -16,7 +16,7 @@ namespace RoslynTests
             _tempOutput = tempOutput;
         }
 
-        public interface Test<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>
+        public interface Test<in T1,out T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>
             where T1 : struct
             where T2 : class
             where T3 : notnull

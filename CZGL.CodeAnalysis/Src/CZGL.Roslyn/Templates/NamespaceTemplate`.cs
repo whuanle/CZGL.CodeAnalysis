@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Extensions.DependencyModel;
 using System;
 using System.Linq;
 
@@ -77,6 +78,18 @@ namespace CZGL.Roslyn.Templates
             _ = usingNames.Execute(cl => _namespace.Usings.Add($"using {cl};"));
             return _TBuilder;
         }
+
+        /// <summary>
+        /// 自动引用此类型相同的命名空间
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public virtual TBuilder WithAutoUsing(Type type)
+        {
+            _ = DependencyContext.Default.CompileLibraries.Execute(cl => _namespace.Usings.Add($"using {cl.Name};"));
+            return _TBuilder;
+        }
+
 
         #region 创建成员
 
@@ -183,6 +196,18 @@ namespace CZGL.Roslyn.Templates
         }
 
         #endregion
+
+        internal TBuilder WithFromCode(string code)
+        {
+            if (string.IsNullOrEmpty(code))
+                throw new ArgumentNullException(nameof(code));
+
+            _base.UseCode = true;
+            _base.Code = code;
+
+            return _TBuilder;
+        }
+
 
         public override string ToFullCode()
         {

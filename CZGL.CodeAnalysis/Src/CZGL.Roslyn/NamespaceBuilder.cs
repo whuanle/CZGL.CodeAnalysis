@@ -28,6 +28,16 @@ namespace CZGL.Roslyn
             _base.Name = namespaceName;
         }
 
+        /// <summary>
+        /// 通过代码直接生成
+        /// </summary>
+        /// <param name="Code"></param>
+        /// <returns></returns>
+        public static NamespaceBuilder FromCode(string Code)
+        {
+            return new NamespaceBuilder().WithFromCode(Code);
+        }
+
         public override NamespaceDeclarationSyntax BuildSyntax()
         {
             NamespaceDeclarationSyntax memberDeclaration;
