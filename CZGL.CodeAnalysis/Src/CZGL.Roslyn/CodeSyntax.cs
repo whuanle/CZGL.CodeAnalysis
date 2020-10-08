@@ -16,6 +16,7 @@ namespace CZGL.Roslyn
     {
 
         #region 命名空间
+
         /// <summary>
         /// 创建一个命名空间
         /// </summary>
@@ -137,7 +138,7 @@ namespace CZGL.Roslyn
         public static AttributeSyntax CreateCodeAttribute(string attrCode)
         {
             var syntaxNodes = CSharpSyntaxTree.ParseText(attrCode).GetRoot().DescendantNodes();
-            _ = syntaxNodes.Execute(item => 
+            _ = syntaxNodes.Execute(item =>
             item.NormalizeWhitespace().ToFullString()
             );
             var member = syntaxNodes.OfType<AttributeSyntax>().FirstOrDefault();
@@ -145,15 +146,6 @@ namespace CZGL.Roslyn
         }
 
         #endregion
-
-        /// <summary>
-        /// 创建枚举
-        /// </summary>
-        /// <returns></returns>
-        public static EnumBuilder CreateEnum()
-        {
-            return new EnumBuilder();
-        }
 
 
         /// <summary>
@@ -227,7 +219,7 @@ namespace CZGL.Roslyn
         /// <returns></returns>
         public static DelegateBuilder CreateDelegate(string name)
         {
-            return  new DelegateBuilder(name);
+            return new DelegateBuilder(name);
         }
 
         /// <summary>
@@ -268,6 +260,26 @@ namespace CZGL.Roslyn
         public static AttributeBuilder CreateAttribute(string name)
         {
             return new AttributeBuilder(name);
+        }
+
+        /// <summary>
+        /// 构建类
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static ClassBuilder CreateClass(string name)
+        {
+            return new ClassBuilder(name);
+        }
+
+        /// <summary>
+        /// 构建类
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static StructBuilder CreateStruct(string name)
+        {
+            return new StructBuilder(name);
         }
     }
 }

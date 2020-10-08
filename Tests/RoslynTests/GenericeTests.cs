@@ -69,7 +69,7 @@ namespace RoslynTests
                     .WithCreate("T3").WithNotnull()
                     .WithCreate("T4").WithUnmanaged()
                     .WithCreate("T5").WithNotnull()
-                    .WithCreate("T6").WithBase("object")
+                    .WithCreate("T6").WithBase("Enum")
                     .WithCreate("T7").WithBase("IEnumerable<int>")
                     .WithCreate("T8").WithTo("T2")
                     .WithCreate("T9").WithClass().WithNew();
@@ -80,7 +80,7 @@ namespace RoslynTests
 #endif
 
             Assert.Equal(@"delegate void Test<T1, T2, T3, T4, T5, T6, T7, T8, T9>()
-    where T1 : struct where T2 : class where T3 : notnull where T4 : unmanaged where T5 : notnull where T6 : object where T7 : IEnumerable<int> where T8 : T2 where T9 : class, new();", result);
+    where T1 : struct where T2 : class where T3 : notnull where T4 : unmanaged where T5 : notnull where T6 : Enum where T7 : IEnumerable<int> where T8 : T2 where T9 : class, new();", result);
         }
 
         //[Fact]

@@ -9,6 +9,6 @@ namespace CZGL.Roslyn.States
     /// </summary>
     public class EnumState
     {
-        public HashSet<string> Fields { get; set; }
+        public HashSet<string> Fields { get; set; } = new HashSet<string>();
     }
 }

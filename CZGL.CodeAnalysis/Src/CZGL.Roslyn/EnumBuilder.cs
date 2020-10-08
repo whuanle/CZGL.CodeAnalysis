@@ -9,6 +9,9 @@ using System.Text;
 
 namespace CZGL.Roslyn
 {
+    /// <summary>
+    /// 枚举
+    /// </summary>
     public class EnumBuilder : EnumTemplate<EnumBuilder>
     {
         // 加上 [Falg]

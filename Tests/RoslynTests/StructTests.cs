@@ -9,15 +9,11 @@ using Xunit.Abstractions;
 
 namespace RoslynTests
 {
-    public class ABCZH
-    {
-        private protected void Test() { }
-    }
 
-    public class ClassTests
+    public class StructTests
     {
         ITestOutputHelper _tempOutput;
-        public ClassTests(ITestOutputHelper tempOutput)
+        public StructTests(ITestOutputHelper tempOutput)
         {
             _tempOutput = tempOutput;
         }
@@ -25,20 +21,20 @@ namespace RoslynTests
         [Fact]
         public void 只命名()
         {
-            ClassBuilder builder = CodeSyntax.CreateClass("Test");
+            StructBuilder builder = CodeSyntax.CreateStruct("Test");
 
 
             var result = builder.ToFormatCode();
 #if Log
             _tempOutput.WriteLine(result);
 #endif
-            Assert.Equal(@"class Test
+            Assert.Equal(@"struct Test
 {
 }", result);
 
         }
 
-        public class Test<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>
+        public struct Test<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>
             where T1 : struct
             where T2 : class
             where T3 : notnull
@@ -62,9 +58,9 @@ namespace RoslynTests
         [Fact]
         public void 完整的测试()
         {
-            ClassBuilder builder = CodeSyntax.CreateClass("Test")
+            StructBuilder builder = CodeSyntax.CreateStruct("Test")
                 .WithAccess(NamespaceAccess.Public)
-                .WithGeneric(b=>
+                .WithGeneric(b =>
                 {
                     b.WithCreate("T1").WithStruct()
                     .WithCreate("T2").WithClass()
@@ -77,20 +73,20 @@ namespace RoslynTests
                     .WithCreate("T9").WithClass().WithNew()
                     .WithCreate("T10").WithInterface("IEnumerator<int>", "IEnumerable<int>").WithNew();
                 })
-                .WithField("str",b=>
+                .WithField("str", b =>
                 {
                     b.WithAccess(MemberAccess.Public)
                     .WithKeyword(FieldKeyword.Readonly)
                     .WithType("string");
                 })
-                .WithProperty("Get", b=>
+                .WithProperty("Get", b =>
                 {
                     b.WithAccess(MemberAccess.Public)
                     .WithType("string")
                     .WithGetInit("get { return str; }")
                     .WithNullSet();
                 })
-                .WithMethod("Method",b=>
+                .WithMethod("Method", b =>
                 {
                     b.WithAccess(MemberAccess.Public)
                     .WithReturnType("string")
@@ -102,7 +98,7 @@ namespace RoslynTests
 #if Log
             _tempOutput.WriteLine(result);
 #endif
-            Assert.Equal(@"public class Test<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
+            Assert.Equal(@"public struct Test<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
     where T1 : struct where T2 : class where T3 : notnull where T4 : unmanaged where T5 : notnull where T6 : Enum where T7 : IEnumerable<int> where T8 : T2 where T9 : class, new()
     where T10 : IEnumerator<int>, IEnumerable<int>, new()
 {

@@ -17,11 +17,6 @@ namespace CZGL.Roslyn.States
         /// </summary>
         public HashSet<string> Params { get; set; } = new HashSet<string>();
 
-        /// <summary>
-        /// 泛型参数以及泛型参数约束
-        /// </summary>
-        public GenericBuilder GenericParams { get; set; } = new GenericBuilder();
-
 
         /// <summary>
         /// 使用代码直接生成

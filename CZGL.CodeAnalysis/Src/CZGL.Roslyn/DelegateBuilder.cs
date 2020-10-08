@@ -120,9 +120,9 @@ namespace CZGL.Roslyn
                 .Replace("{Access}", _member.Access.CodeNewSpace())
                 .Replace("{ReturnType}", _func.ReturnType)
                 .Replace("{Name}", _base.Name)
-                .Replace("{GenericParams}", _func.GenericParams.GetParamCode().CodeNewBefore("<").CodeNewAfter(">"))
+                .Replace("{GenericParams}", _member.GenericParams.GetParamCode().CodeNewBefore("<").CodeNewAfter(">"))
                 .Replace("{Params}", _func.Params.Join(","))
-                .Replace("{GenericList}", _func.GenericParams.GetWhereCode(true).CodeNewBefore("\n"));
+                .Replace("{GenericList}", _member.GenericParams.GetWhereCode(true).CodeNewBefore("\n"));
 
             return code;
         }

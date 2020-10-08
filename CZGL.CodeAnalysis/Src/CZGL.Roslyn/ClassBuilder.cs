@@ -2,6 +2,7 @@ using CZGL.Roslyn.Templates;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Claims;
@@ -30,20 +31,18 @@ namespace CZGL.Roslyn
         /// 通过字符串代码生成类
         /// </summary>
         /// <param name="Code">字符串代码</param>
-        /// <param name="attrs">类型的特性注解</param>
         /// <returns></returns>
-        public static ClassDeclarationSyntax Build(string Code, string[] attrs = null)
+        public static ClassDeclarationSyntax BuildSyntax(string Code)
         {
             ClassDeclarationSyntax memberDeclaration;
             memberDeclaration = CSharpSyntaxTree.ParseText(Code)
                 .GetRoot()
                 .DescendantNodes()
                 .OfType<ClassDeclarationSyntax>()
-                .Single();
+                .FirstOrDefault();
 
-            if (attrs != null)
-                memberDeclaration = memberDeclaration
-                    .WithAttributeLists(CodeSyntax.CreateAttributeList(attrs));
+            if (memberDeclaration is null)
+                throw new InvalidOperationException("未能构建类，请检查代码语法是否有错误！");
 
             return memberDeclaration;
         }
@@ -56,15 +55,29 @@ namespace CZGL.Roslyn
                .GetRoot()
                .DescendantNodes()
                .OfType<ClassDeclarationSyntax>()
-               .Single();
+               .FirstOrDefault();
 
             //if (_member.Atributes.Count != 0)
             //    memberDeclaration = memberDeclaration
             //        .WithAttributeLists(CodeSyntax.CreateAttributeList(_member.Atributes.ToArray()));
 
+            if (memberDeclaration is null)
+                throw new InvalidOperationException("未能构建类，请检查代码语法是否有错误！");
 
             return memberDeclaration;
+        }
 
+        /// <summary>
+        /// 通过代码直接生成
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public static ClassBuilder FromCode(string Code)
+        {
+            if (string.IsNullOrEmpty(Code))
+                throw new ArgumentNullException(nameof(Code));
+
+            return new ClassBuilder().WithFromCode(Code);
         }
 
         public override string ToFormatCode()
@@ -74,7 +87,10 @@ namespace CZGL.Roslyn
 
         public override string ToFullCode()
         {
-            const string Template = @"{Attributes}{Access} {Keyword} class {Name} {:}{BaseClass}{,}{Interfaces}
+            if (_base.UseCode)
+                return _base.Code;
+
+            const string Template = @"{Attributes}{Access} {Keyword} class {Name}{GenericParams} {:}{BaseClass}{,}{Interfaces}{GenericList}
 {
 {Fields}
 
@@ -94,10 +110,12 @@ namespace CZGL.Roslyn
                 .Replace("{Access}", _member.Access)
                 .Replace("{Keyword}", _class.Keyword)
                 .Replace("{Name}", _base.Name)
+                .Replace("{GenericParams}", _member.GenericParams.GetParamCode().CodeNewBefore("<").CodeNewAfter(">"))
                 .Replace("{:}", string.IsNullOrEmpty(_class.BaseClass) && _class.Interfaces.Count == 0 ? "" : ":")
                 .Replace("{BaseClass}", _class.BaseClass)
                 .Replace("{,}", (string.IsNullOrEmpty(_class.BaseClass) || _class.Interfaces.Count == 0) ? "" : ",")
                 .Replace("{Interfaces}", _class.Interfaces.Join(","))
+                .Replace("{GenericList}", _member.GenericParams.GetWhereCode(true).CodeNewBefore("\n"))
                 .Replace("{Fields}", _class.Fields.Select(item => item.ToFullCode()).Join("\n"))
                 .Replace("{Properties}", _class.Propertys.Select(item => item.ToFullCode()).Join("\n"))
                 .Replace("{Delegates}", _class.Delegates.Select(item => item.ToFullCode()).Join("\n"))

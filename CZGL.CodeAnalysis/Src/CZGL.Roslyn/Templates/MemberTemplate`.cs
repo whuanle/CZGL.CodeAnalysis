@@ -170,6 +170,82 @@ namespace CZGL.Roslyn.Templates
 
         #endregion
 
+
+        #region 泛型约束
+
+
+        /// <summary>
+        /// 为此函数构建泛型
+        /// <para>构造函数无泛型参数</para>
+        /// </summary>
+        /// <param name="builder">泛型构建器</param>
+        /// <returns></returns>
+        public virtual TBuilder WithGeneric(Action<GenericTemplate<GenericBuilder>> builder)
+        {
+            GenericBuilder generic = new GenericBuilder();
+            builder.Invoke(generic);
+            _member.GenericParams = generic;
+            return _TBuilder;
+        }
+
+        /// <summary>
+        /// 为此函数构建泛型
+        /// <para>构造函数无泛型参数</para>
+        /// </summary>
+        /// <param name="builder">泛型构建器</param>
+        /// <returns></returns>
+        public virtual TBuilder WithGeneric(Func<GenericTemplate<GenericBuilder>, GenericTemplate<GenericBuilder>> builder)
+        {
+            GenericBuilder generic = new GenericBuilder();
+
+            _member.GenericParams = builder.Invoke(generic).GetBuilder();
+            return _TBuilder;
+        }
+
+        /// <summary>
+        /// 为此函数构建泛型
+        /// <para>构造函数无泛型参数</para>
+        /// </summary>
+        /// <param name="builder">构建器</param>
+        /// <returns></returns>
+        public virtual TBuilder WithGeneric(GenericBuilder builder)
+        {
+            _member.GenericParams = builder;
+            return _TBuilder;
+        }
+
+        /// <summary>
+        /// 为此函数构建泛型
+        /// <para>构造函数无泛型参数</para>
+        /// </summary>
+        /// <param name="paramList">泛型参数</param>
+        /// <param name="constraintList">泛型参数约束</param>
+        /// <returns></returns>
+        public virtual TBuilder WithGeneric(string paramList, string constraintList)
+        {
+            _member.GenericParams = GenericBuilder.WithFromCode(paramList, constraintList);
+            return _TBuilder;
+        }
+
+        /// <summary>
+        /// 为此函数构建泛型
+        /// <para>构造函数无泛型参数</para>
+        /// </summary>
+        /// <param name="paramList">泛型参数</param>
+        /// <param name="constraintList">泛型参数约束</param>
+        /// <param name="builder">构建器</param>
+        /// <returns></returns>
+        public virtual TBuilder WithGeneric(string paramList, string constraintList, out GenericBuilder builder)
+        {
+            var generic = GenericBuilder.WithFromCode(paramList, constraintList);
+            _member.GenericParams = generic;
+            builder = generic;
+            return _TBuilder;
+        }
+
+
+        #endregion
+
         /// <summary>
         /// 通过代码直接生成
         /// </summary>

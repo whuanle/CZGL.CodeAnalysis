@@ -22,11 +22,6 @@ namespace CZGL.Roslyn.States
         public HashSet<string> Interfaces { get; } = new HashSet<string>();
 
         /// <summary>
-        /// 泛型参数以及泛型参数约束
-        /// </summary>
-        public GenericBuilder GenericParams { get; set; }
-
-        /// <summary>
         /// 构造函数
         /// </summary>
         public HashSet<CtorBuilder> Ctors { get; } = new HashSet<CtorBuilder>();

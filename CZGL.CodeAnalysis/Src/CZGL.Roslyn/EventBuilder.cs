@@ -70,7 +70,7 @@ namespace CZGL.Roslyn
                 .FirstOrDefault();
 
             if (memberDeclaration is null)
-                throw new InvalidOperationException("请检查代码语法是否有错误！");
+                throw new InvalidOperationException("无法构建事件，请检查代码语法是否有错误！");
 
 
             if (_member.Atributes.Count != 0)

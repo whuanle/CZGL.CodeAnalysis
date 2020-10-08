@@ -108,64 +108,16 @@ namespace CZGL.Roslyn.Templates
 
         #endregion
 
-
-        #region 泛型约束
-
-
         /// <summary>
-        /// 为此类构建泛型
+        /// 设置访问修饰符(Access Modifiers)
         /// </summary>
-        /// <param name="builder">泛型构建器</param>
+        /// <param name="visibilityType">标记</param>
         /// <returns></returns>
-        public virtual TBuilder WithGeneric(Action<GenericTemplate<GenericBuilder>> builder)
+        public TBuilder WithAccess(NamespaceAccess access = NamespaceAccess.Internal)
         {
-            GenericBuilder generic = new GenericBuilder();
-            builder.Invoke(generic);
-            _class.GenericParams = generic;
+            _member.Access = RoslynHelper.GetName(access);
             return _TBuilder;
         }
-
-        /// <summary>
-        /// 为此类构建泛型
-        /// </summary>
-        /// <param name="builder">构建器</param>
-        /// <returns></returns>
-        public virtual TBuilder WithGeneric(GenericBuilder builder)
-        {
-            _class.GenericParams = builder;
-            return _TBuilder;
-        }
-
-        /// <summary>
-        /// 为此类构建泛型
-        /// </summary>
-        /// <param name="paramList">泛型参数</param>
-        /// <param name="constraintList">泛型参数约束</param>
-        /// <returns></returns>
-        public virtual TBuilder WithGeneric(string paramList, string constraintList)
-        {
-            _class.GenericParams = GenericBuilder.WithFromCode(paramList, constraintList);
-            return _TBuilder;
-        }
-
-        /// <summary>
-        /// 为此类构建泛型
-        /// </summary>
-        /// <param name="paramList">泛型参数</param>
-        /// <param name="constraintList">泛型参数约束</param>
-        /// <param name="builder">构建器</param>
-        /// <returns></returns>
-        public virtual TBuilder WithGeneric(string paramList, string constraintList, out GenericBuilder builder)
-        {
-            var generic = GenericBuilder.WithFromCode(paramList, constraintList);
-            _class.GenericParams = generic;
-            builder = generic;
-            return _TBuilder;
-        }
-
-
-        #endregion
-
 
         #region 构造函数
 
@@ -224,16 +176,6 @@ namespace CZGL.Roslyn.Templates
 
         #region 字段
         
-        /// <summary>
-        /// 添加一个字段
-        /// </summary>
-        /// <returns></returns>
-        public virtual FieldBuilder WithField()
-        {
-            FieldBuilder member = new FieldBuilder();
-            _class.Fields.Add(member);
-            return member;
-        }
 
         /// <summary>
         /// 添加一个字段
@@ -252,9 +194,9 @@ namespace CZGL.Roslyn.Templates
         /// </summary>
         /// <param name="builder">字段构建器</param>
         /// <returns></returns>
-        public virtual TBuilder WithField(Action<FieldBuilder> builder)
+        public virtual TBuilder WithField(string name,Action<FieldBuilder> builder)
         {
-            FieldBuilder member = new FieldBuilder();
+            FieldBuilder member = new FieldBuilder(name);
             builder.Invoke(member);
             _class.Fields.Add(member);
             return _TBuilder;
@@ -278,17 +220,6 @@ namespace CZGL.Roslyn.Templates
         /// <summary>
         /// 添加一个属性
         /// </summary>
-        /// <returns></returns>
-        public virtual PropertyBuilder WithProperty()
-        {
-            PropertyBuilder member = new PropertyBuilder();
-            _class.Propertys.Add(member);
-            return member;
-        }
-
-        /// <summary>
-        /// 添加一个属性
-        /// </summary>
         /// <param name="name">属性名称</param>
         /// <returns></returns>
         public virtual PropertyBuilder WithProperty(string name)
@@ -303,9 +234,9 @@ namespace CZGL.Roslyn.Templates
         /// </summary>
         /// <param name="builder">属性构建器</param>
         /// <returns></returns>
-        public virtual TBuilder WithProperty(Action<PropertyBuilder> builder)
+        public virtual TBuilder WithProperty(string name,Action<PropertyBuilder> builder)
         {
-            PropertyBuilder member = new PropertyBuilder();
+            PropertyBuilder member = new PropertyBuilder(name);
             builder.Invoke(member);
             _class.Propertys.Add(member);
             return _TBuilder;

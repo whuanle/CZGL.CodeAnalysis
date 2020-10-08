@@ -23,9 +23,10 @@ namespace ConsoleTest
         public event A1 a1;
         static void Main(string[] args)
         {
-            AttributeBuilder builder = CodeSyntax.CreateAttribute("Key");
+            var builder = ClassBuilder.BuildSyntax(@"[A]
+public class Test{}");
 
-            var result = builder.ToFormatCode();
+            var result = builder.NormalizeWhitespace().ToFullString();
 
             Console.WriteLine(result);
             //var a = DependencyContext.Default.CompileLibraries;
