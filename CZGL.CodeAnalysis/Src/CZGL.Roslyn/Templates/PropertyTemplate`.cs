@@ -24,7 +24,7 @@ namespace CZGL.Roslyn.Templates
         /// <returns></returns>
         public virtual TBuilder WithKeyword(PropertyKeyword keyword = PropertyKeyword.Default)
         {
-            _variable.Keyword = RoslynHelper.GetName(keyword);
+            _variable.Keyword = CodeHelper.GetName(keyword);
             return _TBuilder;
         }
 

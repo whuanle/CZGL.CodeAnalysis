@@ -13,8 +13,17 @@ namespace ConsoleTest
 {
     class Program
     {
+        delegate void A();
+        static event A Test;
+
+        public static int a { get; set; }
+        
         static void Main(string[] args)
         {
+            PropertyInfo info = typeof(Program).GetProperty("a");
+           
+            Console.WriteLine(info.Attributes.ToString());
+
             // 编译选项
             // 编译选项可以不配置
             DomainOptionBuilder option = new DomainOptionBuilder()

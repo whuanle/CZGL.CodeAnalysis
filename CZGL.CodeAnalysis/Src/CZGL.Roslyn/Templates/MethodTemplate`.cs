@@ -22,7 +22,7 @@ namespace CZGL.Roslyn.Templates
         /// <returns></returns>
         public TBuilder WithKeyword(MethodKeyword keyword=MethodKeyword.Default)
         {
-            _method.Keyword = RoslynHelper.GetName(keyword);
+            _method.Keyword = CodeHelper.GetName(keyword);
             return _TBuilder;
         }
 
