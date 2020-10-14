@@ -26,6 +26,8 @@ namespace CZGL.CodeAnalysis.Shared
         StaticReadonly = Static | Readonly,
 
         [MemberDefineName(Name = "volatile")]
-        Volatile = StaticReadonly << 1
+        Volatile = StaticReadonly << 1,
+        [MemberDefineName(Name = "volatile static")]
+        VolatileStatic = Volatile << 1
     }
 }

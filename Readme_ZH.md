@@ -14,6 +14,10 @@ https://github.com/whuanle/CZGL.CodeAnalysis.git
 
 
 
+## 项目组件介绍
+
+### CZGL.CodeAnalysis.Shared
+所有库的引用对象，其库包含 C# 编程中成员的标准信息，例如命名空间中 class 的访问修饰符只有 public、internal。通过枚举或者常量定义，方便的从反射中获取信息，或者生成代码，避免字符串乱用。
 
 
 Roslyn 框架生成
@@ -60,7 +64,7 @@ Roslyn 框架生成
 
 
 
-.Analysis
+.Reflect
 
 - [ ] 完整整体更新一次反解器
 - [ ] 优化简化API和拓展增加功能
