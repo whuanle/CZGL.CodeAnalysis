@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CZGL.CodeAnalysis\Src\CZGL.Roslyn\CZGL.Roslyn.csproj" />
+    <ProjectReference Include="..\..\Src\CZGL.Roslyn\CZGL.Roslyn.csproj" />
   </ItemGroup>
 
 </Project>
