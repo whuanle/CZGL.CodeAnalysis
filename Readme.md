@@ -20,9 +20,9 @@
 
 这里使用 Blazor 测试演示，代码可以在源码的 `examples/BlazorExample` 中找到。
 
-[注：如无法加载图片，可以点击 [图片git](docs/.images/Blazor 运行 CZGL.Roslyn.gif)]
+注：如无法加载图片，可以点击 [图片git](docs/.images/Blazor运行CZGL.Roslyn.gif)
 
-![Blazor 运行 CZGL.Roslyn](docs/.images/Blazor 运行 CZGL.Roslyn.gif)
+![Blazor 运行 CZGL.Roslyn](docs/.images/Blazor运行CZGL.Roslyn.gif)
 
 
 
