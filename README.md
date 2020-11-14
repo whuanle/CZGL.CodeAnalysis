@@ -38,9 +38,9 @@ CZGL.Roslyn 拥有丰富的文档说明和 API 接口说明，让你使用起来
 
 API URL：[https://czgl-roslyn.github.io/czgl-roslyn](https://czgl-roslyn.github.io/czgl-roslyn)
 
-![文档说明](E:/学习/CZGL.AOP/CZGL.CodeAnalysis/docs/.images/丰富的文档说明.png)
+![文档说明](./docs/.images/丰富的文档说明.png)
 
-![API 文档](E:/学习/CZGL.AOP/CZGL.CodeAnalysis/docs/.images/APIDoc.png)
+![API 文档](./docs/.images/APIDoc.png)
 
 
 
