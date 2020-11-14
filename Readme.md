@@ -22,7 +22,7 @@
 
 [注：如无法加载图片，可以点击 [图片git](docs/.images/Blazor 运行 CZGL.Roslyn.gif)]
 
-![Blazor 运行 CZGL.Roslyn](E:/学习/CZGL.AOP/CZGL.CodeAnalysis/docs/.images/Blazor 运行 CZGL.Roslyn.gif)
+![Blazor 运行 CZGL.Roslyn](docs/.images/Blazor 运行 CZGL.Roslyn.gif)
 
 
 
