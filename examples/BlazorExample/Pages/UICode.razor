@@ -1,0 +1,11 @@
+﻿@inherits UICodeBase
+@inject IJSRuntime JSRuntime
+<pre><code class="@Language" @attributes="UIAttributes">@ChildContent</code></pre>
+
+@code
+{
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JSRuntime.InvokeVoidAsync("Prism.highlightAll", null);
+    }
+}

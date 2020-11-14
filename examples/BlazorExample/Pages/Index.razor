@@ -1,0 +1,62 @@
+﻿@page "/"
+@inject IJSRuntime JSRuntime
+@using BlazorExample
+@using BlazorExample.Data
+
+<h1>欢迎使用 CZGL.Roslyn </h1>
+
+<div class="container">
+    <div class="row">
+        <div>
+            <button class="btn-dark" @onclick="Click">提交代码</button>
+            <p>
+                后台代码写死加载执行程序集的 "MySpace.Test.MyMethod"，你可以更改代码内容，但是命名空间、类名、函数名称，不要改。<br \ />
+                使用  Console.WriteLine 输出的信息，可以看程序控制台，会输出信息。
+            </p>
+        </div>
+
+        @if (message != null && message.Any())
+        {
+            <div>
+                <textarea style="height:100px;width:720px;">@string.Join("\r\n-----------\r\n",message)</textarea>
+            </div>
+        }
+    </div>
+
+    <div class="prism-live">
+        <div style="white-space: nowrap;">
+            <pre ><code class="language-csharp"></code></pre>
+            <textarea class="prism-live language-csharp" style="height:250px;width:720px;" @bind="Code"></textarea>
+
+        </div>
+    </div>
+</div>
+
+* 前端技术水平有限，能用就行
+
+@code{
+    private string[] message;
+    public string Code { get; set; } = @"using System;
+namespace MySpace
+{
+    public class Test
+    {
+        public string MyMethod()
+        {
+        // 代码写在这里
+        Console.WriteLine(""程序集运行成功"");
+        return ""测试成功"";
+        }
+    }
+}";
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await JSRuntime.InvokeVoidAsync("Prism.highlightAll", null);
+    }
+
+    public void Click()
+    {
+        CZGLRoslynService servic = new CZGLRoslynService(Code);
+        message = servic.Start();
+    }
+}
