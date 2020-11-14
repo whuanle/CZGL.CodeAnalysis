@@ -3,6 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Version>0.1.0</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>一套用于反射、动态代码生成的标准模型信息接口，能够准确表达反射各种信息的记载以及动态代码生成的输出。</Description>
+    <PackageProjectUrl>https://github.com/whuanle/CZGL.CodeAnalysis</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/whuanle/CZGL.CodeAnalysis</RepositoryUrl>
   </PropertyGroup>
 
 </Project>
