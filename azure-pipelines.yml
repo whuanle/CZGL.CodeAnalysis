@@ -21,27 +21,8 @@ steps:
     installationPath: $(Agent.ToolsDirectory)/dotnet
 
 
-# 设置环境变量
-variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
-
-
-
-
-# 代码覆盖率
-
 - task: DotNetCoreCLI@2
-  displayName: 'dotnet test'
   inputs:
     command: 'test'
-    arguments: '--configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
-    publishTestResults: true
-    projects: '**/Tests/RoslynTests/*.csproj' # update with your test project directory
-
-- task: PublishCodeCoverageResults@1
-  displayName: 'Publish code coverage report'
-  inputs:
-    codeCoverageTool: 'Cobertura'
-    summaryFileLocation: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
+    projects: '''**/Tests/RoslynTests'
+    testRunTitle: 'RoslynTests'
