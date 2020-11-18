@@ -66,7 +66,7 @@ namespace RoslynTests
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"public interface Test<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
     where T1 : struct where T2 : class where T3 : notnull where T4 : unmanaged where T5 : notnull where T6 : Enum where T7 : IEnumerable<int> where T8 : T2 where T9 : class, new()
@@ -79,7 +79,7 @@ namespace RoslynTests
     }
 
     string Method();
-}", result);
+}", result.WithUnixEOL());
 
         }
 

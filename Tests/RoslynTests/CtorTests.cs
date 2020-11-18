@@ -37,12 +37,12 @@ namespace RoslynTests
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"public T2()
 {
     Console.WriteLine(""666"");
-}", result);
+}", result.WithUnixEOL());
         }
 
         [Fact]
@@ -55,11 +55,11 @@ namespace RoslynTests
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"public T2(string a): this()
 {
-}", result);
+}", result.WithUnixEOL());
 
         }
 
@@ -74,11 +74,11 @@ namespace RoslynTests
             var result = builder.ToFormatCode();
 
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"public T2(string a, string b): base(a)
 {
-}", result);
+}", result.WithUnixEOL());
         }
 
 

@@ -42,12 +42,12 @@ namespace RoslynTests
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"public void T1()
 {
     Console.WriteLine(""666"");
-}", result);
+}", result.WithUnixEOL());
         }
 
         [Fact]
@@ -60,12 +60,12 @@ namespace RoslynTests
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"public string T2()
 {
     return ""666"";
-}", result);
+}", result.WithUnixEOL());
 
         }
 
@@ -79,12 +79,12 @@ namespace RoslynTests
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"public List<Dictionary<int, Dictionary<string, List<FieldInfo>>>> T3()
 {
     return new List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>();
-}", result);
+}", result.WithUnixEOL());
 
         }
 
@@ -98,11 +98,11 @@ namespace RoslynTests
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"public void T4(int a, int b, string c)
 {
-}", result);
+}", result.WithUnixEOL());
         }
 
         [Fact]
@@ -115,11 +115,11 @@ namespace RoslynTests
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"public void T4(ref int a, out int b, param string[] c)
 {
-}", result);
+}", result.WithUnixEOL());
         }
 
         [Fact]
@@ -132,11 +132,11 @@ namespace RoslynTests
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"public void T5(List<Dictionary<int, Dictionary<string, List<FieldInfo>>>> a)
 {
-}", result);
+}", result.WithUnixEOL());
         }
 
         public T1 Test<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(T1 t1, T2 t2, T3 t3)
@@ -177,14 +177,14 @@ namespace RoslynTests
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"public T1 Test<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>(T1 t1, T2 t2, T3 t3)
     where T1 : struct where T2 : class where T3 : notnull where T4 : unmanaged where T5 : new()
     where T6 : IEnumerable<Dictionary<int, int>> where T7 : IEnumerable<int> where T8 : T2
 {
     return t1;
-}", result);
+}", result.WithUnixEOL());
         }
     }
 }

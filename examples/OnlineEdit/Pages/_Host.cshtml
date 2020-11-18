@@ -1,0 +1,60 @@
+﻿@page "/"
+@namespace OnlineEdit.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OnlineEdit</title>
+    <base href="~/" />
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    <link href="css/site.css" rel="stylesheet" />
+    <!--核心 css-->
+    <link href="src/codemirror.css" rel="stylesheet" />
+    <!--自动代码补全-->
+    <link href="addon/hint/show-hint.css" rel="stylesheet" />
+    <!--编辑器模板，根据需求修改-->
+    <link href="theme/monokai.css" rel="stylesheet" type="text/css">
+    <!--全屏支持样式文件-->
+    <link href="addon/display/fullscreen.css" rel="stylesheet" type="text/css">
+
+
+    <!--核心 js-->
+    <script src="src/codemirror.js"></script>
+    <!--C# 语言开发-->
+    <script src="mode/clike/clike.js"></script>
+    <!--自动代码补全-->
+    <script src="addon/hint/show-hint.js"></script>
+    <!--高亮代码-->
+    <script src="addon/edit/matchbrackets.js"></script>
+    <!-- 下面分别为显示行数、括号匹配-->
+    <script src="addon/selection/active-line.js"></script>
+    <script src="addon/edit/matchbrackets.js"></script>
+</head>
+<body>
+    <app>
+        <component type="typeof(App)" render-mode="ServerPrerendered" />
+    </app>
+
+    <div id="blazor-error-ui">
+        <environment include="Staging,Production">
+            An error has occurred. This application may no longer respond until reloaded.
+        </environment>
+        <environment include="Development">
+            An unhandled exception has occurred. See browser dev tools for details.
+        </environment>
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+
+    <script src="_framework/blazor.server.js"></script>
+
+    <!--定义自己的IDE-->
+    <script type="text/javascript" src="MyIDE.js"></script>
+</body>
+</html>

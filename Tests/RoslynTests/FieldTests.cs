@@ -38,9 +38,9 @@ namespace RoslynTests
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
-            Assert.Equal("int i;", result);
+            Assert.Equal("int i;", result.WithUnixEOL());
         }
 
         [Fact]
@@ -52,9 +52,9 @@ namespace RoslynTests
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
-            Assert.Equal("int i = 0;", result);
+            Assert.Equal("int i = 0;", result.WithUnixEOL());
         }
 
 
@@ -67,9 +67,9 @@ namespace RoslynTests
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
-            Assert.Equal("int i = int.Parse(\"1\");", result);
+            Assert.Equal("int i = int.Parse(\"1\");", result.WithUnixEOL());
         }
 
 
@@ -83,9 +83,9 @@ namespace RoslynTests
 
             var result = field1.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
-            Assert.Equal("public int i;", result);
+            Assert.Equal("public int i;", result.WithUnixEOL());
         }
 
         [Fact]
@@ -98,9 +98,9 @@ namespace RoslynTests
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
-            Assert.Equal("protected internal static int i;", result);
+            Assert.Equal("protected internal static int i;", result.WithUnixEOL());
         }
 
 
@@ -114,9 +114,9 @@ namespace RoslynTests
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
-            Assert.Equal("List<Dictionary<int, Dictionary<string, List<FieldInfo>>>> i = new List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>();", result);
+            Assert.Equal("List<Dictionary<int, Dictionary<string, List<FieldInfo>>>> i = new List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>();", result.WithUnixEOL());
         }
 
         [Fact]
@@ -127,10 +127,10 @@ public int a;");
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"[Display(Name = ""a"")]
-public int a;", result);
+public int a;", result.WithUnixEOL());
         }
 
 
@@ -144,11 +144,11 @@ public int a;", result);
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"[Display(Name = ""a"")]
 [Key]
-public int i;", result);
+public int i;", result.WithUnixEOL());
         }
     }
 }

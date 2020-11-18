@@ -46,9 +46,9 @@ namespace RoslynTests
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
-            Assert.Equal("public delegate void T1();", result);
+            Assert.Equal("public delegate void T1();", result.WithUnixEOL());
         }
 
         [Fact]
@@ -60,9 +60,9 @@ namespace RoslynTests
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
-            Assert.Equal("public delegate void T1();", result);
+            Assert.Equal("public delegate void T1();", result.WithUnixEOL());
         }
 
         [Fact]
@@ -74,9 +74,9 @@ namespace RoslynTests
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
-            Assert.Equal("public delegate string T2();", result);
+            Assert.Equal("public delegate string T2();", result.WithUnixEOL());
         }
 
         [Fact]
@@ -89,9 +89,9 @@ namespace RoslynTests
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
-            Assert.Equal("public delegate string T3(string a);", result);
+            Assert.Equal("public delegate string T3(string a);", result.WithUnixEOL());
         }
 
         [Fact]
@@ -104,10 +104,10 @@ namespace RoslynTests
             var result = builder.ToFormatCode();
 
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"[Test(""1"", ""2"", A = ""3"", B = ""4"")]
-public delegate void T4();", result);
+public delegate void T4();", result.WithUnixEOL());
         }
 
         [Fact]
@@ -119,10 +119,10 @@ public delegate void T5();");
             var result = builder.ToFormatCode();
 
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"[Test(""1"", ""2"", A = ""3"", B = ""4"")]
-public delegate void T5();", result);
+public delegate void T5();", result.WithUnixEOL());
         }
 
         public delegate T2 Test<T1, T2, T3, T4, T5>(string a, string b)
@@ -150,10 +150,10 @@ public delegate void T5();", result);
             var result = builder.ToFormatCode();
 
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"public delegate T2 Test<T1, T2, T3, T4, T5>()
-    where T2 : struct where T3 : class where T4 : notnull where T5 : IEnumerable<int>, IQueryable<int>;", result);
+    where T2 : struct where T3 : class where T4 : notnull where T5 : IEnumerable<int>, IQueryable<int>;", result.WithUnixEOL());
         }
 
         [Fact]
@@ -168,10 +168,10 @@ public delegate void T5();", result);
             var result = builder.ToFormatCode();
 
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"public delegate T2 Test<T1, T2, T3, T4, T5>(string a, string b)
-    where T2 : struct where T3 : class where T4 : notnull where T5 : IEnumerable<int>, IQueryable<int>;", result);
+    where T2 : struct where T3 : class where T4 : notnull where T5 : IEnumerable<int>, IQueryable<int>;", result.WithUnixEOL());
         }
     }
 }

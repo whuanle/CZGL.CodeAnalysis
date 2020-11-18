@@ -35,14 +35,14 @@ namespace RoslynTests
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"public enum Test
 {
     A,
     B,
     C
-}", result);
+}", result.WithUnixEOL());
         }
     }
 }

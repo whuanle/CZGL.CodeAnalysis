@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>CodeMirror: HTML completion demo</title>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="../src/codemirror.css">
+    <link rel="stylesheet" href="../addon/hint/show-hint.css">
+    <script src="../src/codemirror.js"></script>
+    <script src="../addon/hint/show-hint.js"></script>
+    <script src="../addon/hint/xml-hint.js"></script>
+    <script src="../addon/hint/html-hint.js"></script>
+    <script src="../mode/xml/xml.js"></script>
+    <script src="../mode/javascript/javascript.js"></script>
+    <script src="../mode/css/css.js"></script>
+    <script src="../mode/htmlmixed/htmlmixed.js"></script>
+    <style>
+        .CodeMirror {
+            border-top: 1px solid #888;
+            border-bottom: 1px solid #888;
+        }
+    </style>
+    <script id="hp_same_"></script>
+    <script id="hp_done_"></script>
+</head>
+
+<body>
+    <div id="nav">
+        <a href="https://codemirror.net"><h1>CodeMirror</h1><img id="logo" src="../doc/logo.png"></a>
+
+        <ul>
+            <li>
+                <a href="../index.html">Home</a>
+            </li>
+            <li>
+                <a href="../doc/manual.html">Manual</a>
+            </li>
+            <li>
+                <a href="https://github.com/codemirror/codemirror">Code</a>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <a class="active" href="#">HTML completion</a>
+            </li>
+        </ul>
+    </div>
+
+    <article>
+        <h2>HTML completion demo</h2>
+
+        <p>
+            Shows the <a href="xmlcomplete.html">XML completer</a>
+            parameterized with information about the tags in HTML.
+            Press <strong>ctrl-space</strong> to activate completion.
+        </p>
+
+        <div id="code"></div>
+
+        <script>
+            window.onload = function () {
+                editor = CodeMirror(document.getElementById("code"), {
+                    mode: "text/html",
+                    extraKeys: { "Ctrl-Space": "autocomplete" },
+                    value: document.documentElement.innerHTML
+                });
+            };
+        </script>
+    </article>
+
+    <div style="position: static; display: none; width: 0px; height: 0px; border: none; padding: 0px; margin: 0px;"><div id="trans-tooltip"><div id="tip-left-top" style="background: url(&quot;chrome-extension://dodigcollhkcpflanilhcefbhbagajfm/imgs/map/tip-left-top.png&quot;);"></div><div id="tip-top" style="background: url(&quot;chrome-extension://dodigcollhkcpflanilhcefbhbagajfm/imgs/map/tip-top.png&quot;) repeat-x;"></div><div id="tip-right-top" style="background: url(&quot;chrome-extension://dodigcollhkcpflanilhcefbhbagajfm/imgs/map/tip-right-top.png&quot;);"></div><div id="tip-right" style="background: url(&quot;chrome-extension://dodigcollhkcpflanilhcefbhbagajfm/imgs/map/tip-right.png&quot;) repeat-y;"></div><div id="tip-right-bottom" style="background: url(&quot;chrome-extension://dodigcollhkcpflanilhcefbhbagajfm/imgs/map/tip-right-bottom.png&quot;);"></div><div id="tip-bottom" style="background: url(&quot;chrome-extension://dodigcollhkcpflanilhcefbhbagajfm/imgs/map/tip-bottom.png&quot;) repeat-x;"></div><div id="tip-left-bottom" style="background: url(&quot;chrome-extension://dodigcollhkcpflanilhcefbhbagajfm/imgs/map/tip-left-bottom.png&quot;);"></div><div id="tip-left" style="background: url(&quot;chrome-extension://dodigcollhkcpflanilhcefbhbagajfm/imgs/map/tip-left.png&quot;);"></div><div id="trans-content"></div></div><div id="tip-arrow-bottom" style="background: url(&quot;chrome-extension://dodigcollhkcpflanilhcefbhbagajfm/imgs/map/tip-arrow-bottom.png&quot;);"></div><div id="tip-arrow-top" style="background: url(&quot;chrome-extension://dodigcollhkcpflanilhcefbhbagajfm/imgs/map/tip-arrow-top.png&quot;);"></div></div><div id="Vidown_extension_alhnopeoagjmjfgcbnokcnagkecgdcdh" style="display: none;"></div><div id="vidown_float_panel_div" style="display: none;"><a id="vidown_float_panel_download" title="用【维棠】下载视频">维棠下载</a><span id="vidown_float_panel_sep">|</span><input type="button" value=" " id="vidown_float_panel_close" title="关闭"></div>
+</body>
+</html>

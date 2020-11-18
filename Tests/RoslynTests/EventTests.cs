@@ -31,9 +31,9 @@ namespace RoslynTests
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
-            Assert.Equal("public event T t1 = AAA;", result);
+            Assert.Equal("public event T t1 = AAA;", result.WithUnixEOL());
         }
 
         [Fact]
@@ -47,9 +47,9 @@ namespace RoslynTests
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
-            Assert.Equal("public event T t1 = AAA;", result);
+            Assert.Equal("public event T t1 = AAA;", result.WithUnixEOL());
         }
 
 
@@ -65,11 +65,11 @@ namespace RoslynTests
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"[Display(Name = ""a"")]
 [Key]
-public event T t1 = AAA;", result);
+public event T t1 = AAA;", result.WithUnixEOL());
         }
 
 
@@ -82,11 +82,11 @@ public event T t1 = AAA;");
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"[Display(Name = ""a"")]
 [Key]
-public event T t1 = AAA;", result);
+public event T t1 = AAA;", result.WithUnixEOL());
         }
 
 

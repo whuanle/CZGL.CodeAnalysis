@@ -23,9 +23,9 @@ namespace RoslynTests
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
-            Assert.Equal("Key", result);
+            Assert.Equal("Key", result.WithUnixEOL());
         }
 
         // [Display(666)]
@@ -38,9 +38,9 @@ namespace RoslynTests
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
-            Assert.Equal("DisplayName(666)", result);
+            Assert.Equal("DisplayName(666)", result.WithUnixEOL());
         }
 
         // [Display(Name = "a")]
@@ -53,9 +53,9 @@ namespace RoslynTests
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
-            Assert.Equal(@"DisplayName(Name = ""a"")", result);
+            Assert.Equal(@"DisplayName(Name = ""a"")", result.WithUnixEOL());
         }
 
         // [Display(666,Name = "a")]
@@ -68,9 +68,9 @@ namespace RoslynTests
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
-            Assert.Equal(@"DisplayName(666, Name = ""a"")", result);
+            Assert.Equal(@"DisplayName(666, Name = ""a"")", result.WithUnixEOL());
         }
     }
 }

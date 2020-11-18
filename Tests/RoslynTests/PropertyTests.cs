@@ -53,13 +53,13 @@ protected internal static readonly int i
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"int i
 {
     get;
     set;
-}", result);
+}", result.WithUnixEOL());
         }
 
         [Fact]
@@ -71,7 +71,7 @@ protected internal static readonly int i
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"int i
 {
@@ -79,7 +79,7 @@ protected internal static readonly int i
     set;
 }
 
-= 0;", result);
+= 0;", result.WithUnixEOL());
         }
 
 
@@ -92,7 +92,7 @@ protected internal static readonly int i
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"int i
 {
@@ -100,7 +100,7 @@ protected internal static readonly int i
     set;
 }
 
-= int.Parse(""1"");", result);
+= int.Parse(""1"");", result.WithUnixEOL());
         }
 
 
@@ -114,13 +114,13 @@ protected internal static readonly int i
 
             var result = field1.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"public int i
 {
     get;
     set;
-}", result);
+}", result.WithUnixEOL());
         }
 
         [Fact]
@@ -133,13 +133,13 @@ protected internal static readonly int i
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"protected internal static int i
 {
     get;
     set;
-}", result);
+}", result.WithUnixEOL());
         }
 
 
@@ -153,7 +153,7 @@ protected internal static readonly int i
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"List<Dictionary<int, Dictionary<string, List<FieldInfo>>>> i
 {
@@ -161,7 +161,7 @@ protected internal static readonly int i
     set;
 }
 
-= new List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>();", result);
+= new List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>();", result.WithUnixEOL());
         }
 
         [Fact]
@@ -172,14 +172,14 @@ public int a{get;set;}");
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"[Display(Name = ""a"")]
 public int a
 {
     get;
     set;
-}", result);
+}", result.WithUnixEOL());
         }
 
 
@@ -193,7 +193,7 @@ public int a
 
             var result = builder.ToFormatCode();
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"[Display(Name = ""a"")]
 [Key]
@@ -201,7 +201,7 @@ public int i
 {
     get;
     set;
-}", result);
+}", result.WithUnixEOL());
         }
 
 
@@ -218,7 +218,7 @@ public int i
             var result = builder.ToFormatCode();
 
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
 
             Assert.Equal(@"protected internal static readonly int i
@@ -227,7 +227,7 @@ public int i
     set;
 }
 
-= int.Parse(""1"");", result);
+= int.Parse(""1"");", result.WithUnixEOL());
 
 
         }
@@ -249,7 +249,7 @@ public int i
             var result = builder.ToFormatCode();
 
 #if Log
-            _tempOutput.WriteLine(result);
+            _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
 
 
@@ -266,7 +266,7 @@ public int i
     }
 }
 
-= int.Parse(""1"");", result);
+= int.Parse(""1"");", result.WithUnixEOL());
         }
 
     }
