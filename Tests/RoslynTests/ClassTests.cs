@@ -50,7 +50,7 @@ namespace RoslynTests
             where T9 : class, new()
             where T10 : IEnumerator<int>, IEnumerable<int>, new()
         {
-            private readonly string str;
+            private readonly string str = "666";
             public string Get { get { return str; } }
 
             public string Method()
@@ -64,7 +64,7 @@ namespace RoslynTests
         {
             ClassBuilder builder = CodeSyntax.CreateClass("Test")
                 .WithAccess(NamespaceAccess.Public)
-                .WithGeneric(b=>
+                .WithGeneric(b =>
                 {
                     b.WithCreate("T1").WithStruct()
                     .WithCreate("T2").WithClass()
@@ -77,25 +77,25 @@ namespace RoslynTests
                     .WithCreate("T9").WithClass().WithNew()
                     .WithCreate("T10").WithInterface("IEnumerator<int>", "IEnumerable<int>").WithNew();
                 })
-                .WithField("str",b=>
-                {
-                    b.WithAccess(MemberAccess.Public)
-                    .WithKeyword(FieldKeyword.Readonly)
-                    .WithType("string");
-                })
-                .WithProperty("Get", b=>
+                .WithField("str", b =>
+                 {
+                     b.WithAccess(MemberAccess.Public)
+                     .WithKeyword(FieldKeyword.Readonly)
+                     .WithType("string");
+                 })
+                .WithProperty("Get", b =>
                 {
                     b.WithAccess(MemberAccess.Public)
                     .WithType("string")
                     .WithGetInit("get { return str; }")
                     .WithNullSet();
                 })
-                .WithMethod("Method",b=>
-                {
-                    b.WithAccess(MemberAccess.Public)
-                    .WithReturnType("string")
-                    .WithBlock(@"return """";");
-                });
+                .WithMethod("Method", b =>
+                 {
+                     b.WithAccess(MemberAccess.Public)
+                     .WithReturnType("string")
+                     .WithBlock(@"return """";");
+                 });
 
 
             var result = builder.ToFormatCode();

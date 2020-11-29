@@ -7,6 +7,7 @@ namespace CZGL.CodeAnalysis.Shared
     /// <summary>
     /// 泛型约束类型
     /// </summary>
+    [Flags]
     public enum GenericKeyword
     {
         /// <summary>

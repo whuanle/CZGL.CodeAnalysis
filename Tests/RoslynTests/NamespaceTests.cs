@@ -41,7 +41,7 @@ namespace RoslynTests
 #if Log
             _tempOutput.WriteLine(code);
 #endif
-            Assert.Equal(constCode, code);
+            Assert.Equal(constCode, code.WithUnixEOL());
 
         }
 

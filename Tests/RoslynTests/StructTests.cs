@@ -46,7 +46,7 @@ namespace RoslynTests
             where T9 : class, new()
             where T10 : IEnumerator<int>, IEnumerable<int>, new()
         {
-            private readonly string str;
+            private readonly string str = "666";
             public string Get { get { return str; } }
 
             public string Method()
