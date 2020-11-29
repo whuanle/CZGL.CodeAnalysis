@@ -24,7 +24,7 @@ namespace CZGL.Roslyn
         /// <returns></returns>
         public virtual TBuilder WithKeyword(FieldKeyword keyword = FieldKeyword.Default)
         {
-            _variable.Keyword = CodeHelper.GetName(keyword);
+            _variable.Keyword = EnumCache.GetValue(keyword);
             return _TBuilder;
         }
     }

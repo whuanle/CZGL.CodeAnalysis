@@ -20,19 +20,19 @@ namespace ConsoleTest
            
             Console.WriteLine(info.Attributes.ToString());
 
-            // ±àÒëÑ¡Ïî
-            // ±àÒëÑ¡Ïî¿ÉÒÔ²»ÅäÖÃ
+            // ç¼–è¯‘é€‰é¡¹
+            // ç¼–è¯‘é€‰é¡¹å¯ä»¥ä¸é…ç½®
             DomainOptionBuilder option = new DomainOptionBuilder()
-                .WithPlatform(Platform.AnyCpu)                     // Éú³É¿ÉÒÆÖ²³ÌĞò¼¯
-                .WithDebug(false)                                  // Ê¹ÓÃ Release ±àÒë
-                .WithKind(OutputKind.DynamicallyLinkedLibrary)     // Éú³É¶¯Ì¬¿â
-                .WithLanguageVersion(LanguageVersion.CSharp7_3);   // Ê¹ÓÃ C# 7.3
+                .WithPlatform(Platform.AnyCpu)                     // ç”Ÿæˆå¯ç§»æ¤ç¨‹åºé›†
+                .WithDebug(false)                                  // ä½¿ç”¨ Release ç¼–è¯‘
+                .WithKind(OutputKind.DynamicallyLinkedLibrary)     // ç”ŸæˆåŠ¨æ€åº“
+                .WithLanguageVersion(LanguageVersion.CSharp7_3);   // ä½¿ç”¨ C# 7.3
 
 
             CompilationBuilder builder = CodeSyntax.CreateCompilation("Test.dll")
                 .WithPath(Directory.GetParent(typeof(Program).Assembly.Location).FullName)
-                .WithOption(option)                                // ¿ÉÒÔÊ¡ÂÔ
-                .WithAutoAssembly()                                // ×Ô¶¯Ìí¼Ó³ÌĞò¼¯ÒıÓÃ
+                .WithOption(option)                                // å¯ä»¥çœç•¥
+                .WithAutoAssembly()                                // è‡ªåŠ¨æ·»åŠ ç¨‹åºé›†å¼•ç”¨
                 .WithNamespace(NamespaceBuilder.FromCode(@"using System;
     namespace MySpace
     {      
@@ -40,8 +40,8 @@ namespace ConsoleTest
         {
             public string MyMethod()
             {
-                Console.WriteLine(""³ÌĞò¼¯ÔËĞĞ³É¹¦"");
-                return ""²âÊÔ³É¹¦"";
+                Console.WriteLine(""ç¨‹åºé›†è¿è¡ŒæˆåŠŸ"");
+                return ""æµ‹è¯•æˆåŠŸ"";
         }
     }
 }
@@ -51,26 +51,26 @@ namespace ConsoleTest
             {
                 if (builder.CreateDomain(out var messages))
                 {
-                    Console.WriteLine("±àÒë³É¹¦£¡¿ªÊ¼Ö´ĞĞ³ÌĞò¼¯½øĞĞÑéÖ¤£¡");
+                    Console.WriteLine("ç¼–è¯‘æˆåŠŸï¼å¼€å§‹æ‰§è¡Œç¨‹åºé›†è¿›è¡ŒéªŒè¯ï¼");
                     var assembly = Assembly.LoadFile(Directory.GetParent(typeof(Program).Assembly.Location).FullName + "/Test.dll");
                     var type = assembly.GetType("MySpace.Test");
                     var method = type.GetMethod("MyMethod");
                     object obj = Activator.CreateInstance(type);
                     string result = (string)method.Invoke(obj, null);
 
-                    if (result.Equals("²âÊÔ³É¹¦"))
-                        Console.WriteLine("Ö´ĞĞ³ÌĞò¼¯²âÊÔ³É¹¦£¡");
+                    if (result.Equals("æµ‹è¯•æˆåŠŸ"))
+                        Console.WriteLine("æ‰§è¡Œç¨‹åºé›†æµ‹è¯•æˆåŠŸï¼");
                     else
-                        Console.WriteLine("Ö´ĞĞ³ÌĞò¼¯²âÊÔÊ§°Ü£¡");
+                        Console.WriteLine("æ‰§è¡Œç¨‹åºé›†æµ‹è¯•å¤±è´¥ï¼");
                 }
                 else
                 {
                     _ = messages.Execute(item =>
                     {
                         Console.WriteLine(@$"ID:{item.Id}
-ÑÏÖØ³Ì¶È:{item.Severity}     
-Î»ÖÃ£º{item.Location.SourceSpan.Start}~{item.Location.SourceSpan.End}
-ÏûÏ¢:{item.Descriptor.Title}   {item}");
+ä¸¥é‡ç¨‹åº¦:{item.Severity}     
+ä½ç½®ï¼š{item.Location.SourceSpan.Start}~{item.Location.SourceSpan.End}
+æ¶ˆæ¯:{item.Descriptor.Title}   {item}");
                     });
                 }
             }
@@ -133,9 +133,9 @@ namespace ConsoleTest
             //generic.AddConstarint(new GenericScheme("T3", GenericConstraintsType.Notnull));
             //generic.AddConstarint(new GenericScheme("T4", GenericConstraintsType.Unmanaged));
             //generic.AddConstarint(new GenericScheme("T5", GenericConstraintsType.New));
-            //// Èç¹ûÄÜ¹»·´ÉäÄÃµ½ Type
+            //// å¦‚æœèƒ½å¤Ÿåå°„æ‹¿åˆ° Type
             //generic.AddConstarint(new GenericScheme("T6", GenericConstraintsType.BaseClass, typeof(int)));
-            //// Èç¹ûÒªÒÔ×Ö·û´®¶¨Òå»ùÀàÀàĞÍ£¬ÇëÊ¹ÓÃ ´ËAPI
+            //// å¦‚æœè¦ä»¥å­—ç¬¦ä¸²å®šä¹‰åŸºç±»ç±»å‹ï¼Œè¯·ä½¿ç”¨ æ­¤API
             //generic.AddBaseClassConstarint("T7", " IEnumerable<int>");
             //generic.AddTUConstarint("T8", "T2");
             //generic.AddConstarint(new GenericScheme("T9", GenericConstraintsType.Class, GenericConstraintsType.New));

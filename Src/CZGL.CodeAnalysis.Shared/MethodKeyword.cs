@@ -30,10 +30,19 @@ namespace CZGL.CodeAnalysis.Shared
         [MemberDefineName(Name = "new")]
         New = 1 << 7,
 
+        /// <summary>
+        /// 暂不支持识别此类修饰符
+        /// </summary>
         [MemberDefineName(Name = "new virsual")]
         NewVirtual = New | Virtual,
 
+        /// <summary>
+        /// 暂不支持识别此类修饰符
+        /// </summary>
         [MemberDefineName(Name = "new static")]
-        NewStatic = New | Static,
+        NewStatic = New | Static
+
+#warning 看看后面能不能支持 extern 方法关键字
+#warning 要支持 ref readonly 方法
     }
 }

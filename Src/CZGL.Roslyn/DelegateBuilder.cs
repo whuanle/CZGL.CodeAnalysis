@@ -32,7 +32,7 @@ namespace CZGL.Roslyn
         /// <returns></returns>
         public DelegateBuilder WithAccess(NamespaceAccess access = NamespaceAccess.Internal)
         {
-            _member.Access = CodeHelper.GetName(access);
+            _member.Access = EnumCache.GetValue(access);
             return _TBuilder;
         }
 

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CZGL.CodeAnalysis.Shared;
+using CZGL.Reflect.Units;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
@@ -6,25 +8,35 @@ using System.Text;
 
 namespace CZGL.CodeAnalysis
 {
-    public class PropertyAnalysis
+    public static class PropertyAnalysis
     {
-        private PropertyDescriptor descriptor;
-        private PropertyInfo _propertyInfo;
-        public PropertyAnalysis(PropertyInfo propertyInfo)
+        /// <summary>
+        /// 获取访问权限修饰符
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public static MemberAccess GetAccess(this PropertyInfo info)
         {
-            _propertyInfo = propertyInfo;
+            return AccessAnalysis.GetAccess(info);
         }
 
-        public string GetVisibility()
+        /// <summary>
+        /// 获取修饰符
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public static PropertyKeyword GetKeyword(this PropertyInfo info)
         {
-            MethodInfo method = _propertyInfo.GetGetMethod();
-            return
-                method.IsPublic ? "public" :
-                method.IsPrivate ? "private" :
-                method.IsAssembly ? "internal" :
-                method.IsFamily ? "protected" :
-                method.IsFamilyOrAssembly ? "protected internal" :
-                null;
+            return KeywordAnalysis.GetPropertyKeyword(info);
+        }
+
+        /// <summary>
+        /// 获取特性列表
+        /// </summary>
+        /// <returns></returns>
+        public static string[] GetAttributes(this PropertyInfo info)
+        {
+            return AttributeAnalysis.GetAttributes(info.GetCustomAttributesData());
         }
     }
 }

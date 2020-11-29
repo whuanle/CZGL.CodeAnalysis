@@ -117,6 +117,7 @@ namespace CZGL.Roslyn
             return this;
         }
 
+#warning 允许设置使用哪个版本的 .NET 发布，例如  .NET Standard 2.0,.NET Core 3.1
         internal class DomainOptionState
         {
             /// <summary>

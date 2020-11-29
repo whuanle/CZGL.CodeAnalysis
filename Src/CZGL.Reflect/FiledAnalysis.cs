@@ -1,104 +1,42 @@
 ﻿using CZGL.CodeAnalysis.Shared;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using CZGL.Reflect.Units;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace CZGL.Reflect
 {
     /// <summary>
     /// 字段分析
     /// </summary>
-    public class FiledAnalysis
+    public static class FiledAnalysis
     {
-        private readonly FieldInfo _info;
-
-        public string Name => _info.Name;
-        
-        public FiledAnalysis(FieldInfo info)
+        /// <summary>
+        /// 获取字段的访问权限修饰符
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public static MemberAccess GetAccess(this FieldInfo info)
         {
-            _info = info;
+            return AccessAnalysis.GetAccess(info);
         }
 
         /// <summary>
-        /// 权限访问修饰符
+        /// 获取修饰符
         /// </summary>
-        public MemberAccess Access
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public static FieldKeyword GetKeyword(this FieldInfo info)
         {
-            get
-            {
-                return TypeAnalysis.GetAccess(_info);
-            }
-        }
-
-        public string AccessCode
-        {
-            get
-            {
-                return TypeAnalysis.GetAccessCode(_info);
-            }
+            return KeywordAnalysis.GetFieldKeyword(info);
         }
 
         /// <summary>
-        /// 获取修饰符关键字
+        /// 获取特性列表
         /// </summary>
-        public FieldKeyword Keyword
+        /// <returns></returns>
+        public static string[] GetAttributes(this FieldInfo info)
         {
-            get
-            {
-                return GetFieldKeyword(_info);
-            }
+            return AttributeAnalysis.GetAttributes(info.GetCustomAttributesData());
         }
 
-        /// <summary>
-        /// 获取修饰符关键字
-        /// </summary>
-        public string KeywordCode
-        {
-            get
-            {
-                return GetFieldKeywordCode(_info);
-            }
-        }
-
-        public static FieldKeyword GetFieldKeyword(FieldInfo info)
-        {
-            if (info.IsLiteral)
-                return FieldKeyword.Const;
-            if (info.IsStatic && info.IsInitOnly)
-                return FieldKeyword.StaticReadonly;
-            bool isVolatile = info.GetRequiredCustomModifiers().Any(x => x == typeof(IsVolatile));
-            if (info.IsStatic)
-            {
-                if (isVolatile) return FieldKeyword.VolatileStatic;
-                return FieldKeyword.Static;
-            }
-            if (isVolatile) return FieldKeyword.Volatile;
-            if (info.IsInitOnly)
-                return FieldKeyword.Readonly;
-
-            return FieldKeyword.Default;
-        }
-
-        public static string GetFieldKeywordCode(FieldInfo info)
-        {
-            if (info.IsLiteral)
-                return "const";
-            if (info.IsStatic && info.IsInitOnly)
-                return "readonly static";
-            bool isVolatile = info.GetRequiredCustomModifiers().Any(x => x == typeof(IsVolatile));
-            if (info.IsStatic)
-            {
-                if (isVolatile) return "volatile static";
-                return "static";
-            }
-            if (isVolatile) return "volatile";
-            if (info.IsInitOnly)
-                return "readonly";
-
-            return string.Empty;
-        }
     }
 }

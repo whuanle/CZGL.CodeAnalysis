@@ -21,7 +21,7 @@ namespace CZGL.Roslyn.Templates
         /// <returns></returns>
         public virtual TBuilder WithAccess(NamespaceAccess access = NamespaceAccess.Internal)
         {
-            _member.Access = CodeHelper.GetName(access);
+            _member.Access = EnumCache.GetValue(access);
             return _TBuilder;
         }
 

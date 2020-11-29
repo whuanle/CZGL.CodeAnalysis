@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleTest", "examples\Con
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorExample", "examples\BlazorExample\BlazorExample.csproj", "{013DF5FC-DAE2-4B66-92B8-178B24B2EE48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineEdit", "examples\OnlineEdit\OnlineEdit.csproj", "{208FFE91-C334-4F15-89F2-ECD868C23791}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineEdit", "examples\OnlineEdit\OnlineEdit.csproj", "{208FFE91-C334-4F15-89F2-ECD868C23791}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

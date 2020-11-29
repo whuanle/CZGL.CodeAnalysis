@@ -5,8 +5,4 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Src\CZGL.Roslyn\CZGL.Roslyn.csproj" />
-  </ItemGroup>
-
 </Project>

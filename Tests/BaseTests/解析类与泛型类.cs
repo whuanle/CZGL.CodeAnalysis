@@ -1,4 +1,5 @@
 using CZGL.CodeAnalysis;
+using CZGL.Reflect;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -67,19 +68,17 @@ namespace BaseTests
         public void 泛型类_未定义参数类型()
         {
             Type type = typeof(Model_泛型1<,,>);
-            GenericeAnalysis genericeAnalysis = new GenericeAnalysis();
-            var z = genericeAnalysis.Analysis(type);
-            Assert.Equal("<, , >", genericeAnalysis.Analysis(type));
-            Assert.Equal("<T1, T2, T3>", genericeAnalysis.Analysis(type, true));
+            var z = GenericeAnalysis.Analysis(type);
+            Assert.Equal("<, , >", GenericeAnalysis.Analysis(type));
+            Assert.Equal("<T1, T2, T3>", GenericeAnalysis.Analysis(type, true));
         }
 
         [Fact]
         public void 泛型类_已定义参数类型()
         {
             Type type = typeof(Model_泛型1<int, double, int>);
-            GenericeAnalysis genericeAnalysis = new GenericeAnalysis();
-            Assert.Equal("<int, double, int>", genericeAnalysis.Analysis(type));
-            Assert.Equal("<System.Int32, System.Double, System.Int32>", genericeAnalysis.Analysis(type, true));
+            Assert.Equal("<int, double, int>", GenericeAnalysis.Analysis(type));
+            Assert.Equal("<System.Int32, System.Double, System.Int32>", GenericeAnalysis.Analysis(type, true));
         }
 
         //[Fact]
@@ -96,35 +95,31 @@ namespace BaseTests
         {
             Model_泛型2<int, double, int> model_ = new Model_泛型2<int, double, int>();
             Type type = model_.GetType();
-            GenericeAnalysis genericeAnalysis = new GenericeAnalysis();
-            Assert.Equal("<int, double, int>", genericeAnalysis.Analysis(type.BaseType));
-            Assert.Equal("<System.Int32, System.Double, System.Int32>", genericeAnalysis.Analysis(type.BaseType, true));
+            Assert.Equal("<int, double, int>", GenericeAnalysis.Analysis(type.BaseType));
+            Assert.Equal("<System.Int32, System.Double, System.Int32>", GenericeAnalysis.Analysis(type.BaseType, true));
         }
 
         [Fact]
         public void 子类非泛型_父类泛型已定义解析()
         {
             Type type = new Model_泛型3().GetType();
-            GenericeAnalysis genericeAnalysis = new GenericeAnalysis();
-            Assert.Equal("<int, double, int>", genericeAnalysis.Analysis(type.BaseType));
-            Assert.Equal("<System.Int32, System.Double, System.Int32>", genericeAnalysis.Analysis(type.BaseType, true));
+            Assert.Equal("<int, double, int>", GenericeAnalysis.Analysis(type.BaseType));
+            Assert.Equal("<System.Int32, System.Double, System.Int32>", GenericeAnalysis.Analysis(type.BaseType, true));
         }
 
         [Fact]
         public void 长嵌套泛型参数解析()
         {
             Type type = typeof(Model_泛型1<int, List<int>, Dictionary<List<int>, Dictionary<int, List<int>>>>);
-            GenericeAnalysis genericeAnalysis = new GenericeAnalysis();
-            Assert.Equal("<int, List<int>, Dictionary<List<int>, Dictionary<int, List<int>>>>", genericeAnalysis.Analysis(type));
-            Assert.Equal(@"<System.Int32, System.Collections.Generic.List<System.Int32>, System.Collections.Generic.Dictionary<System.Collections.Generic.List<System.Int32>, System.Collections.Generic.Dictionary<System.Int32, System.Collections.Generic.List<System.Int32>>>>", genericeAnalysis.Analysis(type, true));
+            Assert.Equal("<int, List<int>, Dictionary<List<int>, Dictionary<int, List<int>>>>", GenericeAnalysis.Analysis(type));
+            Assert.Equal(@"<System.Int32, System.Collections.Generic.List<System.Int32>, System.Collections.Generic.Dictionary<System.Collections.Generic.List<System.Int32>, System.Collections.Generic.Dictionary<System.Int32, System.Collections.Generic.List<System.Int32>>>>", GenericeAnalysis.Analysis(type, true));
         }
 
         [Fact]
         public void 超复杂的泛型约束()
         {
             Type type = typeof(Model_泛型类5<,,,,,,,,,,>);
-            GenericeAnalysis genericeAnalysis = new GenericeAnalysis();
-            _tempOutput.WriteLine(genericeAnalysis.GetGenericConstraintString(type));
+            _tempOutput.WriteLine(GenericeAnalysis.GetGenericConstraintString(type));
             Assert.Equal(@"where T1 : struct 
 where T2 : class 
 where T3 : notnull 
@@ -135,7 +130,7 @@ where T7 : IEnumerable<int>
 where T8 : T2 
 where T9 : class,notnull,new() 
 where T10 : Model_泛型类4,IEnumerable<int>,new() 
-", genericeAnalysis.GetGenericConstraintString(type));
+", GenericeAnalysis.GetGenericConstraintString(type));
         }
     }
 }

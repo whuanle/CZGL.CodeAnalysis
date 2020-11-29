@@ -1,20 +1,45 @@
-﻿using System;
+﻿using CZGL.CodeAnalysis.Shared;
+using CZGL.Reflect.Units;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace CZGL.CodeAnalysis
+namespace CZGL.Reflect
 {
-    public class MethodInfoAnalysis
+    public static class MethodInfoAnalysis
     {
-        private readonly MethodInfo _methodInfo;
-        public MethodInfoAnalysis(MethodInfo methodInfo)
+        /// <summary>
+        /// 判断一个方法是否为 new 方法
+        /// <para>不支持 new virtual</para>
+        /// </summary>
+        /// <param name="method"></param>
+        /// <returns></returns>
+        public static bool IsNew(this MethodInfo method)
         {
-            if (methodInfo is null)
-                throw new ArgumentNullException(paramName: nameof(methodInfo), message: $"");
-            _methodInfo = methodInfo;
+            var baseType = method.GetBaseDefinition().DeclaringType;
+
+            // 排除 object
+            if (baseType == typeof(object))
+                return false;
+
+            // 如果不在此类中定义，则肯定不可能是 new
+            if (baseType != method.DeclaringType)
+                return false;
+
+            // 方法肯定在此类中定义，判断带不带 new
+
+            BindingFlags flags = BindingFlags.Default;
+            if (method.IsStatic)
+                flags = flags | BindingFlags.Static;
+            else flags = flags | BindingFlags.Instance;
+
+            if (method.DeclaringType.BaseType.GetMethod(method.Name, flags) != null)
+                return true;
+
+            return false;
         }
 
         /// <summary>
@@ -22,10 +47,9 @@ namespace CZGL.CodeAnalysis
         /// </summary>
         /// <param name="method"></param>
         /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsPropertyOfAttr(MethodInfo method)
+        public static bool IsRuntime(this MethodInfo method)
         {
-            return method.GetCustomAttributes().Any(x => x.GetType() == typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute));
+            return method.GetCustomAttributes().Any(x => x.GetType() == typeof(CompilerGeneratedAttribute));
         }
 
         /// <summary>
@@ -34,16 +58,14 @@ namespace CZGL.CodeAnalysis
         /// </summary>
         /// <param name="methodInfos"></param>
         /// <returns></returns>
-        public static MethodInfo[] ExcludeSystemMethod(IEnumerable<MethodInfo> methodInfos)
+        public static IEnumerable<MethodInfo> ExcludeSystemMethod(this IEnumerable<MethodInfo> methodInfos)
         {
-            HashSet<MethodInfo> list = new HashSet<MethodInfo>();
             foreach (var item in methodInfos)
             {
-                if (IsPropertyOfAttr(item))
+                if (IsRuntime(item))
                     continue;
-                list.Add(item);
+                yield return item;
             }
-            return list.ToArray();
         }
 
         /// <summary>
@@ -51,127 +73,89 @@ namespace CZGL.CodeAnalysis
         /// </summary>
         /// <param name="method"></param>
         /// <returns></returns>
-        public string GetVisibility(MethodInfo method)
+        public static MemberAccess GetAccess(this MethodInfo method)
         {
-            return
-                method.IsPublic ? "public" :
-                method.IsPrivate ? "private" :
-                method.IsAssembly ? "internal" :
-                method.IsFamily ? "protected" :
-                method.IsFamilyOrAssembly ? "protected internal" : throw new ArgumentNullException($"未能识别当前类型({method.Name})的访问权限");
+            return AccessAnalysis.GetAccess(method);
         }
-
-        /// <summary>
-        /// 获取方法的修饰符
-        /// <para>virtual override  abstract new</para>
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="method"></param>
-        /// <returns></returns>
-        public string Qualifier()
+        public static MethodKeyword GetKeyword(this MethodInfo method)
         {
-            Type type = _methodInfo.DeclaringType;
-            // 没有相应的信息，说明没有使用以上关键字修饰
-            if (!_methodInfo.IsHideBySig)
-                return string.Empty;
-
-            // 是否抽象方法
-            if (_methodInfo.IsAbstract)
-                return "abstract";
-
-            // virtual、override、实现接口的方法
-            if (_methodInfo.IsVirtual)
-            {
-                // 实现接口的方法
-                if (_methodInfo.IsFinal)
-                    return string.Empty;
-                // 没有被重写，则为 virtual
-                if (_methodInfo.Equals(_methodInfo.GetBaseDefinition()))
-                    return "virtual";
-                else
-                    return "override";
-            }
-            // new
-            else
-            {
-                // 如果是当前类型中定义的方法，则只是一个普通的方法
-                if (type == _methodInfo.DeclaringType)
-                    return string.Empty;
-
-                return "new";
-            }
+            return KeywordAnalysis.GetMethodKeyword(method);
         }
 
         /// <summary>
         /// 是否异步方法
         /// </summary>
-        public bool IsAsync()
+        public static bool IsAsync(this MethodInfo method)
         {
-            return _methodInfo.GetCustomAttribute(typeof(AsyncStateMachineAttribute)) == null ? false : true;
+            return method.GetCustomAttribute(typeof(AsyncStateMachineAttribute)) == null ? false : true;
         }
 
         /// <summary>
-        /// 获取返回类型
+        /// 获取返回类型字符串
         /// </summary>
         /// <returns></returns>
-        public string GetReturn()
+        public static string GetReturn(this MethodInfo method)
         {
-            Type returnType = _methodInfo.ReturnType;
-            ParameterInfo returnParam = _methodInfo.ReturnParameter;
+            Type returnType = method.ReturnType;
+            ParameterInfo returnParam = method.ReturnParameter;
 
             if (returnType == typeof(void))
                 return "void";
+
+            // ref、ref readonly
+            string code =
+                method.ReturnParameter.Name.EndsWith("&") ?
+                (method.GetCustomAttributes().Any(x => x.GetType().Name.Equals("IsReadOnlyAttribute"))
+                ? "ref readonly" : "ref")
+                : "";
+
             if (returnType.IsValueType)
             {
                 // 判断是否 (type1,type2) 这样的返回
                 if (returnParam.ParameterType.IsGenericType)
                 {
                     Type[] types = returnParam.ParameterType.GetGenericArguments();
-                    string str = "(";
+                    code = "(";
                     for (int i = 0; i < types.Length; i++)
                     {
-                        str += types[i].Name;
+                        code += types[i].Name;
                         if (i < types.Length - 1)
-                            str += ",";
+                            code += ",";
                     }
-                    str += ")";
-                    return str;
+                    code += ")";
+                    return code;
                 }
+
                 // 泛型
                 else if (returnType.IsGenericType)
                 {
-                    return GenericeAnalysis.Instance.Analysis(returnType);
+                    return GenericeAnalysis.Analysis(returnType);
                 }
                 return returnType.Name;
             }
-            // 暂时不处理数组
+
+            // 数组
+            if (returnType.BaseType == typeof(System.Array))
+                return returnType.Name + "[]";
+
             // 泛型
             if (returnType.IsGenericType)
             {
-                return GenericeAnalysis.Instance.Analysis(returnType);
+                return GenericeAnalysis.Analysis(returnType);
             }
             return returnType.Name;
-        }
-
-        /// <summary>
-        /// 是否为泛型方法
-        /// </summary>
-        /// <returns></returns>
-        public bool IsIsGenericMethod()
-        {
-            return _methodInfo.IsGenericMethod;
         }
 
         /// <summary>
         /// 判断方法是否为泛型方法，并且返回泛型名称
         /// </summary>
         /// <returns></returns>
-        public string GetMethodName()
+        public static string GetGenericeName(this MethodInfo method)
         {
-            if (!_methodInfo.IsGenericMethod)
-                return _methodInfo.Name;
-            Type[] types = _methodInfo.GetGenericArguments();
-            string str = _methodInfo.Name + "<";
+            if (!method.IsGenericMethod)
+                return method.Name;
+            Type[] types = method.GetGenericArguments();
+            string str = method.Name + "<";
             for (int i = 0; i < types.Length; i++)
             {
                 str += types[i].Name;
@@ -183,8 +167,13 @@ namespace CZGL.CodeAnalysis
         }
 
         #region 解析方法的参数
-        // 
-        public  string GetParams(MethodInfo method)
+
+        /// <summary>
+        /// 解析方法的参数并返回字符串
+        /// </summary>
+        /// <param name="method"></param>
+        /// <returns></returns>
+        public static string GetParams(this MethodInfo method)
         {
             ParameterInfo[] parameters = method.GetParameters();
             if (parameters.Length == 0)
@@ -205,7 +194,12 @@ namespace CZGL.CodeAnalysis
             return str.ToString();
         }
 
-        public  string InRefOut(ParameterInfo parameter)
+        /// <summary>
+        /// 判断参数是 in、out、ref、params 哪种修饰符
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
+        public static string InRefOut(this ParameterInfo parameter)
         {
             // in、ref、out ，类型后面会带有 & 符号
             if (parameter.ParameterType.Name.EndsWith("&"))
@@ -220,8 +214,12 @@ namespace CZGL.CodeAnalysis
             return string.Empty;
         }
 
-        // 获取类型
-        public  string GetParamType(ParameterInfo parameter)
+        /// <summary>
+        /// 获取参数的类型
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
+        public static string GetParamType(this ParameterInfo parameter)
         {
             string typeName = parameter.ParameterType.Name;
             if (typeName.EndsWith("&"))
@@ -229,8 +227,12 @@ namespace CZGL.CodeAnalysis
             return typeName;
         }
 
-        // 是否为可选参数，是否有默认值
-        public  string HasValue(ParameterInfo parameter)
+        /// <summary>
+        /// 是否为可选参数，是否有默认值
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <returns>为空则不是可选参数， 没有默认值</returns>
+        public static string HasValue(this ParameterInfo parameter)
         {
             if (!parameter.IsOptional)
                 return string.Empty;
@@ -239,5 +241,15 @@ namespace CZGL.CodeAnalysis
         }
 
         #endregion
+
+        /// <summary>
+        /// 是否为 ref readonly 方法
+        /// </summary>
+        /// <param name="method"></param>
+        /// <returns></returns>
+        public static bool IsRefReadOnly(this MethodInfo method)
+        {
+            return method.GetCustomAttributes().Any(x => x.GetType().Name.Equals("IsReadOnlyAttribute"));
+        }
     }
 }

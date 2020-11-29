@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+#warning 在构建命名空间时，自动将一些字段，类等用到的类型的命名空间导入，自动using
 namespace CZGL.Roslyn
 {
     /// <summary>

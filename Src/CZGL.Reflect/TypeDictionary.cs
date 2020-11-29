@@ -2,18 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CZGL.CodeAnalysis
+namespace CZGL.Reflect
 {
 
     /// <summary>
     /// 字典表
     /// </summary>
-#if DEBUG
-    public
-#else
-        private
-# endif
-        class Dictionaries
+    public class TypeDictionary
     {
         private static readonly Dictionary<Type, string> ValueTypeAlias = new Dictionary<Type, string>()
         {
@@ -21,7 +16,7 @@ namespace CZGL.CodeAnalysis
             { typeof(byte),"byte"},
             { typeof(short),"short"},
             { typeof(decimal),"decimal"},
-            {typeof(sbyte),"sbyte" },
+            { typeof(sbyte),"sbyte" },
             { typeof(ushort),"ushort"},
             { typeof(int),"int"},
             { typeof(uint),"uint"},

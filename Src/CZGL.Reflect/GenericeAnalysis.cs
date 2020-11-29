@@ -1,28 +1,36 @@
 ﻿using CZGL.CodeAnalysis.Models;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Security.Claims;
 using System.Text;
-using System.Threading;
 
-namespace CZGL.CodeAnalysis
+namespace CZGL.Reflect
 {
 
     /// <summary>
     /// 专门用于解析泛型
     /// <para>支持解析泛型类型的泛型参数、泛型约束；方法的泛型参数和泛型约束；解析一个泛型类型；</para>
     /// </summary>
-    public class GenericeAnalysis
+    public static class GenericeAnalysis
     {
-        /// <summary>
-        /// 单例模式
-        /// </summary>
-        private static readonly GenericeAnalysis _Instance = new GenericeAnalysis();
-        public static GenericeAnalysis Instance => _Instance;
 
+        /// <summary>
+        /// 获取一个类型的名称，如果此类型是泛型类型，则会输出器泛型参数名称
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="isFullName">是否显示泛型参数完整的命名空间</param>
+        /// <returns></returns>
+        public static string GetTypeName(Type type, bool isFullName = false)
+        {
+            if (!type.IsGenericType)
+                return default(string);
+
+            if (type.IsGenericTypeDefinition)
+                return BuilderGenerice(type, true, !isFullName);
+
+            return BuilderGenerice(type, true, isFullName);
+        }
 
         #region 解析一个类的泛型
 
@@ -31,7 +39,7 @@ namespace CZGL.CodeAnalysis
         /// </summary>
         /// <param name="genericeType"></param>
         /// <returns></returns>
-        public GenericeParamterInfo[] GenericeParamterAnalysis(Type genericeType)
+        public static GenericeParamterInfo[] GenericeParamterAnalysis(Type genericeType)
         {
             if (!genericeType.IsGenericType)
                 return default;
@@ -46,7 +54,7 @@ namespace CZGL.CodeAnalysis
             {
                 Type[] constrainTypes;
                 GenericParameterAttributes genricAttrs;
-                bool isConstraint = GenericHasConstraint(item,out constrainTypes,out genricAttrs);
+                bool isConstraint = GenericHasConstraint(item, out constrainTypes, out genricAttrs);
 
                 paramterInfos.Add(new GenericeParamterInfo
                 {
@@ -56,7 +64,7 @@ namespace CZGL.CodeAnalysis
                     FullName = item.Name,
                     ParamterType = isHasefineGenerice ? item : null,
                     Constraints = isConstraint ? GetGenericeConstraint(constrainTypes, genricAttrs) : null
-                }) ;
+                });
             }
 
             return paramterInfos.AsReadOnly().ToArray();
@@ -70,7 +78,7 @@ namespace CZGL.CodeAnalysis
         /// </summary>
         /// <param name="typeParameter">泛型中的参数</param>
         /// <returns></returns>
-        public bool GenericHasConstraint(Type typeParameter)
+        public static bool GenericHasConstraint(Type typeParameter)
         {
             return GenericHasConstraint(typeParameter, out _, out _);
         }
@@ -82,7 +90,7 @@ namespace CZGL.CodeAnalysis
         /// <param name="constrainTypes">泛型约束，约束的类型</param>
         /// <param name="genricAttrs">何种约束</param>
         /// <returns></returns>
-        public bool GenericHasConstraint(Type typeParameter, out Type[] constrainTypes, out GenericParameterAttributes genricAttrs)
+        public static bool GenericHasConstraint(Type typeParameter, out Type[] constrainTypes, out GenericParameterAttributes genricAttrs)
         {
             constrainTypes = typeParameter.GetGenericParameterConstraints();
             genricAttrs = typeParameter.GenericParameterAttributes;
@@ -99,11 +107,11 @@ namespace CZGL.CodeAnalysis
         /// </summary>
         /// <param name="typeParameter"></param>
         /// <returns></returns>
-        public GenericeConstraint[] GetGenericeConstraint(Type typeParameter,out bool isHasConstraint)
+        public static GenericeConstraint[] GetGenericeConstraint(Type typeParameter, out bool isHasConstraint)
         {
             Type[] constrainTypes;
             GenericParameterAttributes genricAttrs;
-            isHasConstraint = GenericHasConstraint(typeParameter,out constrainTypes,out genricAttrs);
+            isHasConstraint = GenericHasConstraint(typeParameter, out constrainTypes, out genricAttrs);
 
             if (isHasConstraint == false)
                 return default;
@@ -117,12 +125,12 @@ namespace CZGL.CodeAnalysis
         /// </summary>
         /// <param name="typeParameter"></param>
         /// <returns></returns>
-        private GenericeConstraint[] GetGenericeConstraint(Type[] constrainTypes,  GenericParameterAttributes genricAttrs)
+        private static GenericeConstraint[] GetGenericeConstraint(Type[] constrainTypes, GenericParameterAttributes genricAttrs)
         {
             List<GenericeConstraint> cons = new List<GenericeConstraint>();
 
-                // 只有一种约束的情况下
-                // 符号条件有 staruct、unmanaged、<基类名>、<接口名>、T:U
+            // 只有一种约束的情况下
+            // 符号条件有 staruct、unmanaged、<基类名>、<接口名>、T:U
             if (constrainTypes.Length == 1)
                 cons.Add(_GenericConstraint(constrainTypes[0]));
 
@@ -141,8 +149,8 @@ namespace CZGL.CodeAnalysis
                 if (a == true)
                 {
                     Type tmp = constrainTypes.FirstOrDefault(x => !x.IsInterface && x.IsSubclassOf(typeof(System.Object)));
-                    cons.Add(new GenericeConstraint(tmp.Name, ConstraintScheme.Yellow,tmp));
-                }  
+                    cons.Add(new GenericeConstraint(tmp.Name, ConstraintScheme.Yellow, tmp));
+                }
                 else if (b == true)
                     cons.AddRange(_GenericConstraint(genricAttrs));
 
@@ -163,33 +171,33 @@ namespace CZGL.CodeAnalysis
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        private GenericeConstraint _GenericConstraint(Type type)
+        private static GenericeConstraint _GenericConstraint(Type type)
         {
             if (type.Name == "ValueType")
                 return new GenericeConstraint
                 {
-                    Name= "struct",
-                    ConstraintScheme= ConstraintScheme.Red
+                    Name = "struct",
+                    ConstraintScheme = ConstraintScheme.Red
                 };
             else if (type.IsInterface)
                 return new GenericeConstraint
                 {
                     Name = AnalysisName(type),
-                    ConstraintType=type,
-                    ConstraintScheme= ConstraintScheme.Blue
+                    ConstraintType = type,
+                    ConstraintScheme = ConstraintScheme.Blue
                 };
             else if (type.IsSubclassOf(typeof(Object)))
                 return new GenericeConstraint
                 {
                     Name = AnalysisName(type),
                     ConstraintType = type,
-                    ConstraintScheme= ConstraintScheme.Yellow
+                    ConstraintScheme = ConstraintScheme.Yellow
                 };
             else
                 return new GenericeConstraint
                 {
                     Name = AnalysisName(type),
-                    ConstraintScheme= ConstraintScheme.Blue
+                    ConstraintScheme = ConstraintScheme.Blue
                 };
         }
 
@@ -198,7 +206,7 @@ namespace CZGL.CodeAnalysis
         /// </summary>
         /// <param name="types"></param>
         /// <returns></returns>
-        private GenericeConstraint[] _GenericConstraint(Type[] types)
+        private static GenericeConstraint[] _GenericConstraint(Type[] types)
         {
             List<GenericeConstraint> cons = new List<GenericeConstraint>();
             int length = types.Length - 1;
@@ -206,9 +214,9 @@ namespace CZGL.CodeAnalysis
             {
                 // 约束也可以是泛型，这里不做处理
                 if (types[i].Name == "ValueType")
-                    cons.Add(new GenericeConstraint("struct",ConstraintScheme.Red));
+                    cons.Add(new GenericeConstraint("struct", ConstraintScheme.Red));
                 else
-                    cons.Add(new GenericeConstraint($"{AnalysisName(types[i])}", types[i].IsInterface?ConstraintScheme.Blue: ConstraintScheme.Yellow)); // 检查类是泛型的话
+                    cons.Add(new GenericeConstraint($"{AnalysisName(types[i])}", types[i].IsInterface ? ConstraintScheme.Blue : ConstraintScheme.Yellow)); // 检查类是泛型的话
             }
             return cons.AsReadOnly().ToArray();
         }
@@ -218,7 +226,7 @@ namespace CZGL.CodeAnalysis
         /// </summary>
         /// <param name="attributes"></param>
         /// <returns></returns>
-        private GenericeConstraint[] _GenericConstraint(GenericParameterAttributes attributes)
+        private static GenericeConstraint[] _GenericConstraint(GenericParameterAttributes attributes)
         {
             /*
              * 下面是不同约束的结果
@@ -243,7 +251,7 @@ namespace CZGL.CodeAnalysis
                     if (attributes.HasFlag(GenericParameterAttributes.None))
                         cons.Add(new GenericeConstraint("notnull", ConstraintScheme.Yellow));
                     if (attributes.HasFlag(GenericParameterAttributes.DefaultConstructorConstraint))
-                        cons.Add(new GenericeConstraint("new()",ConstraintScheme.Orange));
+                        cons.Add(new GenericeConstraint("new()", ConstraintScheme.Orange));
                     return cons.AsReadOnly().ToArray();
             }
         }
@@ -314,7 +322,7 @@ namespace CZGL.CodeAnalysis
             var types = genericType.GetGenericArguments();
             for (int i = 0; i < types.Length; i++)
             {
-                str += types[i].IsGenericType ? BuilderGenerice(types[i], false, isFullName) : (isFullName ? types[i].FullName : Dictionaries.FindAlias(types[i]));
+                str += types[i].IsGenericType ? BuilderGenerice(types[i], false, isFullName) : (isFullName ? types[i].FullName : TypeDictionary.FindAlias(types[i]));
                 if (i < types.Length - 1)
                     str += ", ";
             }
@@ -341,7 +349,7 @@ namespace CZGL.CodeAnalysis
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public string GetGenericConstraintString(Type type)
+        public static string GetGenericConstraintString(Type type)
         {
             if (!type.IsGenericType)
                 return type.Name;
@@ -408,7 +416,7 @@ namespace CZGL.CodeAnalysis
         // 枚举值为 8,16 时
         // 判断是 struct 还是 unamaged
         // 红色
-        private string GetStructUnmanaged(Type type)
+        private static string GetStructUnmanaged(Type type)
         {
             if (type.IsSecurityCritical)
                 return "struct";
@@ -426,7 +434,7 @@ namespace CZGL.CodeAnalysis
         /// 判断是否有黄色
         /// </summary>
         /// <returns></returns>
-        private bool IsHasYellow(Type[] types)
+        private static bool IsHasYellow(Type[] types)
         {
             return types.Any(x => !x.IsInterface && x.IsSubclassOf(typeof(System.Object)));
         }
@@ -435,7 +443,7 @@ namespace CZGL.CodeAnalysis
         /// 判断是否有黄色
         /// </summary>
         /// <returns></returns>
-        private bool IsHasYellow(GenericParameterAttributes attributes)
+        private static bool IsHasYellow(GenericParameterAttributes attributes)
         {
             return
                 attributes == GenericParameterAttributes.ReferenceTypeConstraint ||
@@ -448,7 +456,7 @@ namespace CZGL.CodeAnalysis
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        private (string, ConstraintScheme) GetGenericType(Type type)
+        private static (string, ConstraintScheme) GetGenericType(Type type)
         {
             // 约束也可以是泛型，这里不做处理
             if (type.Name == "ValueType")
@@ -468,7 +476,7 @@ namespace CZGL.CodeAnalysis
         /// </summary>
         /// <param name="types"></param>
         /// <returns></returns>
-        private string GetGenericType(Type[] types)
+        private static string GetGenericType(Type[] types)
         {
             int length = types.Length - 1;
             string str = "";
@@ -491,7 +499,7 @@ namespace CZGL.CodeAnalysis
         /// </summary>
         /// <param name="attributes"></param>
         /// <returns></returns>
-        private (string, ConstraintScheme) GetGenericType(GenericParameterAttributes attributes)
+        private static (string, ConstraintScheme) GetGenericType(GenericParameterAttributes attributes)
         {
             /*
              * 下面是不同约束的结果

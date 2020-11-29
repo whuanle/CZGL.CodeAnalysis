@@ -1,15 +1,13 @@
-﻿using System;
+﻿using CZGL.CodeAnalysis.Shared;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
-namespace CZGL.CodeAnalysis.Shared
+namespace CZGL.Dynamic
 {
-    public static class CodeHelper
+    public class AtributeAnalysis
     {
-        #region Token
-
         /// <summary>
         /// 获取枚举携带的信息
         /// </summary>
@@ -36,7 +34,5 @@ namespace CZGL.CodeAnalysis.Shared
             var argument = attrs.FirstOrDefault(x => x.AttributeType.Name == nameof(MemberDefineNameAttribute)).NamedArguments;
             return argument.FirstOrDefault(x => x.MemberName == nameof(MemberDefineNameAttribute.Name)).TypedValue.Value.ToString();
         }
-
-        #endregion
     }
 }

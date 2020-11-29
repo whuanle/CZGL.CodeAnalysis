@@ -21,6 +21,12 @@ namespace CZGL.CodeAnalysis.Shared
         Static = 2,
 
         [MemberDefineName(Name = "abstract")]
-        Abstract = 3
+        Abstract = 3,
+        
+        /// <summary>
+        /// 只能定义在嵌套类中
+        /// </summary>
+        [MemberDefineName(Name = "new")]
+        New = 4
     }
 }

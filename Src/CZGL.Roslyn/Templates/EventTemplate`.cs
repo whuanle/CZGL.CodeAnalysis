@@ -19,7 +19,7 @@ namespace CZGL.Roslyn.Templates
         /// <returns></returns>
         public virtual TBuilder WithAccess(NamespaceAccess access = NamespaceAccess.Internal)
         {
-            _member.Access = CodeHelper.GetName(access);
+            _member.Access = EnumCache.GetValue(access);
             return _TBuilder;
         }
 
@@ -30,7 +30,7 @@ namespace CZGL.Roslyn.Templates
         /// <returns></returns>
         public TBuilder WithKeyword(EventKeyword keyword)
         {
-            _variable.Keyword = CodeHelper.GetName(keyword);
+            _variable.Keyword = EnumCache.GetValue(keyword);
             return _TBuilder;
         }
 

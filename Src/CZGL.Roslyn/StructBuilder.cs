@@ -11,11 +11,15 @@ using System.Transactions;
 
 namespace CZGL.Roslyn
 {
+#warning 需要支持 readonly
+#warning 需要重新定义 Struct 模板，不能再使用 Class 模板
     /// <summary>
     /// 结构体
     /// </summary>
-    public class StructBuilder: ClassTemplate<StructBuilder>
+    public sealed class StructBuilder: ClassTemplate<StructBuilder>
     {
+        private bool IsReadonly;
+
         internal StructBuilder()
         {
             _TBuilder = this;
@@ -24,6 +28,16 @@ namespace CZGL.Roslyn
         internal StructBuilder(string name) : this()
         {
             base.WithName(name);
+        }
+
+        /// <summary>
+        /// 设置为 readonly struct
+        /// </summary>
+        /// <returns></returns>
+        public StructBuilder WithReadonly(bool isReadonly=true)
+        {
+            IsReadonly = isReadonly;
+            return _TBuilder;
         }
 
         /// <summary>

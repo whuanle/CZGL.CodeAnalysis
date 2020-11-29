@@ -210,7 +210,7 @@ public int i
         {
             PropertyBuilder builder = CodeSyntax.CreateProperty("i")
                 .WithAccess(MemberAccess.ProtectedInternal)
-               .WithKeyword(PropertyKeyword.Static | PropertyKeyword.Readonly)
+                .WithKeyword(PropertyKeyword.Static)
                 .WithType("int")
                 .WithName("i")
                 .WithInit("int.Parse(\"1\")");
@@ -221,7 +221,7 @@ public int i
             _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
 
-            Assert.Equal(@"protected internal static readonly int i
+            Assert.Equal(@"protected internal static int i
 {
     get;
     set;
@@ -239,7 +239,7 @@ public int i
             PropertyBuilder builder = CodeSyntax.CreateProperty("i");
             var field = builder
                 .WithAccess(MemberAccess.ProtectedInternal)
-                .WithKeyword(PropertyKeyword.Static | PropertyKeyword.Readonly)
+                .WithKeyword(PropertyKeyword.Static)
                 .WithType("int")
                 .WithName("i")
                 .WithGetInit("get{return tmp+1;}")
@@ -253,7 +253,7 @@ public int i
 #endif
 
 
-            Assert.Equal(@"protected internal static readonly int i
+            Assert.Equal(@"protected internal static int i
 {
     get
     {
