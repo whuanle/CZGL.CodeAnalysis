@@ -1,4 +1,3 @@
-using CZGL.CodeAnalysis;
 using CZGL.Reflect;
 using System;
 using System.Collections;
@@ -6,7 +5,7 @@ using System.Collections.Generic;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace BaseTests
+namespace ReflectTests
 {
     public class Model_·ºÐÍ1<T1, T2, T3>
     {

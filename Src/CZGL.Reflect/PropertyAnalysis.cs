@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Text;
 
-namespace CZGL.CodeAnalysis
+namespace CZGL.Reflect
 {
     public static class PropertyAnalysis
     {
