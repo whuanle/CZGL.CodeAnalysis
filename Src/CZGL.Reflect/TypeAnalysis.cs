@@ -52,7 +52,5 @@ namespace CZGL.Reflect
         }
 
         #endregion
-
-
     }
 }

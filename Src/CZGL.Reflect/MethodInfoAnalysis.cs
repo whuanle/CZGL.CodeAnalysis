@@ -129,7 +129,7 @@ namespace CZGL.Reflect
                 // 泛型
                 else if (returnType.IsGenericType)
                 {
-                    return GenericeAnalysis.Analysis(returnType);
+                    return returnType.GetGenericeName();
                 }
                 return returnType.Name;
             }
@@ -141,7 +141,7 @@ namespace CZGL.Reflect
             // 泛型
             if (returnType.IsGenericType)
             {
-                return GenericeAnalysis.Analysis(returnType);
+                return returnType.GetGenericeName();
             }
             return returnType.Name;
         }

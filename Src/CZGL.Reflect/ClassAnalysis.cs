@@ -1,7 +1,8 @@
-﻿using CZGL.CodeAnalysis.Models;
+﻿using CZGL.Reflect.Models;
 using CZGL.CodeAnalysis.Shared;
 using CZGL.Reflect.Units;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -11,8 +12,7 @@ namespace CZGL.Reflect
     /// 解析一个类型
     /// </summary>
     public static class ClassAnalysis
-    {
-        
+    {        
         /// <summary>
         /// 获取访问权限
         /// </summary>
@@ -56,7 +56,7 @@ namespace CZGL.Reflect
         /// <returns></returns>
         public static string GetGenericeName(this Type type)
         {
-            return GenericeAnalysis.GetGenericeName(type);
+            return GenericeAnalysis.GetGenriceName(type);
         }
 
         /// <summary>
@@ -81,9 +81,9 @@ namespace CZGL.Reflect
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static GenericeParamterInfo[] GetGenericeParam(this Type type)
+        public static Dictionary<string, IEnumerable<GenericeConstraintInfo>> GetGenericeParam(this Type type)
         {
-            return GenericeAnalysis.GenericeParamterAnalysis(type);
+            return GenericeAnalysis.GetConstrains(type);
         }
 
         /// <summary>

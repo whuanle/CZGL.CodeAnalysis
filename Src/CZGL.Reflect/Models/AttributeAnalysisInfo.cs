@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace CZGL.CodeAnalysis.Models
+namespace CZGL.Reflect.Models
 {
     public class AttributeAnalysisInfo: AttributeDefine
     {

@@ -1,4 +1,4 @@
-using CZGL.CodeAnalysis.Models;
+using CZGL.Reflect.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +16,7 @@ namespace CZGL.Reflect.Units
         /// 获取当前类型的特性信息列表
         /// </summary>
         /// <returns></returns>
-        public static AttributeDefine[] GetAttributeDefine(Type type)
+        public static AttributeDefine[] GetAttributeDefine(this Type type)
         {
             IList<CustomAttributeData> attrs = type.GetCustomAttributesData();
             AttributeAnalysisInfo[] infos = GetAttributesParams(attrs);
@@ -29,7 +29,7 @@ namespace CZGL.Reflect.Units
         /// <param name="info"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static string[] GetAttributes<T>(T info) where T : MemberInfo
+        public static string[] GetAttributes<T>(this T info) where T : MemberInfo
         {
             return GetAttributes(info.GetCustomAttributesData());
         }
@@ -39,7 +39,7 @@ namespace CZGL.Reflect.Units
         /// </summary>
         /// <param name="attrs"></param>
         /// <returns></returns>
-        public static string[] GetAttributes(IList<CustomAttributeData> attrs)
+        public static string[] GetAttributes(this IEnumerable<CustomAttributeData> attrs)
         {
             List<string> attrResult = new List<string>(); ;
             foreach (var item in attrs)
@@ -81,7 +81,7 @@ namespace CZGL.Reflect.Units
         /// </summary>
         /// <param name="attrs"></param>
         /// <returns></returns>
-        private static AttributeAnalysisInfo[] GetAttributesParams(IList<CustomAttributeData> attrs)
+        private static AttributeAnalysisInfo[] GetAttributesParams(this IEnumerable<CustomAttributeData> attrs)
         {
             List<AttributeAnalysisInfo> attrResult = new List<AttributeAnalysisInfo>(); ;
             foreach (var item in attrs)
