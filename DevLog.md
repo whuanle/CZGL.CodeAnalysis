@@ -1,4 +1,9 @@
-### 0.1.1 已更新
+# 开发日志
+
+
+
+### 0.1.1 已更新(已结束)
+
 * 修复两个单元测试
 
 * 删除 CZGL.CodeAAnalysis.Sahred 的 CodeHelper.cs
@@ -54,7 +59,9 @@
 
 
 
-### 0.1.2 计划中
+### 0.1.2 正在更新
+
+2021-2月17日开始
 
 * 使用接口来重写模板
 
@@ -82,7 +89,14 @@ https://docs.microsoft.com/zh-cn/dotnet/api/system.reflection.parameterinfo?view
 
   合理使用各种缓存，减少重复计算。
 
+  
+
+### 0.1.3 计划中
+
+* 根据issue，优化项目
+
 * 完成各项单元测试以及代码覆盖率
+
 * 使用 Benchmark 对部分代码进行性能测试
 
    只编写测试代码以及查看测试结果，暂不对性能进行优化。
