@@ -151,7 +151,7 @@ namespace CZGL.Roslyn.Templates
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public new virtual TBuilder WithRondomName()
+        public virtual TBuilder WithRondomName()
         {
             base.WithRondomName();
             return _TBuilder;

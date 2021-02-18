@@ -63,31 +63,26 @@
 
 2021-2月17日开始
 
-* 属性删除关于get、set的方法只保留一个；修改代码生成；
-* WithRondomName 随机生成名称，优化生成方式和性能；
-* 结构体支持ref
+* 全部升级到 5.0
 
-* 使用接口来重写模板
+* Roslyn 调整依赖结构
 
-  不再使用抽象类来编写模板，将构建器模板功能细化以及清除重复的代码，减少冗余。
+  调整大量代码结构，调整继承结构；划分层次模型；优化 xmind 流程图；
 
 * Roslyn 中增加 Struct 模板，不再继承 Class 模板
 
-  Struct 只能有 readonly 修饰。
+* Struct 支持 readonly、ref
+
+* WithRondomName 随机生成名称，优化生成方式和性能；
+
+  增加 until 类；
 
 * 完成拓展模块
 
   完成 Roslyn 拓展模块
 
-* Reflect 中，Method 参数，使用
 
-https://docs.microsoft.com/zh-cn/dotnet/api/system.reflection.parameterinfo?view=net-5.0
-
-来优化in、ref、out检查。
-
-* 编写链表算法，减少 IEnumerable 的使用
-
-  需要启用不安全代码，编写链表算法，更加快速处理各种集合以及条件筛选的等。
+* 启用 Span<> 等方式循环或读取；使用切片优化访问速度；
 
 * Reflect 增加缓存
 

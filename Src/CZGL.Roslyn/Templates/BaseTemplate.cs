@@ -1,4 +1,5 @@
 ﻿using CZGL.Roslyn.States;
+using CZGL.Roslyn.Utils;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -36,9 +37,9 @@ namespace CZGL.Roslyn.Templates
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        internal virtual void WithRondomName()
+        internal virtual void WithRondomName(string prefix = "N")
         {
-            _base.Name = "N" + Guid.NewGuid().ToString("N");
+            _base.Name = CodeUtil.CreateRondomName(prefix);
         }
 
         #endregion

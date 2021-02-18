@@ -24,7 +24,7 @@ namespace CZGL.Roslyn
         /// 构建 AttributeSyntax
         /// </summary>
         /// <returns></returns>
-        public AttributeSyntax BuildSyntax()
+        public  AttributeSyntax BuildSyntax()
         {
             return CodeSyntax.CreateCodeAttribute(ToFullCode());
         }
