@@ -13,7 +13,7 @@ namespace CZGL.Roslyn
     /// <summary>
     /// 构建委托
     /// </summary>
-    public sealed class DelegateBuilder : FuncTemplate<DelegateBuilder>
+    public sealed class DelegateBuilder : DelegateTemplate<DelegateBuilder>
     {
         internal DelegateBuilder()
         {
@@ -25,16 +25,7 @@ namespace CZGL.Roslyn
             _base.Name = name;
         }
 
-        /// <summary>
-        /// 设置访问修饰符(Access Modifiers)
-        /// </summary>
-        /// <param name="visibilityType">标记</param>
-        /// <returns></returns>
-        public DelegateBuilder WithAccess(NamespaceAccess access = NamespaceAccess.Internal)
-        {
-            _member.Access = EnumCache.GetValue(access);
-            return _TBuilder;
-        }
+
 
         /// <summary>
         /// 通过代码直接生成

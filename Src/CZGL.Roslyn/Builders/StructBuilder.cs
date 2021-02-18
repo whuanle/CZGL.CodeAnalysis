@@ -1,3 +1,4 @@
+ï»¿using CZGL.CodeAnalysis.Shared;
 using CZGL.Roslyn.Templates;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -11,50 +12,64 @@ using System.Transactions;
 
 namespace CZGL.Roslyn
 {
-
     /// <summary>
-    /// Àà¹¹½¨Æ÷
+    /// ç»“æ„ä½“
     /// </summary>
-    public sealed class ClassBuilder : ClassTemplate<ClassBuilder>
+    public sealed class StructBuilder : StructTemplate<StructBuilder>
     {
-        internal ClassBuilder()
+
+        internal StructBuilder()
         {
             _TBuilder = this;
         }
 
-        internal ClassBuilder(string name) : this()
+        internal StructBuilder(string name) : this()
         {
             base.WithName(name);
         }
 
         /// <summary>
-        /// Í¨¹ı×Ö·û´®´úÂëÉú³ÉÀà
+        /// è®¾ç½®ä¸º readonly struct
         /// </summary>
-        /// <param name="Code">×Ö·û´®´úÂë</param>
         /// <returns></returns>
-        public static ClassDeclarationSyntax BuildSyntax(string Code)
+        public StructBuilder WithReadonly(bool isReadonly = true)
         {
-            ClassDeclarationSyntax memberDeclaration;
+            if (isReadonly)
+                _typeState.Keyword = "readonly";
+
+            return _TBuilder;
+        }
+
+
+
+        /// <summary>
+        /// é€šè¿‡å­—ç¬¦ä¸²ä»£ç ç”Ÿæˆç±»
+        /// </summary>
+        /// <param name="Code">å­—ç¬¦ä¸²ä»£ç </param>
+        /// <returns></returns>
+        public static StructDeclarationSyntax BuildSyntax(string Code)
+        {
+            StructDeclarationSyntax memberDeclaration;
             memberDeclaration = CSharpSyntaxTree.ParseText(Code)
                 .GetRoot()
                 .DescendantNodes()
-                .OfType<ClassDeclarationSyntax>()
+                .OfType<StructDeclarationSyntax>()
                 .FirstOrDefault();
 
             if (memberDeclaration is null)
-                throw new InvalidOperationException("Î´ÄÜ¹¹½¨Àà£¬Çë¼ì²é´úÂëÓï·¨ÊÇ·ñÓĞ´íÎó£¡");
+                throw new InvalidOperationException("æœªèƒ½æ„å»ºç»“æ„ä½“ï¼Œè¯·æ£€æŸ¥ä»£ç è¯­æ³•æ˜¯å¦æœ‰é”™è¯¯ï¼");
 
             return memberDeclaration;
         }
 
 
-        public ClassDeclarationSyntax BuildSyntax()
+        public StructDeclarationSyntax BuildSyntax()
         {
-            ClassDeclarationSyntax memberDeclaration;
+            StructDeclarationSyntax memberDeclaration;
             memberDeclaration = CSharpSyntaxTree.ParseText(ToFullCode())
                .GetRoot()
                .DescendantNodes()
-               .OfType<ClassDeclarationSyntax>()
+               .OfType<StructDeclarationSyntax>()
                .FirstOrDefault();
 
             //if (_member.Atributes.Count != 0)
@@ -62,22 +77,22 @@ namespace CZGL.Roslyn
             //        .WithAttributeLists(CodeSyntax.CreateAttributeList(_member.Atributes.ToArray()));
 
             if (memberDeclaration is null)
-                throw new InvalidOperationException("Î´ÄÜ¹¹½¨Àà£¬Çë¼ì²é´úÂëÓï·¨ÊÇ·ñÓĞ´íÎó£¡");
+                throw new InvalidOperationException("æœªèƒ½æ„å»ºç»“æ„ä½“ï¼Œè¯·æ£€æŸ¥ä»£ç è¯­æ³•æ˜¯å¦æœ‰é”™è¯¯ï¼");
 
             return memberDeclaration;
         }
 
         /// <summary>
-        /// Í¨¹ı´úÂëÖ±½ÓÉú³É
+        /// é€šè¿‡ä»£ç ç›´æ¥ç”Ÿæˆ
         /// </summary>
         /// <param name="code"></param>
         /// <returns></returns>
-        public static ClassBuilder FromCode(string Code)
+        public static StructBuilder FromCode(string Code)
         {
             if (string.IsNullOrEmpty(Code))
                 throw new ArgumentNullException(nameof(Code));
 
-            return new ClassBuilder().WithFromCode(Code);
+            return new StructBuilder().WithFromCode(Code);
         }
 
         public override string ToFormatCode()
@@ -90,8 +105,11 @@ namespace CZGL.Roslyn
             if (_base.UseCode)
                 return _base.Code;
 
-            const string Template = @"{Attributes}{Access} {Keyword} class {Name}{GenericParams} {:}{BaseClass}{,}{Interfaces}{GenericList}
+            const string Template = @"{Attributes}{Access} {Keyword} struct {Name}{GenericParams} {:}{BaseClass}{,}{Interfaces}{GenericList}
 {
+
+{Ctors}
+
 {Fields}
 
 {Properties}
@@ -108,20 +126,17 @@ namespace CZGL.Roslyn
             var code = Template
                 .Replace("{Attributes}", _member.Atributes.Join("\n").CodeNewAfter("\n"))
                 .Replace("{Access}", _member.Access)
-                .Replace("{Keyword}", _class.Keyword)
+                .Replace("{Keyword}", _typeState.Keyword)
                 .Replace("{Name}", _base.Name)
                 .Replace("{GenericParams}", _member.GenericParams.GetParamCode().CodeNewBefore("<").CodeNewAfter(">"))
-                .Replace("{:}", string.IsNullOrEmpty(_class.BaseClass) && _class.Interfaces.Count == 0 ? "" : ":")
-                .Replace("{BaseClass}", _class.BaseClass)
-                .Replace("{,}", (string.IsNullOrEmpty(_class.BaseClass) || _class.Interfaces.Count == 0) ? "" : ",")
-                .Replace("{Interfaces}", _class.Interfaces.Join(","))
                 .Replace("{GenericList}", _member.GenericParams.GetWhereCode(true).CodeNewBefore("\n"))
-                .Replace("{Fields}", _class.Fields.Select(item => item.ToFullCode()).Join("\n"))
-                .Replace("{Properties}", _class.Propertys.Select(item => item.ToFullCode()).Join("\n"))
-                .Replace("{Delegates}", _class.Delegates.Select(item => item.ToFullCode()).Join("\n"))
-                .Replace("{Events}", _class.Events.Select(item => item.ToFullCode()).Join("\n"))
-                .Replace("{Methods}", _class.Methods.Select(item => item.ToFullCode()).Join("\n"))
-                .Replace("{Others}", _class.Others.OfType<BaseTemplate>().Select(item => item.ToFullCode()).Join("\n"));
+                .Replace("{Ctors}", _typeState.Ctors.Select(item=>item.ToFullCode()).Join("\n"))
+                .Replace("{Fields}", _typeState.Fields.Select(item => item.ToFullCode()).Join("\n"))
+                .Replace("{Properties}", _objectState.Propertys.Select(item => item.ToFullCode()).Join("\n"))
+                .Replace("{Delegates}", _typeState.Delegates.Select(item => item.ToFullCode()).Join("\n"))
+                .Replace("{Events}", _typeState.Events.Select(item => item.ToFullCode()).Join("\n"))
+                .Replace("{Methods}", _objectState.Methods.Select(item => item.ToFullCode()).Join("\n"))
+                .Replace("{Others}", _typeState.Others.OfType<BaseTemplate>().Select(item => item.ToFullCode()).Join("\n"));
 
             return code;
         }

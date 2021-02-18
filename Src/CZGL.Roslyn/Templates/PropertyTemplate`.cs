@@ -46,76 +46,25 @@ namespace CZGL.Roslyn.Templates
             return _TBuilder;
         }
 
+#nullable disable
+
         /// <summary>
-        /// 将 set 构造器设置为 set;        
+        /// 设置属性的 get 和 set 代码，可以留空，但是不能两者都为空
         /// </summary>
+        /// <param name="getCode"></param>
+        /// <param name="setCode"></param>
         /// <returns></returns>
-        public virtual TBuilder WithDefaultSet()
+        public virtual TBuilder WithGetSet(string getCode = "get;", string setCode = "set;")
         {
-            _property.SetBlock = SetBlock;
+            if (string.IsNullOrEmpty(getCode) && string.IsNullOrEmpty(setCode))
+                throw new ArgumentNullException(nameof(getCode) + "," + nameof(setCode));
+
+            _property.GetBlock = getCode;
+            _property.SetBlock = setCode;
             return _TBuilder;
         }
 
-        /// <summary>
-        /// 将 get 构造器设置为 get;
-        /// </summary>
-        /// <returns></returns>
-        public virtual TBuilder WithDefaultGet()
-        {
-            _property.GetBlock = GetBlock;
-            return _TBuilder;
-        }
-
-
-        /// <summary>
-        /// 属性 set 构造器
-        /// <para>示例 set{z=value;}</para>
-        /// </summary>
-        /// <param name="blockCode"></param>
-        /// <returns></returns>
-        public virtual TBuilder WithSetInit(string blockCode)
-        {
-            if (string.IsNullOrWhiteSpace(blockCode))
-                throw new ArgumentNullException(nameof(blockCode));
-            _property.SetBlock = blockCode;
-            return _TBuilder;
-        }
-
-        /// <summary>
-        /// 属性 get 构造器
-        /// <para>示例 get{return z;}</para>
-        /// </summary>
-        /// <param name="blockCode"></param>
-        /// <returns></returns>
-        public virtual TBuilder WithGetInit(string blockCode)
-        {
-            if (string.IsNullOrWhiteSpace(blockCode))
-                throw new ArgumentNullException(nameof(blockCode));
-
-            _property.GetBlock = blockCode;
-            return _TBuilder;
-        }
-
-        /// <summary>
-        /// 不设置 Set 构造器
-        /// </summary>
-        /// <returns></returns>
-        public virtual TBuilder WithNullSet()
-        {
-            _property.SetBlock = string.Empty;
-            return _TBuilder;
-        }
-
-
-        /// <summary>
-        /// 不设置 Get 构造器
-        /// </summary>
-        /// <returns></returns>
-        public virtual TBuilder WithNullGet()
-        {
-            _property.GetBlock = string.Empty;
-            return _TBuilder;
-        }
+#nullable disable
 
         #endregion
 

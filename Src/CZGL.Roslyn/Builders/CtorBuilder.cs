@@ -19,31 +19,6 @@ namespace CZGL.Roslyn
             _TBuilder = this;
         }
 
-        /// <summary>
-        /// 调用父类构造函数
-        /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
-        /// <example>
-        /// <code>
-        /// base("test")
-        /// </code>
-        /// </example>
-        public new CtorBuilder WithBase(string Code)
-        {
-            return base.WithThis(Code);
-        }
-
-        /// <summary>
-        /// 调用本身的其它构造函数
-        /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
-        public new CtorBuilder WithThis(string Code)
-        {
-            return base.WithThis(Code);
-        }
-
 
         public static ConstructorDeclarationSyntax BuildSyntax(string Code, string[] attrs = null)
         {

@@ -67,33 +67,5 @@ namespace CZGL.Roslyn.Templates
             _method.BlockCode = null;
             return _TBuilder;
         }
-
-        /// <summary>
-        /// 调用父类构造函数
-        /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
-        /// <example>
-        /// <code>
-        /// base("test")
-        /// </code>
-        /// </example>
-        internal virtual TBuilder WithBase(string Code)
-        {
-            _method.BaseOrThis = Code;
-            return _TBuilder;
-        }
-
-        /// <summary>
-        /// 调用本身的其它构造函数
-        /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
-        internal virtual TBuilder WithThis(string Code)
-        {
-            _method.BaseOrThis = Code;
-            return _TBuilder;
-        }
-
     }
 }

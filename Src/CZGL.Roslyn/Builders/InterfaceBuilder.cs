@@ -9,7 +9,7 @@ using System.Text;
 
 namespace CZGL.Roslyn
 {
-    public class InterfaceBuilder : ClassTemplate<InterfaceBuilder>
+    public class InterfaceBuilder : InterfaceTemplate<InterfaceBuilder>
     {
         internal InterfaceBuilder()
         {
@@ -93,14 +93,13 @@ namespace CZGL.Roslyn
             var code = Template
                 .Replace("{Attributes}", _member.Atributes.Join("\n").CodeNewAfter("\n"))
                 .Replace("{Access}", _member.Access)
-                .Replace("{Keyword}", _class.Keyword)
                 .Replace("{Name}", _base.Name)
                 .Replace("{GenericParams}", _member.GenericParams.GetParamCode().CodeNewBefore("<").CodeNewAfter(">"))
-                .Replace("{:}", string.IsNullOrEmpty(_class.BaseClass) && _class.Interfaces.Count == 0 ? "" : ":")
-                .Replace("{Interfaces}", _class.Interfaces.Join(","))
+                .Replace("{:}", _objectState.Interfaces.Any() ? ":" : "")
+                .Replace("{Interfaces}", _objectState.Interfaces.Join(","))
                 .Replace("{GenericList}", _member.GenericParams.GetWhereCode(true).CodeNewBefore("\n"))
-                .Replace("{Properties}", _class.Propertys.Select(item => item.ToFullCode()).Join("\n"))
-                .Replace("{Methods}", _class.Methods.Select(item => item.ToFullCode()).Join("\n"));
+                .Replace("{Properties}", _objectState.Propertys.Select(item => item.ToFullCode()).Join("\n"))
+                .Replace("{Methods}", _objectState.Methods.Select(item => item.ToFullCode()).Join("\n"));
 
             return code;
         }

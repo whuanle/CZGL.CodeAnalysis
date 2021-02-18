@@ -31,6 +31,11 @@ namespace CZGL.CodeAnalysis.Shared
             return _ClassKeyWork.Value[value];
         }
 
+        public static string GetStructKword(StructKeyword value)
+        {
+            return value == StructKeyword.Readonly ? "readonly" : "";
+        }
+
         private static Lazy<Dictionary<EventKeyword, string>> _EventKeyword = new Lazy<Dictionary<EventKeyword, string>>(() =>
           {
               return GetDictionary(new Dictionary<EventKeyword, string>());
@@ -146,6 +151,7 @@ namespace CZGL.CodeAnalysis.Shared
        {
            return GetDictionary(new Dictionary<PropertyKeyword, string>());
        });
+
         public static string GetPropertyKeyword(PropertyKeyword value)
         {
             return _PropertyKeyword.Value[value];

@@ -5,6 +5,9 @@ using System.Text;
 
 namespace CZGL.Roslyn.Templates
 {
+    /// <summary>
+    /// 基础模板，所有模板都必须继承此抽象类
+    /// </summary>
     public abstract class BaseTemplate
     {
         /// <summary>

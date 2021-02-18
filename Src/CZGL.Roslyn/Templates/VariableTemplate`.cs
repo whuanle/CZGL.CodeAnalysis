@@ -7,8 +7,8 @@ namespace CZGL.Roslyn.Templates
 {
 
     /// <summary>
-    /// 字段或属性共有操作
-    /// <para><see cref="FieldBuilder"/>、<see cref="PropertyBuilder"/></para>
+    /// 类或结构体成员模板，如字段或属性、事件
+    /// <para>实现者有 <see cref="FieldBuilder"/>、<see cref="PropertyBuilder"/>、<see cref="EventBuilder"/></para>
     /// </summary>
     /// <typeparam name="TBuilder"></typeparam>
     public abstract class VariableTemplate<TBuilder> : MemberTemplate<TBuilder> where TBuilder : VariableTemplate<TBuilder>

@@ -11,18 +11,18 @@ using System.Text;
 namespace CZGL.Roslyn.Templates
 {
     /// <summary>
-    /// 命名空间内的成员共有的操作
+    /// 命名空间内的成员共有的结构和操作
     /// <para>
     /// * {枚举}<br />
-    /// * {委托}
-    /// * {事件}
-    /// * {结构体}
-    /// * {接口}
-    /// * {类}
-    /// *   -{字段}
-    /// *   -{属性}
-    /// *   -{方法}
-    /// *   -{其它成员}
+    /// * {委托}<br />
+    /// * {事件}<br />
+    /// * {结构体}<br />
+    /// * {接口}<br />
+    /// * {类}<br />
+    /// *   -{字段}<br />
+    /// *   -{属性}<br />
+    /// *   -{方法}<br />
+    /// *   -{其它成员}<br />
     /// </para>
     /// </summary>
     /// <typeparam name="TBuilder"></typeparam>
@@ -33,9 +33,12 @@ namespace CZGL.Roslyn.Templates
         /// </summary>
         protected internal MemberState _member = new MemberState();
 
+        // 表示当前子类构建器
         protected internal TBuilder _TBuilder;
 
-
+        /// <summary>
+        /// 成员名称
+        /// </summary>
         public string Name { get { return _base.Name; } }
 
         #region 特性注解
@@ -170,7 +173,6 @@ namespace CZGL.Roslyn.Templates
 
         #endregion
 
-
         #region 泛型约束
 
 
@@ -249,7 +251,7 @@ namespace CZGL.Roslyn.Templates
         /// <summary>
         /// 通过代码直接生成
         /// </summary>
-        /// <param name="code"></param>
+        /// <param name="code">字符串代码</param>
         /// <returns></returns>
         internal TBuilder WithFromCode(string code)
         {

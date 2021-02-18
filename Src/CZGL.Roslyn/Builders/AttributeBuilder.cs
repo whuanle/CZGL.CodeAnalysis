@@ -17,7 +17,7 @@ namespace CZGL.Roslyn
         }
         internal AttributeBuilder(string name) : this()
         {
-            _attribute.Name = name;
+            _base.Name = name;
         }
 
         /// <summary>
@@ -50,19 +50,19 @@ namespace CZGL.Roslyn
             {
                 if (_attribute.Propertys.Count == 0)
                 {
-                    code = Template1.Replace("{Name}", _attribute.Name);
+                    code = Template1.Replace("{Name}", _base.Name);
                 }
                 else
-                    code = Template3.Replace("{Name}", _attribute.Name).Replace("{Propertys}", _attribute.Propertys.Join(","));
+                    code = Template3.Replace("{Name}", _base.Name).Replace("{Propertys}", _attribute.Propertys.Join(","));
             }
             else
             {
                 if (_attribute.Propertys.Count == 0)
                 {
-                    code = Template2.Replace("{Name}", _attribute.Name).Replace("{Ctor}", _attribute.Ctor);
+                    code = Template2.Replace("{Name}", _base.Name).Replace("{Ctor}", _attribute.Ctor);
                 }
                 else
-                    code = Template4.Replace("{Name}", _attribute.Name)
+                    code = Template4.Replace("{Name}", _base.Name)
                         .Replace("{Ctor}", _attribute.Ctor)
                         .Replace("{Propertys}", _attribute.Propertys.Join(","));
             }

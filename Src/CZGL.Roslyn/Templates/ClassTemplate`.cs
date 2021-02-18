@@ -9,10 +9,10 @@ using System.Text;
 namespace CZGL.Roslyn.Templates
 {
     /// <summary>
-    /// 类构建器
+    /// 类构建器模板
     /// </summary>
     /// <typeparam name="TBuilder"><see cref="ClassBuilder"/></typeparam>
-    public abstract class ClassTemplate<TBuilder> : MemberTemplate<TBuilder> where TBuilder : ClassTemplate<TBuilder>
+    public abstract class ClassTemplate<TBuilder> : ObjectTypeTemplate<TBuilder> where TBuilder : ClassTemplate<TBuilder>
     {
         protected internal readonly ClassState _class = new ClassState();
 
@@ -25,45 +25,7 @@ namespace CZGL.Roslyn.Templates
         /// <returns></returns>
         public virtual TBuilder WithKeyword(ClassKeyword keyword)
         {
-            _class.Keyword = EnumCache.GetValue(keyword);
-            return _TBuilder;
-        }
-
-        /// <summary>
-        /// 类的修饰符关键字，如 static，sealed
-        /// <para>关键字拼写错误，可能会导致代码有严重错误</para>
-        /// </summary>
-        /// <param name="keyword">static... </param>
-        /// <returns></returns>
-        public virtual TBuilder WithKeyword(string keyword = "")
-        {
-            _class.Keyword = keyword;
-            return _TBuilder;
-        }
-
-        #endregion
-
-        #region 名称
-
-        /// <summary>
-        /// 设置名称
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public new virtual TBuilder WithName(string name)
-        {
-            base.WithName(name);
-            return _TBuilder;
-        }
-
-        /// <summary>
-        /// 随机生成一个名称
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public new virtual TBuilder WithRondomName()
-        {
-            base.WithRondomName();
+            _typeState.Keyword = EnumCache.GetValue(keyword);
             return _TBuilder;
         }
 
@@ -84,82 +46,6 @@ namespace CZGL.Roslyn.Templates
             return _TBuilder;
         }
 
-        /// <summary>
-        /// 继承接口
-        /// </summary>
-        /// <param name="interfaceName"></param>
-        /// <returns></returns>
-        public virtual TBuilder WithInterface(string interfaceName)
-        {
-            _class.Interfaces.Add(interfaceName);
-            return _TBuilder;
-        }
-
-        /// <summary>
-        /// 继承接口
-        /// </summary>
-        /// <param name="interfaceNames"></param>
-        /// <returns></returns>
-        public virtual TBuilder WithInterfaces(params string[] interfaceNames)
-        {
-            _ = interfaceNames.Execute(item =>  _class.Interfaces.Add(item));
-            return _TBuilder;
-        }
-
-        #endregion
-
-        /// <summary>
-        /// 设置访问修饰符(Access Modifiers)
-        /// </summary>
-        /// <param name="visibilityType">标记</param>
-        /// <returns></returns>
-        public TBuilder WithAccess(NamespaceAccess access = NamespaceAccess.Internal)
-        {
-            _member.Access = EnumCache.GetValue(access);
-            return _TBuilder;
-        }
-
-        #region 构造函数
-
-        /// <summary>
-        /// 添加一个构造函数
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public virtual CtorBuilder WithCtor()
-        {
-            string name = _base.Name;
-            var builder = new CtorBuilder(name);
-            _class.Ctors.Add(builder);
-            return builder;
-        }
-
-        /// <summary>
-        /// 添加一个构造函数
-        /// </summary>
-        /// <param name="builder"></param>
-        /// <returns></returns>
-        public virtual TBuilder WithCtor(Action<CtorBuilder> builder)
-        {
-            CtorBuilder ctor = new CtorBuilder(_base.Name);
-            builder.Invoke(ctor);
-            _class.Ctors.Add(ctor);
-            return _TBuilder;
-        }
-
-
-        /// <summary>
-        /// 添加一个构造函数
-        /// </summary>
-        /// <param name="Code">构造函数代码</param>
-        /// <returns></returns>
-        public virtual TBuilder WithCtorFromCode(string Code)
-        {
-            _class.Ctors.Add(CtorBuilder.FromCode(Code));
-            return _TBuilder;
-        }
-
-
         #endregion
 
         /// <summary>
@@ -170,155 +56,5 @@ namespace CZGL.Roslyn.Templates
         {
             return _TBuilder;
         }
-
-
-        #region 类的成员，字段、事件、委托、属性、方法
-
-        #region 字段
-        
-
-        /// <summary>
-        /// 添加一个字段
-        /// </summary>
-        /// <param name="name">字段名称</param>
-        /// <returns></returns>
-        public virtual FieldBuilder WithField(string name)
-        {
-            FieldBuilder member = new FieldBuilder(name);
-            _class.Fields.Add(member);
-            return member;
-        }
-
-        /// <summary>
-        /// 添加一个字段
-        /// </summary>
-        /// <param name="builder">字段构建器</param>
-        /// <returns></returns>
-        public virtual TBuilder WithField(string name,Action<FieldBuilder> builder)
-        {
-            FieldBuilder member = new FieldBuilder(name);
-            builder.Invoke(member);
-            _class.Fields.Add(member);
-            return _TBuilder;
-        }
-
-        /// <summary>
-        /// 添加一个字段
-        /// </summary>
-        /// <param name="builder">字段构建器</param>
-        /// <returns></returns>
-        public virtual TBuilder WithField(FieldBuilder builder)
-        {
-            _class.Fields.Add(builder);
-            return _TBuilder;
-        }
-
-        #endregion
-
-        #region 属性
-
-        /// <summary>
-        /// 添加一个属性
-        /// </summary>
-        /// <param name="name">属性名称</param>
-        /// <returns></returns>
-        public virtual PropertyBuilder WithProperty(string name)
-        {
-            PropertyBuilder member = new PropertyBuilder(name);
-            _class.Propertys.Add(member);
-            return member;
-        }
-
-        /// <summary>
-        /// 添加一个属性
-        /// </summary>
-        /// <param name="builder">属性构建器</param>
-        /// <returns></returns>
-        public virtual TBuilder WithProperty(string name,Action<PropertyBuilder> builder)
-        {
-            PropertyBuilder member = new PropertyBuilder(name);
-            builder.Invoke(member);
-            _class.Propertys.Add(member);
-            return _TBuilder;
-        }
-
-        /// <summary>
-        /// 添加一个属性
-        /// </summary>
-        /// <param name="builder">字段构建器</param>
-        /// <returns></returns>
-        public virtual TBuilder WithProperty(PropertyBuilder builder)
-        {
-            _class.Propertys.Add(builder);
-            return _TBuilder;
-        }
-
-
-        #endregion
-
-        #region 方法
-
-        /// <summary>
-        /// 添加一个方法
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="builder"></param>
-        /// <returns></returns>
-        public virtual TBuilder WithMethod(string name,Action<MethodBuilder> builder)
-        {
-            MethodBuilder member = new MethodBuilder(name);
-            builder.Invoke(member);
-            _class.Methods.Add(member);
-            return _TBuilder;
-        }
-
-        /// <summary>
-        /// 添加一个方法
-        /// </summary>
-        /// <param name="builder"></param>
-        /// <returns></returns>
-        public virtual TBuilder WithMethod(Action<MethodBuilder> builder)
-        {
-            MethodBuilder member = new MethodBuilder();
-            builder.Invoke(member);
-            _class.Methods.Add(member);
-            return _TBuilder;
-        }
-
-
-        #endregion
-
-
-        #region 委托、事件
-        
-        /// <summary>
-        /// 统计一个委托
-        /// </summary>
-        /// <param name="builder"></param>
-        /// <returns></returns>
-        public virtual TBuilder WithDelegate(Action<DelegateBuilder> builder)
-        {
-            DelegateBuilder member = new DelegateBuilder();
-            builder.Invoke(member);
-            _class.Delegates.Add(member);
-            return _TBuilder;
-        }
-
-        /// <summary>
-        /// 添加一个事件
-        /// </summary>
-        /// <param name="builder"></param>
-        /// <returns></returns>
-        public virtual TBuilder WithDelegate(Action<EventBuilder> builder)
-        {
-            EventBuilder member = new EventBuilder();
-            builder.Invoke(member);
-            _class.Events.Add(member);
-            return _TBuilder;
-        }
-
-        #endregion
-
-        #endregion
     }
 }

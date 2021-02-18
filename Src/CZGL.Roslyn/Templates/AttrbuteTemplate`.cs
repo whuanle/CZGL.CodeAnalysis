@@ -8,7 +8,7 @@ namespace CZGL.Roslyn.Templates
     /// 特性构建器
     /// </summary>
     /// <typeparam name="TBuilder"></typeparam>
-    public abstract class AttrbuteTemplate<TBuilder> where TBuilder : AttrbuteTemplate<TBuilder>
+    public abstract class AttrbuteTemplate<TBuilder> : BaseTemplate where TBuilder : AttrbuteTemplate<TBuilder>
     {
         protected internal readonly AttributeState _attribute = new AttributeState();
 
@@ -20,9 +20,9 @@ namespace CZGL.Roslyn.Templates
         /// <para>需要保证此特性已经存在</para>
         /// </summary>
         /// <param name="name">名称后缀不需要带上 Attribute</param>
-        public virtual TBuilder WithName(string name)
+        public new virtual TBuilder WithName(string name)
         {
-            _attribute.Name = name;
+            base.WithName(name);
             return _TBuilder;
         }
 
@@ -76,20 +76,5 @@ namespace CZGL.Roslyn.Templates
 
             return _TBuilder;
         }
-
-        /// <summary>
-        /// 完整输出代码
-        /// <para>不会对代码进行检查，直接输出当前已经定义的代码</para>
-        /// </summary>
-        /// <returns>代码 <see cref="string"/></returns>
-        public abstract string ToFullCode();
-
-        /// <summary>
-        /// 完整输出格式化代码
-        /// <para>会对代码进行语法树分析，检查代码是否有问题。如果无问题，再格式化代码输出</para>
-        /// </summary>
-        /// <returns>代码 <see cref="string"/></returns>
-        public abstract string ToFormatCode();
-
     }
 }

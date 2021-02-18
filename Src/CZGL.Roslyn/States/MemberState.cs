@@ -16,6 +16,8 @@ namespace CZGL.Roslyn.States
 
         // 委托事件，不具有属性修饰符，如 static
 
+#nullable enable
+
         /// <summary>
         /// 特性列表
         /// </summary>
@@ -26,5 +28,6 @@ namespace CZGL.Roslyn.States
         /// </summary>
         public GenericBuilder GenericParams { get; set; } = new GenericBuilder();
 
+#nullable enable
     }
 }
