@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -16,7 +17,9 @@ namespace CZGL.Roslyn
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static string WithUnixEOL(this string source) => source.Replace("\r\n", "\n");
+        public static string WithUnixEOL(this string source) =>
+            Debugger.IsAttached ? source : source.Replace("\r\n", "\n");
+#warning 这里为了兼容vs
 
         /// <summary>
         /// 将集合中的元素以某个字符结尾组合成字符串
@@ -97,5 +100,9 @@ namespace CZGL.Roslyn
             }
             return source;
         }
+
+#if VS
+Console.Writ
+#endif
     }
 }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CZGL.Roslyn.Extensions
+namespace CZGL.Roslyn
 {
     /// <summary>
     /// 创建命名空间的拓展方法 <see cref="NamespaceBuilder"/>

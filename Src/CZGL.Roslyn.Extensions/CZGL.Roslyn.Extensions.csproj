@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <RootNamespace>CZGL.Roslyn</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

@@ -46,10 +46,11 @@ namespace CZGL.Roslyn.Templates
             return _TBuilder;
         }
 
-#nullable disable
+#nullable enable
 
         /// <summary>
-        /// 设置属性的 get 和 set 代码，可以留空，但是不能两者都为空
+        /// 设置属性的 get 和 set 代码，不能两者都设置为空
+        /// <para>请不要设置为 null，可以设置为 string.Empty ；</para>
         /// </summary>
         /// <param name="getCode"></param>
         /// <param name="setCode"></param>
@@ -64,7 +65,7 @@ namespace CZGL.Roslyn.Templates
             return _TBuilder;
         }
 
-#nullable disable
+#nullable enable
 
         #endregion
 

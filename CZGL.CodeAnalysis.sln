@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineEdit", "examples\Onli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReflectTests", "Tests\ReflectTests\ReflectTests.csproj", "{CC520D23-97E9-455B-BACA-E31D9E8E2577}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoslynExtensionsTests", "Tests\RoslynExtensionsTests\RoslynExtensionsTests.csproj", "{76E78C54-6229-4F57-9FD2-E5C2A5D44E90}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{CC520D23-97E9-455B-BACA-E31D9E8E2577}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC520D23-97E9-455B-BACA-E31D9E8E2577}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC520D23-97E9-455B-BACA-E31D9E8E2577}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76E78C54-6229-4F57-9FD2-E5C2A5D44E90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76E78C54-6229-4F57-9FD2-E5C2A5D44E90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76E78C54-6229-4F57-9FD2-E5C2A5D44E90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76E78C54-6229-4F57-9FD2-E5C2A5D44E90}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -104,6 +110,7 @@ Global
 		{013DF5FC-DAE2-4B66-92B8-178B24B2EE48} = {E98C7842-EEE6-4D32-8B8F-3922FC42D1BF}
 		{208FFE91-C334-4F15-89F2-ECD868C23791} = {E98C7842-EEE6-4D32-8B8F-3922FC42D1BF}
 		{CC520D23-97E9-455B-BACA-E31D9E8E2577} = {065C6A67-FC60-49C2-B1E0-1C1E872E1F77}
+		{76E78C54-6229-4F57-9FD2-E5C2A5D44E90} = {065C6A67-FC60-49C2-B1E0-1C1E872E1F77}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3A846AD7-C6DD-4276-809C-CBD360DDC5E0}

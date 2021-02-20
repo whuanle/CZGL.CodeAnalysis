@@ -73,11 +73,11 @@ namespace CZGL.Reflect
         }
 
         // Test<int,int>，支持递归深入下一层
+
         /// <summary>
         /// 获取类型的泛型定义
         /// </summary>
         /// <param name="type"></param>
-        /// <param name="definition">使用基础泛型类型定义</param>
         /// <returns></returns>
         public static string GetGenriceName(this Type type)
         {

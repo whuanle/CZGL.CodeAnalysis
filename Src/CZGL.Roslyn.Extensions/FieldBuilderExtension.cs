@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Reflection;
 using System;
 
-namespace CZGL.Roslyn.Extensions
+namespace CZGL.Roslyn
 {
     /// <summary>
     /// 字段构建器拓展方法
@@ -16,62 +16,69 @@ namespace CZGL.Roslyn.Extensions
         /// <summary>
         /// 克隆一个字段
         /// </summary>
+        /// <param name="builder"></param>
         /// <param name="field"></param>
-        /// <param name="copyAttribute">是否克隆特性注解，默认不克隆</param>
-        /// <param name="copyName">是否连名称一起克隆，默认不克隆</param>
+        /// <param name="copyAttribute">是否克隆特性注解，默认克隆</param>
         /// <returns></returns>
-        public static FieldBuilder WithCopy(this FieldBuilder fieldBuilder, FieldInfo field, bool copyAttribute = false, bool copyName = false)
+        public static FieldBuilder WithCopy(this FieldBuilder builder, FieldInfo field, bool copyAttribute = true)
         {
             if (field is null)
                 throw new ArgumentNullException(nameof(field));
 
-
-            fieldBuilder.WithAccess(field.GetAccess())
-            .WithType(field.DeclaringType.Name)
+            builder.WithAccess(field.GetAccess())
+            .WithType(field.FieldType)
             .WithKeyword(field.GetKeyword());
 
             if (copyAttribute)
             {
-                fieldBuilder.WithAttributes(field.GetAttributes());
+                builder.WithAttributes(field.GetAttributes());
             }
+            builder.WithName(field.Name);
 
-            if (copyName)
-            {
-                fieldBuilder.WithName(field.Name);
-            }
+            builder.WithNamespace(field.FieldType.Namespace);
 
-            return fieldBuilder;
+            return builder;
         }
 
-        public static FieldBuilder WithType<T>(this FieldBuilder field)
+#nullable enable
+
+        /// <summary>
+        /// 定义字段类型
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="fieldType"></param>
+        /// <returns></returns>
+        public static FieldBuilder WithType(this FieldBuilder builder, Type fieldType)
         {
-            return field.WithType(field.Name);
+            if (fieldType == null)
+                throw new ArgumentNullException(nameof(fieldType));
+
+            var type = fieldType;
+            string typeName;
+
+            if (type.IsGenericType)
+                typeName = GenericeAnalysis.GetGenriceName(type);
+            else typeName = type.Name;
+
+            return builder.WithType(typeName);
         }
 
-        //public static FieldBuilder WithType<T>(this FieldBuilder fieldBuilder)
-        //{
-        //    fieldBuilder.WithType(GenericeAnalysis.Analysis());
-        //    return fieldBuilder;
-        //}
+#nullable enable
 
-        //public static ClassBuilder WithField(this ClassBuilder classBuilder,FieldInfo field)
-        //{
-        //    var analysis = new FiledAnalysis(field);
+        /// <summary>
+        /// 为字段定义类型
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="builder"></param>
+        /// <returns></returns>
+        public static FieldBuilder WithType<T>(this FieldBuilder builder)
+        {
+            Type type = typeof(T);
+            if (!string.IsNullOrEmpty(type.Namespace))
+                builder.WithNamespace(type.Namespace);
 
-        //    var fieldBuild = CodeSyntax.CreateField(field.Name)
-        //        .WithAccess(analysis.Access);
-
-        //    classBuilder.WithField(fieldBuild);
-
-        //    return classBuilder;
-        //}
-
-        //public FieldBuilder SetType(Type type)
-        //{
-
-
-        //    return this;
-        //}
+            return WithType(builder, type);
+        }
 
         public static FieldDeclarationSyntax Create(this FieldBuilder builder, FieldInfo info)
         {

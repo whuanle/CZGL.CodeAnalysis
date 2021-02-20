@@ -54,8 +54,7 @@ namespace RoslynTests
                 .WithProperty("Get", b =>
                 {
                     b.WithType("string")
-                    .WithDefaultGet()
-                    .WithDefaultSet();
+                    .WithGetSet("get", "set");
                 })
                 .WithMethod("Method", b =>
                 {

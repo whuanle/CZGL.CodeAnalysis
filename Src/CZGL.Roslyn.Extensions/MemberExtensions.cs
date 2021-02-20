@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CZGL.Roslyn.Extensions
+namespace CZGL.Roslyn
 {
     public static class MemberExtensions
     {

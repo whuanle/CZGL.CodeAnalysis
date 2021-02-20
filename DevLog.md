@@ -77,6 +77,13 @@
 
   增加 until 类；
 
+* 命名空间自动收集
+
+  BaseTemplate 增加一个命名空间表，自动收集命名空间到此，在构建时使用(未完成)；
+
+* 实现字段和属性的初始化代码识别
+  能够判断`private static readonly List<int> a = new List<int>();` `=` 号后面的表达式；
+
 * 完成拓展模块
 
   完成 Roslyn 拓展模块

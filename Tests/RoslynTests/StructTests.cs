@@ -83,8 +83,7 @@ namespace RoslynTests
                 {
                     b.WithAccess(MemberAccess.Public)
                     .WithType("string")
-                    .WithGetInit("get { return str; }")
-                    .WithNullSet();
+                    .WithGetSet("get { return str; }");
                 })
                 .WithMethod("Method", b =>
                 {

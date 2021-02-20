@@ -12,7 +12,7 @@ namespace CZGL.Reflect
     /// 解析一个类型
     /// </summary>
     public static class ClassAnalysis
-    {        
+    {
         /// <summary>
         /// 获取访问权限
         /// </summary>
@@ -40,7 +40,7 @@ namespace CZGL.Reflect
         /// <returns></returns>
         public static bool IsCanInherited(this Type type)
         {
-            if (type.IsValueType||!type.IsClass||type==typeof(Delegate))
+            if (type.IsValueType || !type.IsClass || type == typeof(Delegate))
                 return false;
 
             var keyword = KeywordAnalysis.GetClassKeyword(type);
@@ -48,7 +48,7 @@ namespace CZGL.Reflect
                 return false;
             return true;
         }
-        
+
         /// <summary>
         /// 获取泛型类的名称
         /// </summary>
@@ -72,7 +72,7 @@ namespace CZGL.Reflect
 
 
             var baseType = type.BaseType != typeof(object) ? true : false;
-            var interfaces = type.GetInterfaces().Any() ? true: false;
+            var interfaces = type.GetInterfaces().Any() ? true : false;
             return baseType || interfaces;
         }
 

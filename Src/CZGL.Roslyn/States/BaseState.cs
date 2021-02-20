@@ -1,4 +1,6 @@
-﻿namespace CZGL.Roslyn.States
+﻿using System.Collections.Generic;
+
+namespace CZGL.Roslyn.States
 {
     /// <summary>
     /// 成员基础结构表示
@@ -21,6 +23,12 @@
         /// 字符串代码
         /// </summary>
         public string Code { get; set; } = null;
+
+        /// <summary>
+        /// 命名空间收集
+        /// </summary>
+        public HashSet<string> Namespaces = new HashSet<string>();
+
 #nullable disable
     }
 }

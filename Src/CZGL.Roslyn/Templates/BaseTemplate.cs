@@ -44,6 +44,24 @@ namespace CZGL.Roslyn.Templates
 
         #endregion
 
+        /// <summary>
+        /// 获取此构造器设的命名空间表
+        /// </summary>
+        internal IEnumerable<string> Namespaces => _base.Namespaces;
+
+        /// <summary>
+        /// 命名空间名称
+        /// <para>此处添加的命名空间将被统一收集，在构建代码时自动引用命名空间</para>
+        /// </summary>
+        /// <param name="namespaceName"></param>
+        public virtual void WithNamespace(string namespaceName)
+        {
+            if (string.IsNullOrWhiteSpace(namespaceName))
+                return;
+
+            _base.Namespaces.Add(namespaceName);
+        }
+
 
         /// <summary>
         /// 完整输出代码

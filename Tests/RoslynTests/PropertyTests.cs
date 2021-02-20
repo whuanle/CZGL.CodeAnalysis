@@ -242,8 +242,7 @@ public int i
                 .WithKeyword(PropertyKeyword.Static)
                 .WithType("int")
                 .WithName("i")
-                .WithGetInit("get{return tmp+1;}")
-                .WithSetInit("set{tmp+=1;}")
+                .WithGetSet("get{return tmp+1;}", "set{tmp+=1;}")
                 .WithInit("int.Parse(\"1\")");
 
             var result = builder.ToFormatCode();
