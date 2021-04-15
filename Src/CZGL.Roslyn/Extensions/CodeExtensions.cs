@@ -17,9 +17,8 @@ namespace CZGL.Roslyn
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static string WithUnixEOL(this string source) =>
-            Debugger.IsAttached ? source : source.Replace("\r\n", "\n");
-#warning 这里为了兼容vs
+        public static string WithUnixEOL(this string source) => source;
+            //Debugger.IsAttached ? source : source.Replace("\r\n", "\n");
 
         /// <summary>
         /// 将集合中的元素以某个字符结尾组合成字符串
@@ -45,7 +44,7 @@ namespace CZGL.Roslyn
         {
             if (string.IsNullOrEmpty(source))
                 return source;
-            return source + "\n";
+            return source + Environment.NewLine;
         }
 
         /// <summary>
@@ -100,9 +99,5 @@ namespace CZGL.Roslyn
             }
             return source;
         }
-
-#if VS
-Console.Writ
-#endif
     }
 }

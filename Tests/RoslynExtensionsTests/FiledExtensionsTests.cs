@@ -1,6 +1,7 @@
 using CZGL.Roslyn;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -9,11 +10,11 @@ namespace RoslynExtensionsTests
     /// <summary>
     /// ◊÷∂ŒππΩ®∆˜Õÿ’π≤‚ ‘
     /// </summary>
-    public class FiledBuilderExtensionsTests
+    public class FiledExtensionsTests
     {
         private readonly FieldBuilder builder = CodeSyntax.CreateField("T1");
         ITestOutputHelper _tempOutput;
-        public FiledBuilderExtensionsTests(ITestOutputHelper tempOutput)
+        public FiledExtensionsTests(ITestOutputHelper tempOutput)
         {
             _tempOutput = tempOutput;
         }
@@ -26,9 +27,7 @@ namespace RoslynExtensionsTests
         {
             builder.WithType<int>();
             var result = builder.ToFormatCode();
-#if Log
             _tempOutput.WriteLine(result.WithUnixEOL());
-#endif
             Assert.Equal("int T1;", result.WithUnixEOL());
         }
 
@@ -40,13 +39,11 @@ namespace RoslynExtensionsTests
         {
             builder.WithType(typeof(int));
             var result = builder.ToFormatCode();
-#if Log
             _tempOutput.WriteLine(result.WithUnixEOL());
-#endif
             Assert.Equal("int T1;", result.WithUnixEOL());
         }
-
-        private static readonly List<int> a;
+        private static readonly int a;
+        private static readonly List<int> b;
 
         /// <summary>
         /// WithType ≤‚ ‘
@@ -54,13 +51,21 @@ namespace RoslynExtensionsTests
         [Fact]
         public void ◊÷∂Œ∏¥÷∆()
         {
-            builder.WithCopy(typeof(FiledBuilderExtensionsTests).GetField("a"));
+            builder.WithCopy(typeof(FiledExtensionsTests).GetField("a", BindingFlags.NonPublic | BindingFlags.Static));
             var result = builder.ToFormatCode();
-#if Log
             _tempOutput.WriteLine(result.WithUnixEOL());
-#endif
-            Assert.Equal("int T1;", result.WithUnixEOL());
+            Assert.Equal("private static readonly int a;", result.WithUnixEOL());
         }
-
+        /// <summary>
+        /// WithType ≤‚ ‘
+        /// </summary>
+        [Fact]
+        public void ∑∫–Õ¿‡–Õ◊÷∂Œ∏¥÷∆()
+        {
+            builder.WithCopy(typeof(FiledExtensionsTests).GetField("b", BindingFlags.NonPublic | BindingFlags.Static));
+            var result = builder.ToFormatCode();
+            _tempOutput.WriteLine(result.WithUnixEOL());
+            Assert.Equal("private static readonly List<int> b;", result.WithUnixEOL());
+        }
     }
 }

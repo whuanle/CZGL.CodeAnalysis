@@ -20,7 +20,7 @@ namespace CZGL.Roslyn.Utils
         public static string CreateRondomName(string prefix = "N")
         {
             var time = DateTime.Now;
-            return prefix + time.Ticks.ToString("x016");
+            return prefix + time.Ticks.ToString("X2");
         }
     }
 }

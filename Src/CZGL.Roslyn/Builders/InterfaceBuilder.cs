@@ -84,7 +84,7 @@ namespace CZGL.Roslyn
             if (_base.UseCode)
                 return _base.Code;
 
-            const string Template = @"{Attributes}{Access} {Keyword} interface {Name}{GenericParams} {:}{Interfaces}{GenericList}
+            const string Template = @"{Attributes}{Access} interface {Name}{GenericParams} {:}{Interfaces}{GenericList}
 {
 {Properties}
 {Methods}

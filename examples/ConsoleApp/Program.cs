@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 // using CZGL.CodeAnalysis.Shared;
 // using CZGL.Roslyn;
 
@@ -79,41 +80,39 @@ namespace ConsoleApp
         E=8
     }
 
+    public interface A<in T1,T2> { }
     class Program
     {
         [Display]
         public readonly static int MyField = int.Parse("666");
         static void Main(string[] args)
         {
-            var z = EEE.B | EEE.C | EEE.D;
-            Console.WriteLine(z^EEE.D);
+            var str = @"
+";
+            Console.WriteLine(Encoding.Unicode.GetBytes(str));
 
-            if(typeof(Program).GetMethod("A") is var method && method != null)
-            {
-
-            }
-            //var obj = new Model_泛型类5<int, Program, E, En, Program, E, List<int>, Program, Program, E, int>();
-            Type a = typeof(Model_泛型类5<int, Program, E, En, Program, E, List<int>, Program, E, E, int>).GetGenericTypeDefinition();
-
-            var types = a.GetGenericArguments();
-
-            foreach (var item in types)
-            {
-                Console.WriteLine(item.Name);
-                Console.WriteLine("参数约束"+item.GenericParameterAttributes);
-                var tmp = item.GetGenericParameterConstraints();
-                foreach (var i in item.GetCustomAttributes())
-                    Console.WriteLine(i.GetType().Name);
-                foreach (var node in tmp)
-                {
-                    
-                    Console.WriteLine(node.Name);
-                }
-                Console.WriteLine("--------------");
-            }
-
-            
+            var type = typeof(A<int,int>);
+            var at = type.GetGenericArguments();
+            Type a = at[0];
+            Type b = at[1];
+            Printf(a);
+            Console.WriteLine("---------------");
+            Printf(b);
             Console.ReadKey();
+
+            void Printf(object obj)
+            {
+                var fiels = obj.GetType().GetFields().ToArray();
+                var property = obj.GetType().GetProperties().ToArray();
+                foreach (var item in fiels)
+                {
+                    Console.WriteLine($"{item.Name} -- {item.GetValue(obj)}");
+                }
+                foreach (var item in property)
+                {
+                    Console.WriteLine($"{item.Name} -- {item.GetValue(obj)}");
+                }
+            }
         }
     }
 }

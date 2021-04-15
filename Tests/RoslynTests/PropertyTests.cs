@@ -55,11 +55,7 @@ protected internal static readonly int i
 #if Log
             _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
-            Assert.Equal(@"int i
-{
-    get;
-    set;
-}", result.WithUnixEOL());
+            Assert.Equal(@"int i { get; set; }", result.WithUnixEOL());
         }
 
         [Fact]
@@ -73,13 +69,7 @@ protected internal static readonly int i
 #if Log
             _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
-            Assert.Equal(@"int i
-{
-    get;
-    set;
-}
-
-= 0;", result.WithUnixEOL());
+            Assert.Equal(@"int i { get; set; } = 0;", result.WithUnixEOL());
         }
 
 
@@ -94,13 +84,7 @@ protected internal static readonly int i
 #if Log
             _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
-            Assert.Equal(@"int i
-{
-    get;
-    set;
-}
-
-= int.Parse(""1"");", result.WithUnixEOL());
+            Assert.Equal(@"int i { get; set; } = int.Parse(""1"");", result.WithUnixEOL());
         }
 
 
@@ -116,11 +100,7 @@ protected internal static readonly int i
 #if Log
             _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
-            Assert.Equal(@"public int i
-{
-    get;
-    set;
-}", result.WithUnixEOL());
+            Assert.Equal(@"public int i { get; set; }", result.WithUnixEOL());
         }
 
         [Fact]
@@ -135,11 +115,7 @@ protected internal static readonly int i
 #if Log
             _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
-            Assert.Equal(@"protected internal static int i
-{
-    get;
-    set;
-}", result.WithUnixEOL());
+            Assert.Equal(@"protected internal static int i { get; set; }", result.WithUnixEOL());
         }
 
 
@@ -155,13 +131,7 @@ protected internal static readonly int i
 #if Log
             _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
-            Assert.Equal(@"List<Dictionary<int, Dictionary<string, List<FieldInfo>>>> i
-{
-    get;
-    set;
-}
-
-= new List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>();", result.WithUnixEOL());
+            Assert.Equal(@"List<Dictionary<int, Dictionary<string, List<FieldInfo>>>> i { get; set; } = new List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>();", result.WithUnixEOL());
         }
 
         [Fact]
@@ -175,11 +145,7 @@ public int a{get;set;}");
             _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
             Assert.Equal(@"[Display(Name = ""a"")]
-public int a
-{
-    get;
-    set;
-}", result.WithUnixEOL());
+public int a { get; set; }", result.WithUnixEOL());
         }
 
 
@@ -197,11 +163,7 @@ public int a
 #endif
             Assert.Equal(@"[Display(Name = ""a"")]
 [Key]
-public int i
-{
-    get;
-    set;
-}", result.WithUnixEOL());
+public int i { get; set; }", result.WithUnixEOL());
         }
 
 
@@ -221,13 +183,7 @@ public int i
             _tempOutput.WriteLine(result.WithUnixEOL());
 #endif
 
-            Assert.Equal(@"protected internal static int i
-{
-    get;
-    set;
-}
-
-= int.Parse(""1"");", result.WithUnixEOL());
+            Assert.Equal(@"protected internal static int i { get; set; } = int.Parse(""1"");", result.WithUnixEOL());
 
 
         }
@@ -263,9 +219,7 @@ public int i
     {
         tmp += 1;
     }
-}
-
-= int.Parse(""1"");", result.WithUnixEOL());
+} = int.Parse(""1"");", result.WithUnixEOL());
         }
 
     }

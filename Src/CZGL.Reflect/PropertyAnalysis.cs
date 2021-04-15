@@ -8,6 +8,9 @@ using System.Text;
 
 namespace CZGL.Reflect
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class PropertyAnalysis
     {
         /// <summary>

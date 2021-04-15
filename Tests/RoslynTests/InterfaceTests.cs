@@ -54,7 +54,7 @@ namespace RoslynTests
                 .WithProperty("Get", b =>
                 {
                     b.WithType("string")
-                    .WithGetSet("get", "set");
+                    .WithGetSet("get;", "set;");
                 })
                 .WithMethod("Method", b =>
                 {
@@ -71,11 +71,7 @@ namespace RoslynTests
     where T1 : struct where T2 : class where T3 : notnull where T4 : unmanaged where T5 : notnull where T6 : Enum where T7 : IEnumerable<int> where T8 : T2 where T9 : class, new()
     where T10 : IEnumerator<int>, IEnumerable<int>, new()
 {
-    string Get
-    {
-        get;
-        set;
-    }
+    string Get { get; set; }
 
     string Method();
 }", result.WithUnixEOL());

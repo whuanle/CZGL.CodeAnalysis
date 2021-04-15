@@ -14,7 +14,11 @@ namespace CZGL.Roslyn
     {
 
         /// <summary>
-        /// 克隆一个字段
+        /// 克隆一个字段 <br />
+        ///<para>复制这个 Filed 定义，例如：<br />
+        /// [Attributes]
+        /// public int a;
+        /// </para>
         /// </summary>
         /// <param name="builder"></param>
         /// <param name="field"></param>
@@ -58,7 +62,8 @@ namespace CZGL.Roslyn
 
             if (type.IsGenericType)
                 typeName = GenericeAnalysis.GetGenriceName(type);
-            else typeName = type.Name;
+            else
+                typeName = ConstantTable.GetBaseTypeName(type);
 
             return builder.WithType(typeName);
         }
@@ -79,26 +84,5 @@ namespace CZGL.Roslyn
 
             return WithType(builder, type);
         }
-
-        public static FieldDeclarationSyntax Create(this FieldBuilder builder, FieldInfo info)
-        {
-            //
-            return builder.BuildSyntax();
-        }
-
-        public static FieldDeclarationSyntax Create(this FieldBuilder builder, MemberInfo info)
-        {
-
-            return builder.BuildSyntax();
-        }
-
-        ///// <summary>
-        ///// 设置初始化值
-        ///// </summary>
-        ///// <returns></returns>
-        //public FieldBuilder SetInitializer<TType>(TType value)
-        //{
-        //    return this;
-        //}
     }
 }

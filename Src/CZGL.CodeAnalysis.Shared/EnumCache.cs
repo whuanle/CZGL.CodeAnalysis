@@ -13,6 +13,19 @@ namespace CZGL.CodeAnalysis.Shared
     /// </summary>
     public static class EnumCache
     {
+        static EnumCache()
+        {
+            _ = _ClassKeyWork.Value;
+            _ = _StructKeyWork.Value;
+            _ = _EventKeyword.Value;
+            _ = _FieldKeyword.Value;
+            _ = _GenericKeyword.Value;
+            _ = _MemberAccess.Value;
+            _ = _MemberType.Value;
+            _ = _MethodKeyword.Value;
+            _ = _NamespaceAccess.Value;
+            _ = _PropertyKeyword.Value;
+        }
 
         #region 生成缓存
 
@@ -152,13 +165,6 @@ namespace CZGL.CodeAnalysis.Shared
         {
             return _FieldKeyword.Value[value];
         }
-
-
-
-
-
-
-
 
         /// <summary>
         /// 获取 MemberAccess 枚举代表的信息

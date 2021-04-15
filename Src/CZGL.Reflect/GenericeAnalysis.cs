@@ -84,27 +84,39 @@ namespace CZGL.Reflect
             if (!type.IsGenericType)
                 return type.Name;
 
-            // 基础泛型定义
-            Type gType = type.GetGenericTypeDefinition();
-            string code = $"{type.Name}<";
+            // 要识别出为定义泛型和已定义泛型
+            // List<>、List<int>
 
+            StringBuilder code = new StringBuilder($"{WipeOutName(type.Name)}<");
             List<string> vs = new List<string>();
 
-            if (!type.IsGenericTypeDefinition)
-                string.Join(",", gType.GetGenericArguments().Select(x => GetInOut(x) + x.Name));
-
-            foreach (var item in gType.GetGenericArguments())
+            // 未定义泛型
+            if (type.IsGenericTypeDefinition)
             {
-                if (item.IsGenericType)
-                    vs.Add(GetGenriceName(item));
+                var gType = type.GetGenericTypeDefinition();
+                code.Append(string.Join(",", gType.GetGenericArguments().Select(x => GetInOut(x) + x.Name)));
+            }
+            else
+            {
+                foreach (var item in type.GetGenericArguments())
+                {
+                    if (item.IsGenericType)
+                        vs.Add(GetInOut(item) + GetGenriceName(item));
+                    else
+                        vs.Add(GetInOut(item) + ConstantTable.GetBaseTypeName(item));
+                }
+                code.Append(string.Join(",", vs));
             }
 
-            return code + string.Join(",", vs) + ">";
+
+            return code.Append(">").ToString();
 
             // 解析协变逆变
             string GetInOut(Type type1)
             {
-                switch (type.GenericParameterAttributes)
+                if (!type1.IsGenericParameter) 
+                    return string.Empty;
+                switch (type1.GenericParameterAttributes)
                 {
                     case GenericParameterAttributes.Contravariant: return "in";
                     case GenericParameterAttributes.Covariant: return "out";
@@ -159,7 +171,7 @@ namespace CZGL.Reflect
         /// <summary>
         /// 解析泛型约束信息为字符串
         /// </summary>
-        /// <param name="info"></param>
+        /// <param name="infos"></param>
         /// <returns></returns>
         public static string GetString(this IEnumerable<GenericeConstraintInfo> infos)
         {

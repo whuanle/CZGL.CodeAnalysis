@@ -120,7 +120,7 @@ namespace CZGL.Roslyn
         {
             if (interfaceNames is null)
                 throw new ArgumentNullException(nameof(interfaceNames));
-           interfaceNames.Execute(str => { _this.Constraints.Add(str);}).ToArray();
+            interfaceNames.Execute(str => { _this.Constraints.Add(str); }).ToArray();
 
             return this;
         }

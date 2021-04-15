@@ -105,7 +105,7 @@ namespace CZGL.Roslyn
             if (_base.UseCode)
                 return _base.Code;
 
-            const string Template = @"{Attributes}{Access} {Keyword} struct {Name}{GenericParams} {:}{BaseClass}{,}{Interfaces}{GenericList}
+            const string Template = @"{Attributes}{Access} {Keyword} struct {Name}{GenericParams} {:} {Interfaces}{GenericList}
 {
 
 {Ctors}
@@ -128,6 +128,8 @@ namespace CZGL.Roslyn
                 .Replace("{Access}", _member.Access)
                 .Replace("{Keyword}", _typeState.Keyword)
                 .Replace("{Name}", _base.Name)
+                .Replace("{:}", _objectState.Interfaces.Count()==0?string.Empty:":")
+                .Replace("{Interfaces}", _objectState.Interfaces.Join(","))
                 .Replace("{GenericParams}", _member.GenericParams.GetParamCode().CodeNewBefore("<").CodeNewAfter(">"))
                 .Replace("{GenericList}", _member.GenericParams.GetWhereCode(true).CodeNewBefore("\n"))
                 .Replace("{Ctors}", _typeState.Ctors.Select(item=>item.ToFullCode()).Join("\n"))

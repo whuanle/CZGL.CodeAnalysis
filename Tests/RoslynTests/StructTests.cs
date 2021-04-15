@@ -108,6 +108,8 @@ namespace RoslynTests
         {
             return str;
         }
+
+        set;
     }
 
     public string Method()
