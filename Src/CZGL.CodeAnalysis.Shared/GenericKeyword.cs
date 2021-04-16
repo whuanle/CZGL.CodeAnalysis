@@ -6,8 +6,10 @@ namespace CZGL.CodeAnalysis.Shared
 {
     /// <summary>
     /// 泛型约束类型
+    /// <para>单独指示一个泛型参数的约束时，可以组合使用；如果表示其中一种约束，则不应组合使用。</para>
     /// </summary>
     [Flags]
+    [CLSCompliant(true)]
     public enum GenericKeyword
     {
         /// <summary>

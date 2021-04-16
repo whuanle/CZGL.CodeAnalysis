@@ -29,6 +29,7 @@ namespace RoslynTests
         // public int i;
         // protected internel static readonly int i = int.Parse("1");
         // List<Dictionary<int, Dictionary<string, List<FieldInfo>>>> i = new List<Dictionary<int, Dictionary<string, List<FieldInfo>>>>();
+        // int[] i;
 
         [Fact]
         public void 定义字段_T1_简单型()

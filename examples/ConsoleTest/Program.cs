@@ -17,10 +17,6 @@ namespace ConsoleTest
         
         static void Main(string[] args)
         {
-            PropertyInfo info = typeof(Program).GetProperty("a");
-           
-            Console.WriteLine(info.Attributes.ToString());
-
             // 编译选项
             // 编译选项可以不配置
             DomainOptionBuilder option = new DomainOptionBuilder()
@@ -80,86 +76,7 @@ namespace ConsoleTest
                 Console.WriteLine($"{ex.ToString()}");
             }
 
-
-
-            //List<PortableExecutableReference> references = assemblies.Select(c => MetadataReference.CreateFromStream(c)).ToList();
-
-
-
-            //var tmp = DependencyContext.Default.RuntimeLibraries
-            //    .Execute(item =>
-            //    {
-            //        item.Dependencies.Execute(itemNode =>
-            //        {
-            //            var t = $"{itemNode.Name}.dll";
-            //            Console.WriteLine(item.Path + "|" + item.HashPath + "|" + item.Path);
-            //            var c = MetadataReference.CreateFromFile(t);
-            //            references.Add(c);
-            //        });
-
-            //    }).ToArray();
-
-
-            //PortableExecutableReference[] mscorlibs = references.ToArray();
-
-            //PortableExecutableReference mscorlib = MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
-            //CSharpCompilation compilation = CSharpCompilation.Create("MyCompilation",
-            //    syntaxTrees: new[] { tree }, references: mscorlibs);
-
-            ////Emitting to file is available through an extension method in the Microsoft.CodeAnalysis namespace
-            //EmitResult emitResult = compilation.Emit("output.dll", "output.pdb");
-
-            ////If our compilation failed, we can discover exactly why.
-            //if (!emitResult.Success)
-            //{
-            //    foreach (var diagnostic in emitResult.Diagnostics)
-            //    {
-            //        Console.WriteLine(diagnostic.ToString());
-            //    }
-            //}
-
-
-
-            //var a = DependencyContext.Default.CompileLibraries;
-            //var b = a.Count;
-
-            //foreach (var item in DependencyContext.Default.CompileLibraries.SelectMany(cl=>cl.ResolveReferencePaths()))
-            //{
-            //    Console.WriteLine(item);
-            //}
-
-            //GenericBuilder generic = new GenericBuilder();
-            //generic.AddConstarint(new GenericScheme("T1", GenericConstraintsType.Struct));
-            //generic.AddConstarint(new GenericScheme("T2", GenericConstraintsType.Class));
-            //generic.AddConstarint(new GenericScheme("T3", GenericConstraintsType.Notnull));
-            //generic.AddConstarint(new GenericScheme("T4", GenericConstraintsType.Unmanaged));
-            //generic.AddConstarint(new GenericScheme("T5", GenericConstraintsType.New));
-            //// 如果能够反射拿到 Type
-            //generic.AddConstarint(new GenericScheme("T6", GenericConstraintsType.BaseClass, typeof(int)));
-            //// 如果要以字符串定义基类类型，请使用 此API
-            //generic.AddBaseClassConstarint("T7", " IEnumerable<int>");
-            //generic.AddTUConstarint("T8", "T2");
-            //generic.AddConstarint(new GenericScheme("T9", GenericConstraintsType.Class, GenericConstraintsType.New));
-            //var syntax = generic.Build();
-            //var result = syntax.ToFullString();
-            //Console.WriteLine(result);
-
-            //ClassBuilder buidler = new ClassBuilder();
-            //var build = buidler.SetVisibility(ClassVisibilityType.Public)
-            //    .SetName("Test")
-            //    .AddMethodMember(b =>
-            //    {
-            //        b.SetVisibility(MemberVisibilityType.Public)
-            //        .SetRondomName()
-            //        .SetBlock("System.Console.WriteLine(\"111\");");
-            //    })
-            //    .Build();
-
-            // CompilationBuilder compilation = new CompilationBuilder();
-            //compilation.Test(build);
             Console.ReadKey();
-
         }
-
     }
 }

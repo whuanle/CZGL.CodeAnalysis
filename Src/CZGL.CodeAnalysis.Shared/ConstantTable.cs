@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 namespace CZGL.CodeAnalysis.Shared
 {
     /// <summary>
-    /// 常量表
+    /// 常量表。
+    /// <para>记录常量映射关系，简化反射过程中的逻辑分析。</para>
     /// </summary>
+    [CLSCompliant(true)]
     public static class ConstantTable
     {
         private static readonly Dictionary<int, string> BaseTypeNameTable = new Dictionary<int, string>
@@ -33,33 +35,36 @@ namespace CZGL.CodeAnalysis.Shared
         };
 
         /// <summary>
-        /// 获取基本类型的表达名称
+        /// 获取基本类型的表达名称。
+        /// <para>对于 System.Int32 等基础类型，会获得 int 这样的常用名称。不能用于泛型类型、数组。</para>
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static string GetBaseTypeName(object value)
+        /// <typeparam name="TObject">任意对象类型</typeparam>
+        /// <param name="value">任意对象</param>
+        /// <returns>基础类型的常用表达名称。如 int，而不是 System.Int32 。</returns>
+        public static string GetBaseTypeName<TObject>(TObject value)
         {
             TypeCode typeCode;
             if (value is IConvertible temp)
             {
                 typeCode = temp.GetTypeCode();
+
+                if (typeCode == TypeCode.Object)
+                    return value.GetType().Name;
             }
             else return value.GetType().Name;
 
             if (BaseTypeNameTable.TryGetValue((int)typeCode, out var name))
                 return name;
 
-            if (typeCode == TypeCode.Object)
-                return value.GetType().Name;
-
             return string.Empty;
         }
 
         /// <summary>
-        /// 获取基本类型的表达名称
+        /// 获取基本类型的表达名称。
+        /// <para>对于 System.Int32 等基础类型，会获得 int 这样的常用名称。不能用于泛型类型、数组。</para>
         /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
+        /// <param name="type">对象类型</param>
+        /// <returns>基础类型的常用表达名称。如 int，而不是 System.Int32 。</returns>
         public static string GetBaseTypeName(Type type)
         {
             TypeCode typeCode = Type.GetTypeCode(type);

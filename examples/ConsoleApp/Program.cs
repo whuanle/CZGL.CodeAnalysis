@@ -87,32 +87,6 @@ namespace ConsoleApp
         public readonly static int MyField = int.Parse("666");
         static void Main(string[] args)
         {
-            var str = @"
-";
-            Console.WriteLine(Encoding.Unicode.GetBytes(str));
-
-            var type = typeof(A<int,int>);
-            var at = type.GetGenericArguments();
-            Type a = at[0];
-            Type b = at[1];
-            Printf(a);
-            Console.WriteLine("---------------");
-            Printf(b);
-            Console.ReadKey();
-
-            void Printf(object obj)
-            {
-                var fiels = obj.GetType().GetFields().ToArray();
-                var property = obj.GetType().GetProperties().ToArray();
-                foreach (var item in fiels)
-                {
-                    Console.WriteLine($"{item.Name} -- {item.GetValue(obj)}");
-                }
-                foreach (var item in property)
-                {
-                    Console.WriteLine($"{item.Name} -- {item.GetValue(obj)}");
-                }
-            }
         }
     }
 }
