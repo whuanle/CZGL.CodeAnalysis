@@ -44,7 +44,7 @@ namespace CZGL.Reflect
             if (type.IsEnum)
                 return MemberType.Enum;
 
-            return type.IsPrimitive ? MemberType.BaseValue : MemberType.Struct;
+            return type.IsPrimitive ? MemberType.BaseType : MemberType.Struct;
 
             //return !type.IsValueType ? MemberType.None :
             //    type.IsEnum ? MemberType.Enum :

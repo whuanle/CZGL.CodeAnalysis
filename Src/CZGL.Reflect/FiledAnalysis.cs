@@ -1,13 +1,13 @@
 ﻿using CZGL.CodeAnalysis.Shared;
-using CZGL.Reflect.Units;
 using System;
 using System.Reflection;
 
 namespace CZGL.Reflect
 {
     /// <summary>
-    /// 字段分析
+    /// 字段分析器
     /// </summary>
+    [CLSCompliant(true)]
     public static class FiledAnalysis
     {
         /// <summary>
@@ -23,7 +23,7 @@ namespace CZGL.Reflect
         /// <summary>
         /// 获取修饰符
         /// </summary>
-        /// <param name="info"></param>
+        /// <param name="info">字段</param>
         /// <returns></returns>
         public static FieldKeyword GetKeyword(this FieldInfo info)
         {
@@ -33,6 +33,7 @@ namespace CZGL.Reflect
         /// <summary>
         /// 获取特性列表
         /// </summary>
+        /// <param name="info">字段</param>
         /// <returns></returns>
         public static string[] GetAttributes(this FieldInfo info)
         {

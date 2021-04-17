@@ -1,12 +1,10 @@
-﻿using CZGL.Reflect.Models;
-using CZGL.CodeAnalysis.Shared;
+﻿using CZGL.CodeAnalysis.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using CZGL.Reflect.Units;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace CZGL.Reflect
 {
@@ -14,8 +12,10 @@ namespace CZGL.Reflect
     /// 专门用于解析泛型
     /// <para>支持解析泛型类型的泛型参数、泛型约束；方法的泛型参数和泛型约束；解析一个泛型类型；</para>
     /// </summary>
+    [CLSCompliant(true)]
     public static class GenericeAnalysis
     {
+
         #region 名称
 
         /// <summary>
@@ -69,13 +69,16 @@ namespace CZGL.Reflect
             if (!type.IsGenericType)
                 return new string[0];
 
-            return type.GetGenericArguments().Select(x => x.Name).ToArray();
+            return type.GetGenericArguments().Select(x =>
+                                                    x.IsGenericTypeParameter ? x.Name : ConstantTable.GetBaseTypeName(x))
+                                             .ToArray();
         }
 
         // Test<int,int>，支持递归深入下一层
 
         /// <summary>
-        /// 获取类型的泛型定义
+        /// 获取类型的泛型定义。
+        /// <para>获取示例 Test{int,int,List{int}}></para>
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
@@ -94,7 +97,7 @@ namespace CZGL.Reflect
             if (type.IsGenericTypeDefinition)
             {
                 var gType = type.GetGenericTypeDefinition();
-                code.Append(string.Join(",", gType.GetGenericArguments().Select(x => GetInOut(x) + x.Name)));
+                code.Append(string.Join(", ", gType.GetGenericArguments().Select(x => GetInOut(x) + x.Name)));
             }
             else
             {
@@ -105,16 +108,16 @@ namespace CZGL.Reflect
                     else
                         vs.Add(GetInOut(item) + ConstantTable.GetBaseTypeName(item));
                 }
-                code.Append(string.Join(",", vs));
+                code.Append(string.Join(", ", vs));
             }
 
 
-            return code.Append(">").ToString();
+            return code.Append('>').ToString();
 
             // 解析协变逆变
             string GetInOut(Type type1)
             {
-                if (!type1.IsGenericParameter) 
+                if (!type1.IsGenericParameter)
                     return string.Empty;
                 switch (type1.GenericParameterAttributes)
                 {
@@ -135,6 +138,7 @@ namespace CZGL.Reflect
         {
             if (!type.IsGenericType)
                 return string.Empty;
+
             Type gType = type.IsGenericTypeDefinition ? type : type.GetGenericTypeDefinition();
             Dictionary<string, IEnumerable<GenericeConstraintInfo>> dic = new Dictionary<string, IEnumerable<GenericeConstraintInfo>>();
             var arguments = gType.GetGenericArguments();
@@ -143,8 +147,21 @@ namespace CZGL.Reflect
                 dic.Add(argument.Name, GetConstrain(gType, argument));
             }
 
-            return string.Join(lineFeed ? "\n" : " ",
-                "where " + dic.Select(x => $" {x.Key} : {string.Join(",", x.Value.Select(z => z.Value))}"));
+            string lineChar = lineFeed ? " \r\n" : " ";
+
+            StringBuilder stringBuilder = new StringBuilder();
+            var data = dic.ToArray();
+            var count = data.Count();
+            for (int i = 0; i < count; i++)
+            {
+                if (data[i].Value.Count() == 0)
+                    continue;
+
+                stringBuilder.Append("where" + $" {data[i].Key} : {string.Join(",", data[i].Value.Select(z => z.Value).ToArray())}");
+                if (i < count)
+                    stringBuilder.Append(lineChar);
+            }
+            return stringBuilder.ToString();
         }
 
         /// <summary>
@@ -178,12 +195,20 @@ namespace CZGL.Reflect
             // 只能唯一的
             if (infos.FirstOrDefault(x => x.Location == ConstraintLocation.Only) is var info)
                 return info.Value;
-#warning 下个版本完成此代码，使用链表算法处理。现在的方法可能导致排序位置不正确
-            //const string Template = "{First} {Center} {Any} {End}";
 
-            //// 有没有必须放在首位的
-            //var first = infos.FirstOrDefault(x => x.Location == ConstraintLocation.First);
-            return string.Join(",", infos.Select(x => x.Value));
+            const string Template = "{First} {;1} {Any} {;2} {End}";
+
+
+            var first = infos.FirstOrDefault(x => x.Location == ConstraintLocation.First);
+            var end = infos.FirstOrDefault(x => x.Location == ConstraintLocation.End);
+            var any = infos.Where(x => x.Location == ConstraintLocation.Any).ToArray();
+            var code = Template.Replace("{First}", first.Value)
+                               .Replace("{Any}", string.Join(",", any.Select(x => x.Value).ToArray()))
+                               .Replace("{End}", end.Value)
+                               .Replace("{;1}", (first != null && any != null) ? "," : "")
+                               .Replace("{;2}", (end != null && (first != null || any.Length != 0)) ? ";" : "");
+
+            return code;
         }
 
         /// <summary>
@@ -191,7 +216,6 @@ namespace CZGL.Reflect
         /// </summary>
         /// <param name="type"></param>
         /// <param name="argumentName">泛型参数名称</param>
-        /// <param name="definition">使用基础泛型类型定义</param>
         /// <returns></returns>
         public static IEnumerable<GenericeConstraintInfo> GetConstrain(this Type type, string argumentName)
         {
@@ -201,10 +225,16 @@ namespace CZGL.Reflect
             return GetConstrain(gType, argument);
         }
 
+        /// <summary>
+        /// 泛型约束解析
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="argumentType"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static IEnumerable<GenericeConstraintInfo> GetConstrain(Type type, Type argumentType)
         {
-            // IsGenericParameter    指明是不是泛型参数
+            // IsGenericParameter    指明是不是泛型参数模板，如 T1、T2
             if (!argumentType.IsGenericParameter)
                 return new GenericeConstraintInfo[0];
 
@@ -238,6 +268,7 @@ namespace CZGL.Reflect
         /// 解析一个约束。必须配合两个参数才能正确解析约束类型以及值
         /// <para>要获取约束 Type，可以使用 Type.GetGenericParameterConstraints</para>
         /// </summary>
+        /// <param name="paramter"></param>
         /// <param name="constraintType">此类型必须是泛型参数的约束列表</param>
         /// <param name="attributes">泛型参数约束枚举</param>
         /// <returns>Keyword 约束类型，Location 摆放位置、是否可组合，Value 代表值</returns>

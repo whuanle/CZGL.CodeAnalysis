@@ -3,33 +3,34 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace CZGL.Reflect.Models
+namespace CZGL.Reflect
 {
 
     /// <summary>
-    /// 特性信息
+    /// 特性定义信息
     /// </summary>
-    public interface AttributeDefine
+    [CLSCompliant(true)]
+    public class AttributeDefine
     {
         /// <summary>
         /// 特性的名称
         /// </summary>
-        string Name { get; }
+        public string Name { get; set; }
 
         /// <summary>
         /// 特性类型
         /// </summary>
-        Type AttributeType { get; }
+        public Type AttributeType { get; set; }
 
         /// <summary>
         /// 特性构造函数中的值
         /// <para>ArgumentType、Value 属性分别表示构造函数中参数和参数值</para>
         /// </summary>
-        CustomAttributeTypedArgument[] ConstructParams { get; }
+        public CustomAttributeTypedArgument[] ConstructParams { get; set; }
 
         /// <summary>
         /// 特性的属性
         /// </summary>
-        CustomAttributeTypedArgument[] PropertyParams { get; }
+        public CustomAttributeTypedArgument[] PropertyParams { get; set; }
     }
 }

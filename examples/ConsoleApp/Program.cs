@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 // using CZGL.CodeAnalysis.Shared;
 // using CZGL.Roslyn;
 
 namespace ConsoleApp
 {
-    public class E: Model_泛型类4, IEnumerable<int>
+    public class E : Model_泛型类4, IEnumerable<int>
     {
         public E() { }
 
@@ -47,7 +48,7 @@ namespace ConsoleApp
         where T3 : notnull, IEnumerable<int>
         where T4 : unmanaged
         where T5 : new()
-        where T6 : Model_泛型类4,new()
+        where T6 : Model_泛型类4, new()
         where T7 : IEnumerable<int>
         where T8 : T2
         // 组合条件
@@ -73,20 +74,38 @@ namespace ConsoleApp
     }
     public enum EEE
     {
-        A=0,
-        B=1,
-        C=2,
-        D=4,
-        E=8
+        A = 0,
+        B = 1,
+        C = 2,
+        D = 4,
+        E = 8
     }
 
-    public interface A<in T1,T2> { }
+    public interface A<in T1, T2> { }
+
+    public class Test
+    {
+        public ref readonly int A(ref int a)
+        {
+            return ref a;
+        }
+        public ref int B(ref int a)
+        {
+            return ref a;
+        }
+
+
+    }
     class Program
     {
         [Display]
         public readonly static int MyField = int.Parse("666");
         static void Main(string[] args)
         {
+            var type1 = typeof(A<,>);
+            var type2 = typeof(A<int,int>);
+            var a = type1.GetGenericArguments();
+            var b = type2.GetGenericArguments();
         }
     }
 }

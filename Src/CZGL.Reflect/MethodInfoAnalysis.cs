@@ -1,5 +1,4 @@
 ﻿using CZGL.CodeAnalysis.Shared;
-using CZGL.Reflect.Units;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +8,9 @@ using System.Text;
 
 namespace CZGL.Reflect
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class MethodInfoAnalysis
     {
         /// <summary>

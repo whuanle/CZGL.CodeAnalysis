@@ -41,7 +41,7 @@ namespace ReflectTests
 
             Assert.Equal(MemberType.Struct, TypeAnalysis.GetMemberType(typeof(T6)));
 
-            Assert.Equal(MemberType.BaseValue, TypeAnalysis.GetMemberType(typeof(int)));
+            Assert.Equal(MemberType.BaseType, TypeAnalysis.GetMemberType(typeof(int)));
         }
 
         [Fact]
@@ -59,7 +59,7 @@ namespace ReflectTests
 
             Assert.Equal(MemberType.Struct, typeof(T6).GetMemberType());
 
-            Assert.Equal(MemberType.BaseValue, typeof(int).GetMemberType());
+            Assert.Equal(MemberType.BaseType, typeof(int).GetMemberType());
         }
     }
 }

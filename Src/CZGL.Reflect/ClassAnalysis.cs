@@ -1,6 +1,4 @@
-﻿using CZGL.Reflect.Models;
-using CZGL.CodeAnalysis.Shared;
-using CZGL.Reflect.Units;
+﻿using CZGL.CodeAnalysis.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +9,14 @@ namespace CZGL.Reflect
     /// <summary>
     /// 解析一个类型
     /// </summary>
+    [CLSCompliant(true)]
     public static class ClassAnalysis
     {
         /// <summary>
         /// 获取访问权限
         /// </summary>
         /// <param name="type"></param>
-        /// <returns></returns>
+        /// <returns>修饰符</returns>
         public static MemberAccess GetAccess(this Type type)
         {
             return AccessAnalysis.GetAccess(type);
@@ -36,7 +35,7 @@ namespace CZGL.Reflect
         /// <summary>
         /// 类能否被继承
         /// </summary>
-        /// <param name="type"></param>
+        /// <param name="type">类型</param>
         /// <returns></returns>
         public static bool IsCanInherited(this Type type)
         {
@@ -52,8 +51,8 @@ namespace CZGL.Reflect
         /// <summary>
         /// 获取泛型类的名称
         /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
+        /// <param name="type">类型</param>
+        /// <returns>类名称</returns>
         public static string GetGenericeName(this Type type)
         {
             return GenericeAnalysis.GetGenriceName(type);
@@ -63,7 +62,7 @@ namespace CZGL.Reflect
         /// 是否有继承
         /// <para>是否有继承接口等</para>
         /// </summary>
-        /// <param name="type"></param>
+        /// <param name="type">类型</param>
         /// <returns></returns>
         public static bool IsInherite(this Type type)
         {
@@ -79,7 +78,7 @@ namespace CZGL.Reflect
         /// <summary>
         /// 解析出一个类的分析参数以及泛型约束
         /// </summary>
-        /// <param name="type"></param>
+        /// <param name="type">类型</param>
         /// <returns></returns>
         public static Dictionary<string, IEnumerable<GenericeConstraintInfo>> GetGenericeParam(this Type type)
         {

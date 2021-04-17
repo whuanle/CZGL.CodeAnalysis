@@ -3,13 +3,19 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CZGL.Reflect.Units
+namespace CZGL.Reflect
 {
     /// <summary>
     /// 表示泛型参数的一个约束信息
     /// </summary>
-    public struct GenericeConstraintInfo
+    public class GenericeConstraintInfo
     {
+        /// <summary>
+        /// 表示泛型参数的一个约束信息
+        /// </summary>
+        /// <param name="keyword">泛型关键字</param>
+        /// <param name="location">摆放位置</param>
+        /// <param name="value">具体约束名称</param>
         public GenericeConstraintInfo(GenericKeyword keyword, ConstraintLocation location, string value)
         {
             Keyword = keyword;

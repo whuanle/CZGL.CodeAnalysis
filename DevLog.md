@@ -87,9 +87,9 @@
 
   完成 Roslyn 拓展模块
   
-  要支持 ref readonly 方法
-  
-  支持 extern 方法关键字
+* Reflect 方法支持 extern 方法关键字
+
+* Reflect 非空类型解析
 
 
 

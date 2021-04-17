@@ -64,36 +64,26 @@ namespace ReflectTests
             _tempOutput = tempOutput;
         }
         [Fact]
-        public void 泛型类_未定义参数类型()
+        public void 泛型类_泛型参数列表_未定义参数类型()
         {
             Type type = typeof(Model_泛型1<,,>);
-            Assert.Equal("<, , >", "<" + string.Join(",", GenericeAnalysis.GetGenriceParams(type)) + ">");
-            //Assert.Equal("<T1, T2, T3>", GenericeAnalysis.Analysis(type, true));
+            Assert.Equal("<T1, T2, T3>", "<" + string.Join(", ", GenericeAnalysis.GetGenriceParams(type)) + ">");
         }
 
         [Fact]
-        public void 泛型类_已定义参数类型()
+        public void 泛型类_泛型参数列表_已定义参数类型()
         {
             Type type = typeof(Model_泛型1<int, double, int>);
-            Assert.Equal("<int, double, int>", "<" + string.Join(",", GenericeAnalysis.GetGenriceParams(type)) + ">");
-            //Assert.Equal("<System.Int32, System.Double, System.Int32>", GenericeAnalysis.Analysis(type, true));
+            var array = type.GetGenriceParams();    // GenericeAnalysis.GetGenriceParams(type);
+            Assert.Equal("<int, double, int>", "<" + string.Join(", ", array) + ">");
         }
-
-        //[Fact]
-        //public void 泛型类_未定义参数_泛型父类解析()
-        //{
-        //    Type type = typeof(Model_泛型2<,,>);
-        //    GenericeAnalysis genericeAnalysis = new GenericeAnalysis(type);
-        //    Assert.Equal("<,,>", genericeAnalysis.BaseTypeAnalysis());
-        //    Assert.Equal("<T1,T2,T3>", genericeAnalysis.Analysis(true));
-        //}
 
         [Fact]
         public void 泛型类_泛型父类解析()
         {
             Model_泛型2<int, double, int> model_ = new Model_泛型2<int, double, int>();
             Type type = model_.GetType();
-            Assert.Equal("<int, double, int>", "<" + string.Join(",", GenericeAnalysis.GetGenriceParams(type)) + ">");
+            Assert.Equal("<int, double, int>", "<" + string.Join(", ", GenericeAnalysis.GetGenriceParams(type)) + ">");
             //Assert.Equal("<System.Int32, System.Double, System.Int32>", GenericeAnalysis.Analysis(type.BaseType, true));
         }
 
@@ -101,16 +91,17 @@ namespace ReflectTests
         public void 子类非泛型_父类泛型已定义解析()
         {
             Type type = new Model_泛型3().GetType();
-            Assert.Equal("<int, double, int>", "<" + string.Join(",", GenericeAnalysis.GetGenriceParams(type)) + ">");
+            Assert.Equal("<>", "<" + string.Join(",", GenericeAnalysis.GetGenriceParams(type)) + ">");
             //Assert.Equal("<System.Int32, System.Double, System.Int32>", "<"+string.Join(",", GenericeAnalysis.GetGenriceParams(type))+">");
         }
 
         [Fact]
-        public void 长嵌套泛型参数解析()
+        public void 长嵌套泛型泛型定义()
         {
             Type type = typeof(Model_泛型1<int, List<int>, Dictionary<List<int>, Dictionary<int, List<int>>>>);
-            Assert.Equal("<int, List<int>, Dictionary<List<int>, Dictionary<int, List<int>>>>", "<" + string.Join(",", GenericeAnalysis.GetGenriceParams(type)) + ">");
-            //Assert.Equal(@"<System.Int32, System.Collections.Generic.List<System.Int32>, System.Collections.Generic.Dictionary<System.Collections.Generic.List<System.Int32>, System.Collections.Generic.Dictionary<System.Int32, System.Collections.Generic.List<System.Int32>>>>", GenericeAnalysis.Analysis(type, true));
+            string output = GenericeAnalysis.GetGenriceName(type);
+            _tempOutput.WriteLine(output);
+            Assert.Equal("Model_泛型1<int, List<int>, Dictionary<List<int>, Dictionary<int, List<int>>>>", output);
         }
 
         [Fact]
@@ -126,7 +117,7 @@ where T5 : new()
 where T6 : Model_泛型类4 
 where T7 : IEnumerable<int> 
 where T8 : T2 
-where T9 : class,notnull,new() 
+where T9 : class,new() 
 where T10 : Model_泛型类4,IEnumerable<int>,new() 
 ", GenericeAnalysis.GetGetConstrainCode(type, true));
         }

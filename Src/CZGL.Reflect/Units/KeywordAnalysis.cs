@@ -1,37 +1,42 @@
 using CZGL.CodeAnalysis.Shared;
 using System;
 using System.Collections.Generic;
-using CZGL.Reflect;
 using System.Reflection;
 using System.Text;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace CZGL.Reflect.Units
+namespace CZGL.Reflect
 {
     /// <summary>
     /// 获取成员修饰符
     /// </summary>
+    [CLSCompliant(true)]
     public class KeywordAnalysis
     {
         /// <summary>
         /// 获取字段修饰符
         /// </summary>
-        /// <param name="info"></param>
-        /// <returns></returns>
+        /// <param name="info">字段</param>
+        /// <returns>字段修饰符</returns>
         public static FieldKeyword GetFieldKeyword(FieldInfo info)
         {
             if (info.IsLiteral)
                 return FieldKeyword.Const;
+
             if (info.IsStatic && info.IsInitOnly)
                 return FieldKeyword.StaticReadonly;
+
             bool isVolatile = info.GetRequiredCustomModifiers().Any(x => x == typeof(IsVolatile));
+
             if (info.IsStatic)
             {
                 if (isVolatile) return FieldKeyword.VolatileStatic;
                 return FieldKeyword.Static;
             }
+
             if (isVolatile) return FieldKeyword.Volatile;
+
             if (info.IsInitOnly)
                 return FieldKeyword.Readonly;
 
@@ -41,8 +46,8 @@ namespace CZGL.Reflect.Units
         /// <summary>
         /// 获取字段修饰符
         /// </summary>
-        /// <param name="info"></param>
-        /// <returns></returns>
+        /// <param name="info">字段</param>
+        /// <returns>修饰符名称</returns>
         public static string GetFieldKeywordCode(FieldInfo info)
         {
             return EnumCache.GetValue(GetFieldKeyword(info));
@@ -53,21 +58,27 @@ namespace CZGL.Reflect.Units
         /// 判断方法的访问修饰符
         /// <para>暂不支持 new static</para>
         /// </summary>
-        /// <param name="info"></param>
-        /// <returns></returns>
+        /// <param name="info">字段</param>
+        /// <returns><see cref="MethodKeyword"/></returns>
         public static MethodKeyword GetMethodKeyword(MethodInfo info)
         {
             if (info is null)
                 throw new ArgumentNullException(nameof(info));
 
-            // 函数是否在本类型中 实现
-            bool isLocalDefinition = MethodInfoAnalysis.IsNew(info);
-            // 是否使用了 new
-            bool isHasNewSlot = ((info.Attributes & MethodAttributes.VtableLayoutMask) == MethodAttributes.NewSlot);
-
             MethodAttributes attributes = info.Attributes;
-
             MethodKeyword methodKeyword = MethodKeyword.Default;
+
+            // extern 方法
+            if ((attributes | MethodAttributes.PinvokeImpl) == attributes)
+            {
+                return MethodKeyword.StaticExtern;
+            }
+
+            // 函数是否在本类型中 实现
+            bool isLocalDefinition = info.IsNew();
+
+            // 是否使用了 new
+            bool isHasNewSlot = (info.Attributes & MethodAttributes.VtableLayoutMask) == MethodAttributes.NewSlot;
 
             // abstract
             if ((attributes | MethodAttributes.Abstract) == attributes)
@@ -119,21 +130,21 @@ namespace CZGL.Reflect.Units
         /// 获取属性修饰符
         /// </summary>
         /// <param name="info"></param>
-        /// <returns></returns>
+        /// <returns><see cref="PropertyKeyword"/></returns>
         public static PropertyKeyword GetPropertyKeyword(PropertyInfo info)
         {
             MethodInfo method = info.GetGetMethod();
             if (method == null)
                 method = info.GetSetMethod() ?? throw new NullReferenceException("无法获取属性的信息");
 
-            return EnumCache.ToPropertyKeyword(GetMethodKeyword(method));
+            return GetMethodKeyword(method).ToPropertyKeyword();
         }
 
         /// <summary>
         /// 获取类修饰符关键字
         /// </summary>
         /// <param name="type"></param>
-        /// <returns></returns>
+        /// <returns><see cref="ClassKeyword"/></returns>
         public static ClassKeyword GetClassKeyword(Type type)
         {
             if (type is null)
@@ -156,6 +167,11 @@ namespace CZGL.Reflect.Units
             return ClassAnalysis.IsNew(type) ? ClassKeyword.New : ClassKeyword.Default;
         }
 
+        /// <summary>
+        /// 获取结构体的修饰符
+        /// </summary>
+        /// <param name="type">结构体类型</param>
+        /// <returns><see cref="StructKeyword"/></returns>
         public StructKeyword GetStructKeyword(Type type)
         {
             return type.GetCustomAttributes()
