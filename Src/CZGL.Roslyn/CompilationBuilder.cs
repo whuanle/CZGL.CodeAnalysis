@@ -145,7 +145,7 @@ namespace CZGL.Roslyn
         /// <summary>
         /// 创建程序集
         /// </summary>
-        /// <exception cref="Exception">
+        /// <exception cref="Exception"></exception>
         /// <param name="messages">代码编译时的分析结果</param>
         public bool CreateDomain(out ImmutableArray<Diagnostic> messages)
         {

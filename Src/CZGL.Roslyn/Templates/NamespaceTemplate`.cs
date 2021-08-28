@@ -38,9 +38,8 @@ namespace CZGL.Roslyn.Templates
         /// <summary>
         /// 随机生成一个名称
         /// </summary>
-        /// <param name="name"></param>
         /// <returns></returns>
-        public new virtual TBuilder WithRondomName()
+        public virtual TBuilder WithRondomName()
         {
             base.WithRondomName();
             return _TBuilder;

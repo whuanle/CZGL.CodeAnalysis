@@ -69,9 +69,15 @@ namespace CZGL.Reflect
             if (!type.IsGenericType)
                 return new string[0];
 
+#if NETSTANDARD2_0
+            return type.GetGenericArguments().Select(x =>
+                                                    x.IsGenericParameter ? x.Name : ConstantTable.GetBaseTypeName(x))
+                                             .ToArray();
+#else
             return type.GetGenericArguments().Select(x =>
                                                     x.IsGenericTypeParameter ? x.Name : ConstantTable.GetBaseTypeName(x))
                                              .ToArray();
+#endif
         }
 
         // Test<int,int>，支持递归深入下一层
@@ -134,18 +140,13 @@ namespace CZGL.Reflect
         /// <param name="type"></param>
         /// <param name="lineFeed">是否换行</param>
         /// <returns></returns>
-        public static string GetGetConstrainCode(this Type type, bool lineFeed = false)
+        public static string GetConstrainCode(this Type type, bool lineFeed = false)
         {
             if (!type.IsGenericType)
                 return string.Empty;
 
             Type gType = type.IsGenericTypeDefinition ? type : type.GetGenericTypeDefinition();
-            Dictionary<string, IEnumerable<GenericeConstraintInfo>> dic = new Dictionary<string, IEnumerable<GenericeConstraintInfo>>();
-            var arguments = gType.GetGenericArguments();
-            foreach (var argument in arguments)
-            {
-                dic.Add(argument.Name, GetConstrain(gType, argument));
-            }
+            Dictionary<string, IEnumerable<GenericeConstraintInfo>> dic = GetConstrains(gType);
 
             string lineChar = lineFeed ? " \r\n" : " ";
 
@@ -183,7 +184,7 @@ namespace CZGL.Reflect
             return dic;
         }
 
-        #region 泛型约束解析器
+#region 泛型约束解析器
 
         /// <summary>
         /// 解析泛型约束信息为字符串
@@ -282,7 +283,7 @@ namespace CZGL.Reflect
             List<GenericeConstraintInfo> list = new List<GenericeConstraintInfo>();
             var types = constraintType.GetEnumerator();
 
-            #region 第一位置
+#region 第一位置
 
             // classs
             if ((attributes | GenericParameterAttributes.ReferenceTypeConstraint) == attributes)
@@ -310,9 +311,9 @@ namespace CZGL.Reflect
                 types.MoveNext();
             }
 
-            #endregion
+#endregion
 
-            #region 中间位置
+#region 中间位置
 
             if (constraintType.Any())
             {
@@ -327,7 +328,7 @@ namespace CZGL.Reflect
                 }
             }
 
-            #endregion
+#endregion
 
             // new
             if ((attributes | GenericParameterAttributes.DefaultConstructorConstraint) == attributes)
@@ -362,6 +363,6 @@ namespace CZGL.Reflect
 
             return (false, GenericKeyword.NoConstrant, ConstraintLocation.None, string.Empty);
         }
-        #endregion
+#endregion
     }
 }

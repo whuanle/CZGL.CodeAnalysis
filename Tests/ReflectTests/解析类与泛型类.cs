@@ -92,7 +92,7 @@ namespace ReflectTests
         {
             Type type = new Model_泛型3().GetType();
             Assert.Equal("<>", "<" + string.Join(",", GenericeAnalysis.GetGenriceParams(type)) + ">");
-            //Assert.Equal("<System.Int32, System.Double, System.Int32>", "<"+string.Join(",", GenericeAnalysis.GetGenriceParams(type))+">");
+            Assert.Equal("<int,double,int>", "<"+string.Join(",", GenericeAnalysis.GetGenriceParams(typeof(Model_泛型1<int, double, int>)))+">");
         }
 
         [Fact]
@@ -108,7 +108,7 @@ namespace ReflectTests
         public void 超复杂的泛型约束()
         {
             Type type = typeof(Model_泛型类5<,,,,,,,,,,>);
-            _tempOutput.WriteLine(GenericeAnalysis.GetGetConstrainCode(type, true));
+            _tempOutput.WriteLine(GenericeAnalysis.GetConstrainCode(type, true));
             Assert.Equal(@"where T1 : struct 
 where T2 : class 
 where T3 : notnull 
@@ -119,7 +119,7 @@ where T7 : IEnumerable<int>
 where T8 : T2 
 where T9 : class,new() 
 where T10 : Model_泛型类4,IEnumerable<int>,new() 
-", GenericeAnalysis.GetGetConstrainCode(type, true));
+", GenericeAnalysis.GetConstrainCode(type, true));
         }
     }
 }

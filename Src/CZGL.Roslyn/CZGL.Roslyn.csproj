@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netcoreapp3.1;net5.0</TargetFrameworks>
     <Version>0.1.0</Version>
+    <LangVersion>8.0</LangVersion>
     <Description>
       基于 Roslyn 技术的 C# 动态代码构建器以及编译器，开发者可以使用此库动态构建 C# 代码，并且通过指定条件编译代码。
       * 运行时动态构造代码；

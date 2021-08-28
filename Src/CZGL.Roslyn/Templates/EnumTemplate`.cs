@@ -46,7 +46,6 @@ namespace CZGL.Roslyn.Templates
 
         /// <summary>
         /// 添加一个枚举字段，比为字段添加特性
-        /// <code>
         /// </summary>
         /// <param name="code"></param>
         /// <param name="func">特性</param>
