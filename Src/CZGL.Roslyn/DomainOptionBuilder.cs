@@ -105,7 +105,7 @@ namespace CZGL.Roslyn
         /// <summary>
         /// 编译条件字符串
         /// </summary>
-        /// <param name="environment"></param>
+        /// <param name="environment">#if 中使用到的条件编译，如 Debug 这些</param>
         /// <returns></returns>
         public DomainOptionBuilder WithEnvironment(params string[] environment)
         {
@@ -117,7 +117,6 @@ namespace CZGL.Roslyn
             return this;
         }
 
-#warning 此功能未完成，允许设置使用哪个版本的 .NET 发布，例如  .NET Standard 2.0,.NET Core 3.1
         internal class DomainOptionState
         {
             /// <summary>

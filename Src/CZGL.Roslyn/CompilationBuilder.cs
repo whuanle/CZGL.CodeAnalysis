@@ -10,6 +10,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -142,6 +143,7 @@ namespace CZGL.Roslyn
             return this;
         }
 
+
         /// <summary>
         /// 创建程序集
         /// </summary>
@@ -160,7 +162,7 @@ namespace CZGL.Roslyn
                {
                    references.Add(item);
                });
-
+            
             _ = _state.Assemblies.Select(x => x.GetFiles()).Execute(item =>
             {
                 item.Execute(file =>
@@ -244,7 +246,6 @@ namespace CZGL.Roslyn
             CSharpCompilationOptions options)
         {
             var compilation = CSharpCompilation.Create(assemblyName, syntaxTrees, references, options);
-
             var result = compilation.Emit(Path.Combine(path, assemblyName));
             return result;
         }
