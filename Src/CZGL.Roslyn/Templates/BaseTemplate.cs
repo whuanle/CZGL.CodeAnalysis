@@ -35,7 +35,7 @@ namespace CZGL.Roslyn.Templates
         /// <summary>
         /// 随机生成一个名称
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="prefix"></param>
         /// <returns></returns>
         internal virtual void WithRondomName(string prefix = "N")
         {

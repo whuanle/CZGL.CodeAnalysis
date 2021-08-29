@@ -4,7 +4,9 @@ using System.Text;
 
 namespace CZGL.Roslyn.States
 {
-
+    /// <summary>
+    /// 函数状态机
+    /// </summary>
     public class FuncState
     {
         /// <summary>

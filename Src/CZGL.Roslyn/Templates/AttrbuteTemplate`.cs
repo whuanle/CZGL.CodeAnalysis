@@ -10,8 +10,14 @@ namespace CZGL.Roslyn.Templates
     /// <typeparam name="TBuilder"></typeparam>
     public abstract class AttrbuteTemplate<TBuilder> : BaseTemplate where TBuilder : AttrbuteTemplate<TBuilder>
     {
+        /// <summary>
+        /// 特性状态机
+        /// </summary>
         protected internal readonly AttributeState _attribute = new AttributeState();
 
+        /// <summary>
+        /// 模板构建器
+        /// </summary>
         protected internal TBuilder _TBuilder;
 
 
@@ -50,7 +56,7 @@ namespace CZGL.Roslyn.Templates
         /// <summary>
         /// 设置构造函数中的参数
         /// </summary>
-        /// <param name="params"></param>
+        /// <param name="paramsCode"></param>
         /// <returns></returns>
         public virtual TBuilder WithCtor(string paramsCode)
         {

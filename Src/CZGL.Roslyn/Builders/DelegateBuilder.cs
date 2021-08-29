@@ -98,7 +98,11 @@ namespace CZGL.Roslyn
             return memberDeclaration;
         }
 
-
+        /// <summary>
+        /// 完整输出代码
+        /// <para>不会对代码进行检查，直接输出当前已经定义的代码</para>
+        /// </summary>
+        /// <returns>代码 <see cref="string"/></returns>
         public override string ToFullCode()
         {
             if (_base.UseCode)
@@ -118,6 +122,11 @@ namespace CZGL.Roslyn
             return code;
         }
 
+        /// <summary>
+        /// 完整输出格式化代码
+        /// <para>会对代码进行语法树分析，检查代码是否有问题。如果无问题，再格式化代码输出</para>
+        /// </summary>
+        /// <returns>代码 <see cref="string"/></returns>
         public override string ToFormatCode()
         {
             return BuildSyntax().NormalizeWhitespace().ToFullString();

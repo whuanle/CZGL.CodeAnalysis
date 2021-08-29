@@ -27,11 +27,6 @@ namespace CZGL.Roslyn
             return new NamespaceBuilder(namespaceName);
         }
 
-        public static NamespaceBuilder NamespaceTransform()
-        {
-            return null;
-        }
-
         #endregion
 
 
@@ -52,7 +47,7 @@ namespace CZGL.Roslyn
         /// </example>
         /// </para>
         /// </summary>
-        /// <param name="attrCode"></param>
+        /// <param name="attrsCode"></param>
         /// <returns></returns>
         public static SyntaxList<AttributeListSyntax> CreateAttributeList(params string[] attrsCode)
         {

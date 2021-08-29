@@ -13,6 +13,9 @@ namespace CZGL.Roslyn.Templates
     /// <typeparam name="TBuilder"></typeparam>
     public abstract class PropertyTemplate<TBuilder> : VariableTemplate<TBuilder> where TBuilder : PropertyTemplate<TBuilder>
     {
+        /// <summary>
+        /// 属性状态机
+        /// </summary>
         protected internal readonly PropertyState _property = new PropertyState();
 
         #region 关键字

@@ -190,7 +190,7 @@ namespace CZGL.Roslyn
         /// <param name="option">程序集配置</param>
         /// <param name="messages">编译时的消息</param>
         /// <returns></returns>
-        public static bool CreateDomain(ClassBuilder builder, string assemblyPath, string assemblyName, DomainOptionBuilder option, out ImmutableArray<Diagnostic> message)
+        public static bool CreateDomain(ClassBuilder builder, string assemblyPath, string assemblyName, DomainOptionBuilder option, out ImmutableArray<Diagnostic> messages)
         {
             HashSet<PortableExecutableReference> references = new HashSet<PortableExecutableReference>();
 
@@ -207,7 +207,7 @@ namespace CZGL.Roslyn
 
             var syntaxTree = ParseToSyntaxTree(builder.ToFullCode(), option);
             var result = BuildCompilation(assemblyPath, assemblyName, new SyntaxTree[] { syntaxTree }, references.ToArray(), options);
-            message = result.Diagnostics;
+            messages = result.Diagnostics;
             return result.Success;
         }
 
@@ -215,6 +215,7 @@ namespace CZGL.Roslyn
         /// 将代码转为语法树
         /// </summary>
         /// <param name="code"></param>
+        /// <param name="option"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static SyntaxTree ParseToSyntaxTree(string code, DomainOptionBuilder option)

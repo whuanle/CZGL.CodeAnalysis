@@ -14,6 +14,9 @@ namespace CZGL.Roslyn.Templates
     /// <typeparam name="TBuilder"><see cref="ClassBuilder"/></typeparam>
     public abstract class ClassTemplate<TBuilder> : ObjectTypeTemplate<TBuilder> where TBuilder : ClassTemplate<TBuilder>
     {
+        /// <summary>
+        /// 类状态机
+        /// </summary>
         protected internal readonly ClassState _class = new ClassState();
 
         #region 修饰符

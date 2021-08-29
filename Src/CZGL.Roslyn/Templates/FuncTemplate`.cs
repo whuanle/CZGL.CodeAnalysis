@@ -12,6 +12,9 @@ namespace CZGL.Roslyn.Templates
     /// <typeparam name="TBuilder"></typeparam>
     public abstract class FuncTemplate<TBuilder> : MemberTemplate<TBuilder> where TBuilder : FuncTemplate<TBuilder>
     {
+        /// <summary>
+        /// 函数状态机
+        /// </summary>
         protected internal FuncState _func = new FuncState();
         private const string ReturnType = "void";
 

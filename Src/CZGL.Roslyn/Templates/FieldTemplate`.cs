@@ -14,6 +14,9 @@ namespace CZGL.Roslyn
     /// <typeparam name="TBuilder"></typeparam>
     public abstract class FieldTemplate<TBuilder> : VariableTemplate<TBuilder> where TBuilder : FieldTemplate<TBuilder>
     {
+        /// <summary>
+        /// 类构建器
+        /// </summary>
         protected internal ClassBuilder _this;
 
 

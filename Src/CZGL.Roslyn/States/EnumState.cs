@@ -9,6 +9,9 @@ namespace CZGL.Roslyn.States
     /// </summary>
     public class EnumState
     {
+        /// <summary>
+        /// 枚举的字段
+        /// </summary>
         public HashSet<string> Fields { get; set; } = new HashSet<string>();
     }
 }

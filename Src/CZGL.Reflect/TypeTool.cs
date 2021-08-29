@@ -19,7 +19,9 @@ namespace CZGL.Reflect
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
+#pragma warning disable CS3002 // 返回类型不符合 CLS
         public static uint SizeOf<T>()
+#pragma warning restore CS3002 // 返回类型不符合 CLS
         {
             unsafe
             {

@@ -8,13 +8,29 @@ using System.Linq;
 
 namespace CZGL.Roslyn.Templates
 {
+    /// <summary>
+    /// 命名空间模板
+    /// </summary>
+    /// <typeparam name="TBuilder"></typeparam>
     public abstract class NamespaceTemplate<TBuilder> : BaseTemplate where TBuilder : NamespaceTemplate<TBuilder>
     {
         private readonly NamespaceState _namespace = new NamespaceState();
+        
+        /// <summary>
+        /// 构建器
+        /// </summary>
         protected internal TBuilder _TBuilder;
 
-        public NamespaceTemplate() { }
-        public NamespaceTemplate(string namespaceName)
+        /// <summary>
+        /// 命名空间模板
+        /// </summary>
+        protected NamespaceTemplate() { }
+
+        /// <summary>
+        /// 命名空间模板
+        /// </summary>
+        /// <param name="namespaceName">命名空间名称</param>
+        protected NamespaceTemplate(string namespaceName)
         {
             _base.Name = namespaceName;
         }
@@ -70,7 +86,7 @@ namespace CZGL.Roslyn.Templates
         /// <summary>
         /// 添加 N 个命名空间引用
         /// </summary>
-        /// <param name="usingName"></param>
+        /// <param name="usingNames"></param>
         /// <returns></returns>
         public virtual TBuilder WithUsing(params string[] usingNames)
         {
@@ -115,27 +131,61 @@ namespace CZGL.Roslyn.Templates
             return builder;
         }
 
+        /// <summary>
+        /// 创建一个结构体
+        /// </summary>
+        /// <returns></returns>
         public virtual StructBuilder CreateStruct()
         {
-            return new StructBuilder();
+            var member = new StructBuilder();
+            _namespace.Structs.Add(member);
+            return member;
         }
 
+        /// <summary>
+        /// 创建一个接口
+        /// </summary>
+        /// <returns></returns>
         public virtual InterfaceBuilder CreateInterface()
         {
-            return new InterfaceBuilder();
+            var member = new InterfaceBuilder();
+            _namespace.Interfaces.Add(member);
+            return member;
         }
 
+        /// <summary>
+        /// 创建一个类
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
         public virtual ClassBuilder CreateClass(ClassBuilder builder)
         {
-            return new ClassBuilder();
+            var member = new ClassBuilder();
+            _namespace.Classes.Add(member);
+            return member;
         }
+
+        /// <summary>
+        /// 创建一个委托
+        /// </summary>
+        /// <returns></returns>
         public virtual DelegateBuilder CreateDelegate()
         {
-            return new DelegateBuilder();
+            var member = new DelegateBuilder();
+            _namespace.Delegates.Add(member);
+            return member;
         }
+
+        /// <summary>
+        /// 创建一个事件
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
         public virtual EventBuilder CreateEvent(EventBuilder builder)
         {
-            return new EventBuilder();
+            var member = new EventBuilder();
+            _namespace.Events.Add(member);
+            return member;
         }
 
 
@@ -171,24 +221,51 @@ namespace CZGL.Roslyn.Templates
             return _TBuilder;
         }
 
+        /// <summary>
+        /// 加入成员
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
         public virtual TBuilder With(StructBuilder builder)
         {
             return _TBuilder;
         }
 
+        /// <summary>
+        /// 加入成员
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
         public virtual TBuilder With(InterfaceBuilder builder)
         {
             return _TBuilder;
         }
 
+        /// <summary>
+        /// 加入成员
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
         public virtual TBuilder With(ClassBuilder builder)
         {
             return _TBuilder;
         }
+
+        /// <summary>
+        /// 加入成员
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
         public virtual TBuilder With(DelegateBuilder builder)
         {
             return _TBuilder;
         }
+
+        /// <summary>
+        /// 加入成员
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
         public virtual TBuilder With(EventBuilder builder)
         {
             return _TBuilder;
@@ -207,7 +284,11 @@ namespace CZGL.Roslyn.Templates
             return _TBuilder;
         }
 
-
+        /// <summary>
+        /// 完整输出代码
+        /// <para>不会对代码进行检查，直接输出当前已经定义的代码</para>
+        /// </summary>
+        /// <returns>代码 <see cref="string"/></returns>
         public override string ToFullCode()
         {
             if (_base.UseCode)
@@ -258,7 +339,10 @@ namespace CZGL.Roslyn.Templates
             return code;
         }
 
-
+        /// <summary>
+        /// 生成命名空间语法树
+        /// </summary>
+        /// <returns></returns>
         public abstract NamespaceDeclarationSyntax BuildSyntax();
     }
 }

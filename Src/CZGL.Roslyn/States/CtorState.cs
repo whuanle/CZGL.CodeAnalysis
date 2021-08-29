@@ -9,6 +9,9 @@ namespace CZGL.Roslyn.States
     /// </summary>
     public class CtorState
     {
+        /// <summary>
+        /// 执行何种构造函数
+        /// </summary>
         public string BaseOrThis { get; set; }
     }
 }

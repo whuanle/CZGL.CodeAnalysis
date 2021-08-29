@@ -13,6 +13,9 @@ namespace CZGL.Roslyn.Templates
     /// <typeparam name="TBuilder"></typeparam>
     public abstract class VariableTemplate<TBuilder> : MemberTemplate<TBuilder> where TBuilder : VariableTemplate<TBuilder>
     {
+        /// <summary>
+        /// 变量状态机
+        /// </summary>
         protected internal readonly VariableState _variable = new VariableState();
 
         /// <summary>

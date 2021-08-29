@@ -114,7 +114,7 @@ namespace CZGL.Roslyn
         /// 为泛型参数添加接口约束
         /// <para>位置不限，个数不限</para>
         /// </summary>
-        /// <param name="interfaceName"></param>
+        /// <param name="interfaceNames"></param>
         /// <returns></returns>
         public GenericBuilder WithInterface(params string[] interfaceNames)
         {
@@ -226,6 +226,11 @@ namespace CZGL.Roslyn
             return memberDeclaration;
         }
 
+        /// <summary>
+        /// 格式化代码输出
+        /// </summary>
+        /// <param name="objectName"></param>
+        /// <returns></returns>
         public string ToFullCodeName(string objectName)
         {
             const string Template = "{Name} <{Params}> {where}";
@@ -269,11 +274,21 @@ namespace CZGL.Roslyn
             return code;
         }
 
+        /// <summary>
+        /// 完整输出代码
+        /// <para>不会对代码进行检查，直接输出当前已经定义的代码</para>
+        /// </summary>
+        /// <returns>代码 <see cref="string"/></returns>
         public override string ToFullCode()
         {
             return ToFullCodeName(null);
         }
 
+        /// <summary>
+        /// 完整输出格式化代码
+        /// <para>会对代码进行语法树分析，检查代码是否有问题。如果无问题，再格式化代码输出</para>
+        /// </summary>
+        /// <returns>代码 <see cref="string"/></returns>
         public override string ToFormatCode()
         {
             var node = CSharpSyntaxTree.ParseText(ToFullCode()).GetRoot().DescendantNodes().FirstOrDefault();

@@ -16,13 +16,16 @@ namespace CZGL.Roslyn.Templates
     public abstract class ObjectTemplate<TBuilder> : MemberTemplate<TBuilder>
         where TBuilder : ObjectTemplate<TBuilder>
     {
+        /// <summary>
+        /// 类型状态机
+        /// </summary>
         protected internal readonly ObjectState _objectState = new ObjectState();
 
 
         /// <summary>
         /// 设置访问修饰符(Access Modifiers)
         /// </summary>
-        /// <param name="visibilityType">标记</param>
+        /// <param name="access">标记</param>
         /// <returns></returns>
         public TBuilder WithAccess(NamespaceAccess access = NamespaceAccess.Internal)
         {
@@ -47,6 +50,7 @@ namespace CZGL.Roslyn.Templates
         /// <summary>
         /// 添加一个属性
         /// </summary>
+        /// <param name="name">属性名称</param>
         /// <param name="builder">属性构建器</param>
         /// <returns></returns>
         public virtual TBuilder WithProperty(string name, Action<PropertyBuilder> builder)

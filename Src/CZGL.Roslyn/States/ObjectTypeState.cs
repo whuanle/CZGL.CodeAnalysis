@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CZGL.Roslyn.States
 {
+    /// <summary>
+    /// 对象类型状态机
+    /// </summary>
     public class ObjectTypeState
     {
         /// <summary>

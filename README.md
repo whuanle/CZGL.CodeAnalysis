@@ -1,10 +1,24 @@
-### CZGL.Roslyn
+### [✍CZGL.CodeAnalysis](https://roslyn.whuanle.cn/)
 
 ![azure-devops](https://img.shields.io/azure-devops/build/whuanle/CZGL.CodeAnalysis/3)    ![](https://img.shields.io/azure-devops/tests/whuanle/CZGL.CodeAnalysis/3)    [![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
 
 [![CZGL.Roslyn](https://img.shields.io/nuget/v/CZGL.Roslyn)](https://www.nuget.org/packages/CZGL.Roslyn/)   ![Download](https://img.shields.io/nuget/dt/CZGL.Roslyn)
 
-基于 Roslyn 技术的 C# 动态代码构建器以及编译器，开发者可以使用此库动态构建 C# 代码，并且通过指定条件编译代码。
+
+
+文档 URL：[https://roslyn.whuanle.cn](https://roslyn.whuanle.cn)
+
+API URL：[https://api.roslyn.whuanle.cn](https://api.roslyn.whuanle.cn)
+
+
+
+CZGL.CodeAnalysis 主要包含反射解析库和动态代码生成库两部分。
+
+CZGL.Reflect 是用于反射解析的库，可以轻松帮助你从反射中获取到各种需要的信息。
+
+
+
+CZGL.Roslyn 是基于 Roslyn 技术的 C# 动态代码构建器以及编译器，开发者可以使用此库动态构建 C# 代码，并且通过指定条件编译代码。
 
 * 运行时动态构造代码；
 * 运行时为程序提供新的模块功能，拓展能力；
@@ -34,9 +48,9 @@ Blazor 演示的是以命名空间为单位的编译，你可以通过定制后�
 
 CZGL.Roslyn 拥有丰富的文档说明和 API 接口说明，让你使用起来得心应手！
 
-文档 URL：[https://1586052146.gitbook.io/codeanalysis](https://1586052146.gitbook.io/codeanalysis)
+文档 URL：[https://roslyn.whuanle.cn](https://roslyn.whuanle.cn)
 
-API URL：[https://czgl-roslyn.github.io/czgl-roslyn](https://czgl-roslyn.github.io/czgl-roslyn)
+API URL：[https://api.roslyn.whuanle.cn](https://api.roslyn.whuanle.cn)
 
 ![文档说明](./docs/.images/丰富的文档说明.png)
 
@@ -46,17 +60,17 @@ API URL：[https://czgl-roslyn.github.io/czgl-roslyn](https://czgl-roslyn.github
 
 ### 版本更新计划
 
-- [ ] **0.1.0 α版(正在开发中，当前版本)**
+- [ ] **0.1.0 α版(完成)**
 
   特性：一个具有完整功能的初级版本。
 
-- [ ] **0.2.0 β（beta）版**
+- [x] **0.2.0 β（beta）版**
 
   特性：消除了严重的错误和缺陷，完成大量的单元测试等，对代码的可靠性有了极大的提升；能够上线 Nuget 提供用户试用；对用户的需求进行收集，改进程序；
 
 - [ ] **0.3.0 γ版**
 
-该版本已经相当成熟了，根据用户使用 β 版本后的建议和需求进行更新；开始关注性能，进行性能测试已经采取措施对性能进行改进。
+  特性：该版本已经相当成熟了，根据用户使用 β 版本后的建议和需求进行更新；开始关注性能，进行性能测试已经采取措施对性能进行改进。
 
 
 
@@ -108,25 +122,11 @@ Natsha 是一个非常优秀的动态代码框架，由大帅主导，形成了�
 
 
 
-那为什么 还要写 CZGL.Rolysn 呢？
-
-1，锻炼技术能力；
-
-2，与 Natasha 不构成竞品， CZGL.Roslyn 尽可能做的轻量，开发者可以考虑业务大小，大型场景使用 Natasha；快速建设使用 CZGL.Roslyn；Natasha 学习曲线比较大，CZGL.Roslyn 学习上手比较快。
-
-3，Natasha 功能完整，依赖比较多；CZGL.Roslyn 功能尽可能足够同时保存少量的依赖，体积小；
-
-4，CZGL.Roslyn 适合写小工具，例如 dotnet-tool、数据库还原实体、为 ML.NET 提供快速代码生成等，适合作为小部件为你的程序提供额外的功能；Natasha 适合作为独立的一个产品去做，围绕 Natasha 构建更多功能；
-
-
-
-论性能，Natasha 优秀；论功能完整性，Natasha 一整套大保健服务... ...
-
-CZGL.Roslyn 相比 Natasha ，大概就只有 “轻量” 这个特点了，简直被秒杀。。。
-
-
-
 ### 我可以从这个框架学习到什么
+
+CZGL.Roslyn 尽可能做的轻量，而且代码较为简单，代码里面有很多注释，可以帮助读者很好地理解代码功能。
+
+CZGL.Roslyn 适合写小工具，例如 dotnet-tool、数据库还原实体、为 ML.NET 提供快速代码生成等，适合作为小部件为你的程序提供额外的功能；
 
 框架特点是简单易用，你可以从中学习到大量的反射知识，以及 Roslyn 知识，甚至可能学习到 EMIT(后面我会使用这种技术优化性能)。
 

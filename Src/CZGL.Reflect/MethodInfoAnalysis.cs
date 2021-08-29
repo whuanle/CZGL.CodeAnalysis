@@ -79,6 +79,12 @@ namespace CZGL.Reflect
         {
             return AccessAnalysis.GetAccess(method);
         }
+
+        /// <summary>
+        /// 获取方法关键字
+        /// </summary>
+        /// <param name="method"></param>
+        /// <returns></returns>
         public static MethodKeyword GetKeyword(this MethodInfo method)
         {
             return KeywordAnalysis.GetMethodKeyword(method);

@@ -12,12 +12,15 @@ namespace CZGL.Roslyn.Templates
     /// <typeparam name="TBuilder"></typeparam>
     public abstract class EnumTemplate<TBuilder> : MemberTemplate<TBuilder> where TBuilder : EnumTemplate<TBuilder>
     {
+        /// <summary>
+        /// 枚举状态机
+        /// </summary>
         protected internal EnumState _enum = new EnumState();
 
         /// <summary>
         /// 设置访问修饰符(Access Modifiers)
         /// </summary>
-        /// <param name="visibilityType">标记</param>
+        /// <param name="access">标记</param>
         /// <returns></returns>
         public virtual TBuilder WithAccess(NamespaceAccess access = NamespaceAccess.Internal)
         {

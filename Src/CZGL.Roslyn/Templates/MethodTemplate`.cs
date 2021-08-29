@@ -13,6 +13,9 @@ namespace CZGL.Roslyn.Templates
     /// <typeparam name="TBuilder"></typeparam>
     public abstract class MethodTemplate<TBuilder> : FuncTemplate<TBuilder> where TBuilder : MethodTemplate<TBuilder>
     {
+        /// <summary>
+        /// 方法状态机
+        /// </summary>
         protected internal MethodState _method = new MethodState();
 
         /// <summary>

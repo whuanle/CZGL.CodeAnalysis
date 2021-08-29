@@ -63,6 +63,7 @@ namespace CZGL.Roslyn
         /// 如果源字符串为空，则不改变，如果不为空，则再前面加上符号
         /// </summary>
         /// <param name="source"></param>
+        /// <param name="separator">分隔符</param>
         /// <returns></returns>
         public static string CodeNewBefore(this string source, string separator = " ")
         {
@@ -75,6 +76,7 @@ namespace CZGL.Roslyn
         /// 如果源字符串为空，则不改变，如果不为空，则再后面面加上符号
         /// </summary>
         /// <param name="source"></param>
+        /// <param name="separator">分隔符</param>
         /// <returns></returns>
         public static string CodeNewAfter(this string source, string separator = " ")
         {

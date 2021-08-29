@@ -15,6 +15,9 @@ namespace CZGL.Roslyn.Templates
     public abstract class ObjectTypeTemplate<TBuilder> : ObjectTemplate<TBuilder>
         where TBuilder : ObjectTypeTemplate<TBuilder>
     {
+        /// <summary>
+        /// 对象类型状态机
+        /// </summary>
         protected internal readonly ObjectTypeState _typeState = new ObjectTypeState();
 
         /// <summary>
@@ -37,7 +40,6 @@ namespace CZGL.Roslyn.Templates
         /// <summary>
         /// 添加一个构造函数
         /// </summary>
-        /// <param name="name"></param>
         /// <returns></returns>
         public virtual CtorBuilder WithCtor()
         {
@@ -95,6 +97,7 @@ namespace CZGL.Roslyn.Templates
         /// <summary>
         /// 添加一个字段
         /// </summary>
+        /// <param name="name">name</param>
         /// <param name="builder">字段构建器</param>
         /// <returns></returns>
         public virtual TBuilder WithField(string name, Action<FieldBuilder> builder)

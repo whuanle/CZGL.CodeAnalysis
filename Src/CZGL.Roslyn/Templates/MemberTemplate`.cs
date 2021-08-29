@@ -33,7 +33,9 @@ namespace CZGL.Roslyn.Templates
         /// </summary>
         protected internal MemberState _member = new MemberState();
 
-        // 表示当前子类构建器
+        /// <summary>
+        /// 表示当前子类构建器
+        /// </summary>
         protected internal TBuilder _TBuilder;
 
         /// <summary>
@@ -149,7 +151,6 @@ namespace CZGL.Roslyn.Templates
         /// <summary>
         /// 随机生成一个名称
         /// </summary>
-        /// <param name="name"></param>
         /// <returns></returns>
         public virtual TBuilder WithRondomName()
         {

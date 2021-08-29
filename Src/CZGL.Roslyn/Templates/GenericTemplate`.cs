@@ -12,16 +12,40 @@ using System.Text;
 
 namespace CZGL.Roslyn.Templates
 {
+    /// <summary>
+    /// 泛型生成器模板
+    /// </summary>
+    /// <typeparam name="TBuilder"></typeparam>
     public abstract class GenericTemplate<TBuilder> where TBuilder : GenericTemplate<TBuilder>
     {
+        /// <summary>
+        /// 泛型状态机
+        /// </summary>
         protected internal HashSet<GenericState> _generic = new HashSet<GenericState>();
+        
+        /// <summary>
+        /// 泛型参数字符串
+        /// </summary>
         protected internal string ParamCode;
+
+        /// <summary>
+        /// 泛型约束字符串
+        /// </summary>
         protected internal string WhereCode;
 
+        /// <summary>
+        /// 构建器
+        /// </summary>
         protected internal TBuilder _TBuilder;
+
+        /// <summary>
+        /// 状态机
+        /// </summary>
         protected internal GenericState _this;
 
-        // 为哪个对象构建泛型
+        /// <summary>
+        /// 为哪个对象构建泛型
+        /// </summary>
         protected internal string ObjectName;
 
         /// <summary>
