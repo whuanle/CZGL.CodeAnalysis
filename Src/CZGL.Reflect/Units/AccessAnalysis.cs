@@ -1,15 +1,11 @@
 using CZGL.CodeAnalysis.Shared;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
-using System.Text;
 
 namespace CZGL.Reflect
 {
-
     /// <summary>
-    /// 解析访问权限
+    /// 访问符解析器。
     /// </summary>
     [CLSCompliant(true)]
     public static class AccessAnalysis
@@ -23,7 +19,7 @@ namespace CZGL.Reflect
         #region 访问权限
 
         /// <summary>
-        /// 获得成员的访问权限
+        /// 获得成员的访问权限。
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="t"></param>
@@ -33,68 +29,77 @@ namespace CZGL.Reflect
         {
             switch (t)
             {
-                case Type type: return GetAccess(type);
-                case MethodInfo method: return GetAccess(method);
-                case ConstructorInfo constructor: return GetAccess(constructor);
-                case PropertyInfo property: return GetAccess(property);
-                case FieldInfo field: return GetAccess(field);
+                case Type type: return GetTypeAccess(type);
+                case MethodInfo method: return GetMethodAccess(method);
+                case ConstructorInfo constructor: return GetMethodAccess(constructor);
+                case PropertyInfo property: return GetPropertyAccess(property);
+                case FieldInfo field: return GetFieldAccess(field);
 
                 default: throw new MemberAccessException($"未能识别当前类型的访问权限");
             }
         }
 
         /// <summary>
-        /// 获取一个能够在命名空间下直接定义的类型的访问权限
+        /// 获取成员的访问修饰符。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        /// <exception cref="MemberAccessException"></exception>
+        public static string GetAccessString<T>(T t) where T : MemberInfo
+        {
+            switch (t)
+            {
+                case Type type: return GetTypeAccessString(type);
+                case MethodInfo method: return GetMethodAccessString(method);
+                case ConstructorInfo constructor: return GetMethodAccessString(constructor);
+                case PropertyInfo property: return GetPropertyAccessString(property);
+                case FieldInfo field: return GetFieldAccessString(field);
+
+                default: throw new MemberAccessException($"未能识别当前类型的访问权限");
+            }
+        }
+
+        /// <summary>
+        /// 获取一个能够在命名空间下直接定义的类型的访问权限。
         /// <para>结构体、枚举、类、委托等</para>
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static MemberAccess GetAccess(Type type)
+        public static MemberAccess GetTypeAccess(Type type)
         {
             if (type.IsNested)
-                return GetNestedAccess(type);
+                return GetNestedTypeAccess(type);
 
             return type.IsPublic ? MemberAccess.Public : MemberAccess.Internal;
         }
 
         /// <summary>
-        /// 获取一个能够在命名空间下直接定义的类型的访问权限
+        /// 获取一个能够在命名空间下直接定义的类型的访问权限。
         /// <para>结构体、枚举、类、委托等</para>
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static string GetAccessCode(Type type)
-        {
-            return EnumCache.GetValue(GetAccess(type));
-        }
+        public static string GetTypeAccessString(Type type) => EnumCache.GetValue(GetTypeAccess(type));
 
         /// <summary>
-        /// 获取成员访问权限
+        /// 获取嵌套类型访问权限。
         /// </summary>
         /// <param name="type">类型</param>
         /// <returns><see cref="MemberAccess"/></returns>
         /// <exception cref="MemberAccessException">未能识别当前类型的访问权限</exception>
-        public static MemberAccess GetNestedAccess(Type type)
+        public static MemberAccess GetNestedTypeAccess(Type type)
         {
-            if (!type.IsNested)
-                return GetAccess(type);
+            if (!type.IsNested) return GetTypeAccess(type);
 
             if (type.IsNestedPublic) return MemberAccess.Public;
-            if (type.IsNestedPrivate && type.IsNestedFamily) return MemberAccess.PrivateProtected;
+            if (type.IsNestedAssembly && !type.IsNestedFamily) return MemberAccess.Internal;
+            if (type.IsNestedFamily && !type.IsNestedAssembly) return MemberAccess.Protected;
             if (type.IsNestedPrivate) return MemberAccess.Private;
-            if (type.IsNestedAssembly) return MemberAccess.Internal;
-            if (type.IsNestedFamily) return MemberAccess.Protected;
+            if (type.IsNestedFamANDAssem) return MemberAccess.PrivateProtected;
             if (type.IsNestedFamORAssem) return MemberAccess.ProtectedInternal;
 
             throw new MemberAccessException($"未能识别当前类型的访问权限");
-
-            //return
-            //    type.IsNestedPublic ? MemberAccess.Public :
-            //    type.IsNestedPrivate && type.IsNestedFamily ? MemberAccess.PrivateProtected :
-            //    type.IsNestedPrivate ? MemberAccess.Private :
-            //    type.IsNestedAssembly ? MemberAccess.Internal :
-            //    type.IsNestedFamily ? MemberAccess.Protected :
-            //    type.IsNestedFamORAssem ? MemberAccess.ProtectedInternal : throw new MemberAccessException($"未能识别当前类型的访问权限");
         }
 
         /// <summary>
@@ -102,20 +107,14 @@ namespace CZGL.Reflect
         /// </summary>
         /// <param name="type">类型</param>
         /// <returns>public、private ... ...</returns>
-        public static string GetNestedAccessCode(Type type)
-        {
-            return EnumCache.GetValue(GetNestedAccess(type));
-        }
+        public static string GetNestedTypeAccessString(Type type) => EnumCache.GetValue(GetNestedTypeAccess(type));
 
         /// <summary>
-        /// 获取成员访问权限
+        /// 获取方法访问权限
         /// </summary>
         /// <param name="method">方法</param>
         /// <returns>public、private ... ...</returns>
-        public static string GetAccessCode(MethodInfo method)
-        {
-            return EnumCache.GetValue(GetAccess(method));
-        }
+        public static string GetMethodAccessString(MethodBase method) => EnumCache.GetValue(GetMethodAccess(method));
 
         /// <summary>
         /// 获取成员访问权限
@@ -123,25 +122,16 @@ namespace CZGL.Reflect
         /// <param name="method"></param>
         /// <returns>public、private ... ...</returns>
         /// <exception cref="MemberAccessException">未能识别当前类型的访问权限</exception>
-        public static MemberAccess GetAccess(MethodInfo method)
+        public static MemberAccess GetMethodAccess(MethodBase method)
         {
             if (method.IsPublic) return MemberAccess.Public;
-            if (method.IsPrivate && method.IsFamily) return MemberAccess.PrivateProtected;
+            if (method.IsAssembly && !method.IsFamily) return MemberAccess.Internal;
+            if (method.IsFamily && !method.IsAssembly) return MemberAccess.Protected;
             if (method.IsPrivate) return MemberAccess.Private;
-            if (method.IsAssembly) return MemberAccess.Internal;
-            if (method.IsFamily) return MemberAccess.Protected;
+            if (method.IsFamilyAndAssembly) return MemberAccess.PrivateProtected;
             if (method.IsFamilyOrAssembly) return MemberAccess.ProtectedInternal;
 
             throw new MemberAccessException($"未能识别当前类型的访问权限");
-
-            //return
-            //    method.IsPublic ? MemberAccess.Public :
-            //    method.IsPrivate && method.IsFamily ? MemberAccess.PrivateProtected :
-            //    method.IsPrivate ? MemberAccess.Private :
-            //    method.IsAssembly ? MemberAccess.Internal :
-            //    method.IsFamily ? MemberAccess.Protected :
-            //    method.IsFamilyOrAssembly ? MemberAccess.ProtectedInternal :
-            //    throw new MemberAccessException($"未能识别当前类型的访问权限");
         }
 
         /// <summary>
@@ -149,10 +139,7 @@ namespace CZGL.Reflect
         /// </summary>
         /// <param name="info">字段</param>
         /// <returns>访问修饰符</returns>
-        public static string GetAccessCode(FieldInfo info)
-        {
-            return EnumCache.GetValue(GetAccess(info));
-        }
+        public static string GetFieldAccessString(FieldInfo info) => EnumCache.GetValue(GetFieldAccess(info));
 
         /// <summary>
         /// 获取成员访问权限
@@ -160,24 +147,16 @@ namespace CZGL.Reflect
         /// <param name="info">字段</param>
         /// <returns><see cref="MemberAccess"/></returns>
         /// <exception cref="MemberAccessException">未能识别当前类型的访问权限</exception>
-        public static MemberAccess GetAccess(FieldInfo info)
+        public static MemberAccess GetFieldAccess(FieldInfo info)
         {
             if (info.IsPublic) return MemberAccess.Public;
-            if (info.IsPrivate && info.IsFamily) return MemberAccess.PrivateProtected;
+            if (info.IsAssembly && !info.IsFamily) return MemberAccess.Internal;
+            if (info.IsFamily && !info.IsAssembly) return MemberAccess.Protected;
             if (info.IsPrivate) return MemberAccess.Private;
-            if (info.IsAssembly) return MemberAccess.Internal;
-            if (info.IsFamily) return MemberAccess.Protected;
+            if (info.IsFamilyAndAssembly) return MemberAccess.PrivateProtected;
             if (info.IsFamilyOrAssembly) return MemberAccess.ProtectedInternal;
-            throw new MemberAccessException($"未能识别当前类型的访问权限");
 
-            //return
-            //    info.IsPublic ? MemberAccess.Public :
-            //    info.IsPrivate && info.IsFamily ? MemberAccess.PrivateProtected :
-            //    info.IsPrivate ? MemberAccess.Private :
-            //    info.IsAssembly ? MemberAccess.Internal :
-            //    info.IsFamily ? MemberAccess.Protected :
-            //    info.IsFamilyOrAssembly ? MemberAccess.ProtectedInternal :
-            //    throw new MemberAccessException($"未能识别当前类型的访问权限");
+            throw new MemberAccessException($"未能识别当前类型的访问权限");
         }
 
         /// <summary>
@@ -185,10 +164,7 @@ namespace CZGL.Reflect
         /// </summary>
         /// <param name="property">属性</param>
         /// <returns>访问修饰符</returns>
-        public static string GetAccessCode(PropertyInfo property)
-        {
-            return EnumCache.GetValue(GetAccess(property));
-        }
+        public static string GetPropertyAccessString(PropertyInfo property) => EnumCache.GetValue(GetPropertyAccess(property));
 
         /// <summary>
         /// 获取成员访问权限
@@ -196,28 +172,19 @@ namespace CZGL.Reflect
         /// <param name="property">属性</param>
         /// <returns>访问修饰符</returns>
         /// <exception cref="MemberAccessException">未能识别当前类型的访问权限</exception>
-        public static MemberAccess GetAccess(PropertyInfo property)
+        public static MemberAccess GetPropertyAccess(PropertyInfo property)
         {
-            MethodInfo info = property.GetGetMethod() ?? property.GetSetMethod();
-            if (info == null)
-                throw new MemberAccessException($"未能识别当前类型的访问权限，因为当前对象不存在 get 和 set 构造器");
+            // GetGetMethod() 会报错
+            MethodInfo info = property.GetMethod ?? throw new MemberAccessException($"未能识别当前类型的访问权限，因为当前对象不存在 get 构造器");
 
             if (info.IsPublic) return MemberAccess.Public;
-            if (info.IsPrivate && info.IsFamily) return MemberAccess.PrivateProtected;
+            if (info.IsAssembly && !info.IsFamily) return MemberAccess.Internal;
+            if (info.IsFamily && !info.IsAssembly) return MemberAccess.Protected;
             if (info.IsPrivate) return MemberAccess.Private;
-            if (info.IsAssembly) return MemberAccess.Internal;
-            if (info.IsFamily) return MemberAccess.Protected;
+            if (info.IsFamilyAndAssembly) return MemberAccess.PrivateProtected;
             if (info.IsFamilyOrAssembly) return MemberAccess.ProtectedInternal;
-            throw new MemberAccessException($"未能识别当前类型的访问权限");
 
-            //return
-            //    info.IsPublic ? MemberAccess.Public :
-            //    info.IsPrivate && info.IsFamily ? MemberAccess.PrivateProtected :
-            //    info.IsPrivate ? MemberAccess.Private :
-            //    info.IsAssembly ? MemberAccess.Internal :
-            //    info.IsFamily ? MemberAccess.Protected :
-            //    info.IsFamilyOrAssembly ? MemberAccess.ProtectedInternal :
-            //    throw new MemberAccessException($"未能识别当前类型的访问权限");
+            throw new MemberAccessException($"未能识别当前类型的访问权限");
         }
 
         #endregion

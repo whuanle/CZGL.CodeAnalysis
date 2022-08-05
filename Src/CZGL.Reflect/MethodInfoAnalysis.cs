@@ -77,7 +77,7 @@ namespace CZGL.Reflect
         /// <returns></returns>
         public static MemberAccess GetAccess(this MethodInfo method)
         {
-            return AccessAnalysis.GetAccess(method);
+            return AccessAnalysis.GetMethodAccess(method);
         }
 
         /// <summary>

@@ -17,7 +17,7 @@ namespace CZGL.Reflect
         /// <returns></returns>
         public static MemberAccess GetAccess(this FieldInfo info)
         {
-            return AccessAnalysis.GetAccess(info);
+            return AccessAnalysis.GetFieldAccess(info);
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace CZGL.Reflect
         /// <returns></returns>
         public static string[] GetAttributes(this FieldInfo info)
         {
-            return AttributeAnalysis.GetAttributes(info.GetCustomAttributesData());
+            return AttributeAnalysis.GetAttributesString(info.GetCustomAttributesData());
         }
 
         /// <summary>

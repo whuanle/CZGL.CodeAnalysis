@@ -5,12 +5,12 @@ using System.Text;
 namespace CZGL.CodeAnalysis.Shared
 {
     /// <summary>
-    /// 字段的关键字
+    /// 字段的关键字。
     /// <para>该枚举可组合，但不能随意组合，建议使用枚举中已定义的组合。</para>
     /// </summary>
     [Flags]
     [CLSCompliant(true)]
-    public enum FieldKeyword
+    public enum FieldKeyword : int
     {
         /// <summary>
         /// 无

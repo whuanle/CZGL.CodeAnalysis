@@ -5,10 +5,10 @@ using System.Text;
 namespace CZGL.CodeAnalysis.Shared
 {
     /// <summary>
-    /// 方法关键字
+    /// 方法关键字。
     /// </summary>
     [CLSCompliant(true)]
-    public enum MethodKeyword
+    public enum MethodKeyword : int
     {
         /// <summary>
         /// None

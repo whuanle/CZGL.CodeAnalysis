@@ -19,7 +19,7 @@ namespace CZGL.Reflect
         /// <returns>修饰符</returns>
         public static MemberAccess GetAccess(this Type type)
         {
-            return AccessAnalysis.GetAccess(type);
+            return AccessAnalysis.GetTypeAccess(type);
         }
 
         /// <summary>

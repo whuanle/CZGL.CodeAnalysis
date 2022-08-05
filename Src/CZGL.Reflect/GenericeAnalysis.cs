@@ -71,11 +71,11 @@ namespace CZGL.Reflect
 
 #if NETSTANDARD2_0
             return type.GetGenericArguments().Select(x =>
-                                                    x.IsGenericParameter ? x.Name : ConstantTable.GetBaseTypeName(x))
+                                                    x.IsGenericParameter ? x.Name : TypeAliasName.GetName(x))
                                              .ToArray();
 #else
             return type.GetGenericArguments().Select(x =>
-                                                    x.IsGenericTypeParameter ? x.Name : ConstantTable.GetBaseTypeName(x))
+                                                    x.IsGenericTypeParameter ? x.Name : TypeAliasName.GetName(x))
                                              .ToArray();
 #endif
         }
@@ -112,7 +112,7 @@ namespace CZGL.Reflect
                     if (item.IsGenericType)
                         vs.Add(GetInOut(item) + GetGenriceName(item));
                     else
-                        vs.Add(GetInOut(item) + ConstantTable.GetBaseTypeName(item));
+                        vs.Add(GetInOut(item) + TypeAliasName.GetName(item));
                 }
                 code.Append(string.Join(", ", vs));
             }

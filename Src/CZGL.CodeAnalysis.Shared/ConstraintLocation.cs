@@ -9,7 +9,7 @@ namespace CZGL.CodeAnalysis.Shared
     /// <para>你也可以 <see href="https://www.cnblogs.com/whuanle/p/12252754.html#113-泛型的参数名称和泛型限定">查看具体的约束说明</see></para>
     /// </summary>
     [CLSCompliant(true)]
-    public enum ConstraintLocation
+    public enum ConstraintLocation : int
     {
         /// <summary>
         /// 此约束不能与其它约束同时使用

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{E98C7842-EEE6-4D32-8B8F-3922FC42D1BF}"
 EndProject
@@ -37,9 +37,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RoslynExtensionsTests", "Te
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AOP", "AOP", "{3F09A783-961F-4067-B77B-290C821E9BB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CZGL.RoslynAOP", "aop\CZGL.RoslynAOP\CZGL.RoslynAOP.csproj", "{CC8DDC96-15F2-4C38-AAE1-7A0AD060CC66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CZGL.RoslynAOP", "aop\CZGL.RoslynAOP\CZGL.RoslynAOP.csproj", "{CC8DDC96-15F2-4C38-AAE1-7A0AD060CC66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedTests", "Tests\SharedTests\SharedTests.csproj", "{8693DE06-8E20-4A7A-BD99-0EEAF3626ECD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedTests", "Tests\SharedTests\SharedTests.csproj", "{8693DE06-8E20-4A7A-BD99-0EEAF3626ECD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CZGL.CodeAnalysis.Shared.Tests", "Src\CZGL.CodeAnalysis.Shared.Tests\CZGL.CodeAnalysis.Shared.Tests.csproj", "{658DC64E-A79A-4280-B7E1-2CEBAFF81F1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CZGL.Reflect.Tests", "Src\CZGL.Reflect.Tests\CZGL.Reflect.Tests.csproj", "{D95C8DDB-87AF-45D3-981A-B53E93184F6B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,6 +111,14 @@ Global
 		{8693DE06-8E20-4A7A-BD99-0EEAF3626ECD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8693DE06-8E20-4A7A-BD99-0EEAF3626ECD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8693DE06-8E20-4A7A-BD99-0EEAF3626ECD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{658DC64E-A79A-4280-B7E1-2CEBAFF81F1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{658DC64E-A79A-4280-B7E1-2CEBAFF81F1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{658DC64E-A79A-4280-B7E1-2CEBAFF81F1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{658DC64E-A79A-4280-B7E1-2CEBAFF81F1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D95C8DDB-87AF-45D3-981A-B53E93184F6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D95C8DDB-87AF-45D3-981A-B53E93184F6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D95C8DDB-87AF-45D3-981A-B53E93184F6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D95C8DDB-87AF-45D3-981A-B53E93184F6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -127,6 +139,8 @@ Global
 		{76E78C54-6229-4F57-9FD2-E5C2A5D44E90} = {065C6A67-FC60-49C2-B1E0-1C1E872E1F77}
 		{CC8DDC96-15F2-4C38-AAE1-7A0AD060CC66} = {3F09A783-961F-4067-B77B-290C821E9BB4}
 		{8693DE06-8E20-4A7A-BD99-0EEAF3626ECD} = {065C6A67-FC60-49C2-B1E0-1C1E872E1F77}
+		{658DC64E-A79A-4280-B7E1-2CEBAFF81F1A} = {A9BD8E4E-35E2-4813-903D-3527D8E5E3B9}
+		{D95C8DDB-87AF-45D3-981A-B53E93184F6B} = {A9BD8E4E-35E2-4813-903D-3527D8E5E3B9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3A846AD7-C6DD-4276-809C-CBD360DDC5E0}

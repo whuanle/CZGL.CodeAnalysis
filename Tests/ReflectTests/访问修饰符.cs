@@ -24,7 +24,7 @@ namespace ReflectTests
 
         public void 判断各种类型1()
         {
-            Assert.Equal(MemberAccess.Public, AccessAnalysis.GetAccess(typeof(Test)));
+            Assert.Equal(MemberAccess.Public, AccessAnalysis.GetTypeAccess(typeof(Test)));
         }
 
     }

@@ -5,10 +5,10 @@ using System.Text;
 namespace CZGL.CodeAnalysis.Shared
 {
     /// <summary>
-    /// 事件关键字
+    /// 事件关键字。
     /// </summary>
     [CLSCompliant(true)]
-    public enum EventKeyword
+    public enum EventKeyword : int
     {
         /// <summary>
         /// 无

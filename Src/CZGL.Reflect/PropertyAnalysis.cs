@@ -19,7 +19,7 @@ namespace CZGL.Reflect
         /// <returns></returns>
         public static MemberAccess GetAccess(this PropertyInfo info)
         {
-            return AccessAnalysis.GetAccess(info);
+            return AccessAnalysis.GetPropertyAccess(info);
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace CZGL.Reflect
         /// <returns></returns>
         public static string[] GetAttributes(this PropertyInfo info)
         {
-            return AttributeAnalysis.GetAttributes(info.GetCustomAttributesData());
+            return AttributeAnalysis.GetAttributesString(info.GetCustomAttributesData());
         }
     }
 }

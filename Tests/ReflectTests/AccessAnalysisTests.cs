@@ -41,17 +41,17 @@ namespace ReflectTests
         public void 命名空间访问权限()
         {
             var t = typeof(AccessAnalysisTests);
-            var access = AccessAnalysis.GetAccess(t);
+            var access = AccessAnalysis.GetTypeAccess(t);
             Assert.Equal(MemberAccess.Public,access);
 
-            var str = AccessAnalysis.GetAccessCode(t);
+            var str = AccessAnalysis.GetTypeAccessCode(t);
             Assert.Equal("public", str);
         }
 
         [Fact]
         public void 嵌套类型成员访问权限()
         {
-            var access = AccessAnalysis.GetNestedAccess(type);
+            var access = AccessAnalysis.GetNestedTypeAccess(type);
             Assert.Equal(MemberAccess.Private, access);
 
             var str = AccessAnalysis.GetNestedAccessCode(type);
@@ -62,30 +62,30 @@ namespace ReflectTests
         public void 方法访问权限()
         {
             var method = type.GetMethod("A");
-            var access = AccessAnalysis.GetAccess(method);
+            var access = AccessAnalysis.GetMethodAccess(method);
             Assert.Equal(MemberAccess.Public, access);
 
-            var str = AccessAnalysis.GetAccessCode(method);
+            var str = AccessAnalysis.GetMethodAccessCode(method);
             Assert.Equal("public", str);
         }
 
         [Fact]
         public void 字段访问权限()
         {
-            var access = AccessAnalysis.GetAccess(type.GetField("B"));
+            var access = AccessAnalysis.GetFieldAccess(type.GetField("B"));
             Assert.Equal(MemberAccess.Public, access);
 
-            var str = AccessAnalysis.GetAccessCode(type.GetField("B"));
+            var str = AccessAnalysis.GetFieldAccessCode(type.GetField("B"));
             Assert.Equal("public", str);
         }
 
         [Fact]
         public void 属性访问权限()
         {
-            var access = AccessAnalysis.GetAccess(type.GetProperty("C"));
+            var access = AccessAnalysis.GetPropertyAccess(type.GetProperty("C"));
             Assert.Equal(MemberAccess.Public, access);
 
-            var str = AccessAnalysis.GetAccessCode(type.GetProperty("C"));
+            var str = AccessAnalysis.GetPropertyAccessCode(type.GetProperty("C"));
             Assert.Equal("public", str);
         }
     }

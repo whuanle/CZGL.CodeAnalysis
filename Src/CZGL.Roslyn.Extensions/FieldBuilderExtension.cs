@@ -63,7 +63,7 @@ namespace CZGL.Roslyn
             if (type.IsGenericType)
                 typeName = GenericeAnalysis.GetGenriceName(type);
             else
-                typeName = ConstantTable.GetBaseTypeName(type);
+                typeName = TypeAliasName.GetName(type);
 
             return builder.WithType(typeName);
         }

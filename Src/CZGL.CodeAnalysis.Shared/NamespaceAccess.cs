@@ -4,11 +4,11 @@ namespace CZGL.CodeAnalysis.Shared
 {
 
     /// <summary>
-    /// 命名空间中的成员修饰符
+    /// 命名空间中的成员修饰符。
     /// <para>嵌套成员请使用 <see cref="MemberAccess"/></para>
     /// </summary>
     [CLSCompliant(true)]
-    public enum NamespaceAccess
+    public enum NamespaceAccess : int
     {
         /// <summary>
         /// 无

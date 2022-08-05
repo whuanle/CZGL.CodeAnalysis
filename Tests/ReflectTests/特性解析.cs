@@ -31,7 +31,7 @@ namespace ReflectTests
         public void 特性解析器()
         {
             // AttributeDefine 对应一个特性
-            AttributeDefine[] attributeDefines = AttributeAnalysis.GetAttributeDefine(typeof(Test));
+            AttributeDefine[] attributeDefines = AttributeAnalysis.GetDefine(typeof(Test));
             string[] str = AttributeAnalysis.GetAttributes(typeof(Test));
         }
     }

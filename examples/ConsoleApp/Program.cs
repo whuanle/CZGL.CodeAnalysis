@@ -96,6 +96,21 @@ namespace ConsoleApp
 
 
     }
+
+    public record  AAA
+    {
+
+    }
+
+    public static record BAA
+    {
+
+    }
+    public readonly record struct AAAa
+    {
+
+    }
+
     class Program
     {
         [Display]

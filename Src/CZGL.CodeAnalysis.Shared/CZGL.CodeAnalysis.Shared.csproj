@@ -1,13 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netcoreapp3.1;net5.0</TargetFrameworks>
-    <Version>0.2.0</Version>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Description>一套用于反射、动态代码生成的标准模型信息接口，能够准确表达反射各种信息的记载以及动态代码生成的输出。</Description>
-    <PackageProjectUrl>https://github.com/whuanle/CZGL.CodeAnalysis</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/whuanle/CZGL.CodeAnalysis</RepositoryUrl>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+		<Version>0.3.0</Version>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<Description>一套用于反射、动态代码生成的标准模型信息接口，能够准确表达反射各种信息的记载以及动态代码生成的输出。</Description>
+		<PackageProjectUrl>https://roslyn.whuanle.cn</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/whuanle/CZGL.CodeAnalysis</RepositoryUrl>
+		<Nullable>enable</Nullable>
+		<LangVersion>8.0</LangVersion>
+		<Authors>痴者工良</Authors>
+		<EnableNETAnalyzers>True</EnableNETAnalyzers>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">
+	  <WarningLevel>4</WarningLevel>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0|AnyCPU'">
+	  <WarningLevel>4</WarningLevel>
+	</PropertyGroup>
 
 </Project>

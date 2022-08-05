@@ -1,5 +1,6 @@
 ﻿using CZGL.CodeAnalysis.Shared;
 using System;
+using System.Reflection;
 
 namespace CZGL.Reflect
 {
@@ -50,6 +51,13 @@ namespace CZGL.Reflect
             //    type.IsEnum ? MemberType.Enum :
             //    type.IsPrimitive ? MemberType.Base : MemberType.Struct;
         }
+
+        /// <summary>
+        /// 获取成员类型
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public static MemberTypes GetMemberType(MemberInfo info) => info.MemberType;
 
         #endregion
     }

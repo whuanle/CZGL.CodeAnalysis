@@ -5,11 +5,10 @@ using System.Text;
 namespace CZGL.CodeAnalysis.Shared
 {
     /// <summary>
-    /// 属性可用的关键字
+    /// 属性可用的关键字。
     /// </summary>
-    [Flags]
     [CLSCompliant(true)]
-    public enum PropertyKeyword
+    public enum PropertyKeyword : int
     {
         /// <summary>
         /// None

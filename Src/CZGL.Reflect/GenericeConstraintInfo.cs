@@ -6,7 +6,7 @@ using System.Text;
 namespace CZGL.Reflect
 {
     /// <summary>
-    /// 表示泛型参数的一个约束信息
+    /// 表示泛型参数的一个约束信息。
     /// </summary>
     public class GenericeConstraintInfo
     {

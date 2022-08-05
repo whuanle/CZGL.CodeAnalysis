@@ -5,11 +5,11 @@ using System.Text;
 namespace CZGL.CodeAnalysis.Shared
 {
     /// <summary>
-    /// 何种成员
+    /// 成员成员。
     /// <para>指示当前成员是何种类型/结构。</para>
     /// </summary>
     [CLSCompliant(true)]
-    public enum MemberType
+    public enum MemberType : int
     {
         /// <summary>
         /// 不是目标类型

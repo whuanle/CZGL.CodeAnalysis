@@ -6,12 +6,11 @@ namespace CZGL.CodeAnalysis.Shared
 {
 
     /// <summary>
-    /// 命名空间中所有种类的成员的访问修饰符
-    /// <para>接口，枚举，嵌套类、属性、字段、方法等</para>
+    /// 命名空间中所有种类的成员的访问修饰符。
+    /// <para>接口，枚举，嵌套类、属性、字段、方法等。</para>
     /// </summary>
-    [Flags]
     [CLSCompliant(true)]
-    public enum MemberAccess
+    public enum MemberAccess : int
     {
         /// <summary>
         /// None
