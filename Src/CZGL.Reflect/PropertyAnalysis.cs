@@ -29,16 +29,16 @@ namespace CZGL.Reflect
         /// <returns></returns>
         public static PropertyKeyword GetKeyword(this PropertyInfo info)
         {
-            return KeywordAnalysis.GetPropertyKeyword(info);
+            return KeywordAnalysis.GetKeyword(info);
         }
 
         /// <summary>
         /// 获取特性列表
         /// </summary>
         /// <returns></returns>
-        public static string[] GetAttributes(this PropertyInfo info)
+        public static string GetAttributes(this PropertyInfo info)
         {
-            return AttributeAnalysis.GetAttributesString(info.GetCustomAttributesData());
+            return info.GetCustomAttributesData().ToString();
         }
     }
 }

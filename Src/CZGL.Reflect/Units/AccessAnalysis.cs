@@ -80,7 +80,7 @@ namespace CZGL.Reflect
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static string GetTypeAccessString(Type type) => EnumCache.GetValue(GetTypeAccess(type));
+        public static string GetTypeAccessString(Type type) => EnumCache.View<MemberAccess>(GetTypeAccess(type));
 
         /// <summary>
         /// 获取嵌套类型访问权限。
@@ -107,14 +107,14 @@ namespace CZGL.Reflect
         /// </summary>
         /// <param name="type">类型</param>
         /// <returns>public、private ... ...</returns>
-        public static string GetNestedTypeAccessString(Type type) => EnumCache.GetValue(GetNestedTypeAccess(type));
+        public static string GetNestedTypeAccessString(Type type) => EnumCache.View<MemberAccess>(GetNestedTypeAccess(type));
 
         /// <summary>
         /// 获取方法访问权限
         /// </summary>
         /// <param name="method">方法</param>
         /// <returns>public、private ... ...</returns>
-        public static string GetMethodAccessString(MethodBase method) => EnumCache.GetValue(GetMethodAccess(method));
+        public static string GetMethodAccessString(MethodBase method) => EnumCache.View<MemberAccess>(GetMethodAccess(method));
 
         /// <summary>
         /// 获取成员访问权限
@@ -139,7 +139,7 @@ namespace CZGL.Reflect
         /// </summary>
         /// <param name="info">字段</param>
         /// <returns>访问修饰符</returns>
-        public static string GetFieldAccessString(FieldInfo info) => EnumCache.GetValue(GetFieldAccess(info));
+        public static string GetFieldAccessString(FieldInfo info) => EnumCache.View<MemberAccess>(GetFieldAccess(info));
 
         /// <summary>
         /// 获取成员访问权限
@@ -164,7 +164,7 @@ namespace CZGL.Reflect
         /// </summary>
         /// <param name="property">属性</param>
         /// <returns>访问修饰符</returns>
-        public static string GetPropertyAccessString(PropertyInfo property) => EnumCache.GetValue(GetPropertyAccess(property));
+        public static string GetPropertyAccessString(PropertyInfo property) => EnumCache.View<MemberAccess>(GetPropertyAccess(property));
 
         /// <summary>
         /// 获取成员访问权限

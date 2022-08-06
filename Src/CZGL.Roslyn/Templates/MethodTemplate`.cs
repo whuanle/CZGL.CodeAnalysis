@@ -25,7 +25,7 @@ namespace CZGL.Roslyn.Templates
         /// <returns></returns>
         public TBuilder WithKeyword(MethodKeyword keyword=MethodKeyword.Default)
         {
-            _method.Keyword = EnumCache.GetValue(keyword);
+            _method.Keyword = EnumCache.View<MethodKeyword>(keyword);
             return _TBuilder;
         }
 

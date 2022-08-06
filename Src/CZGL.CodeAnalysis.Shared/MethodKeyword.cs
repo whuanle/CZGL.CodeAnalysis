@@ -13,64 +13,68 @@ namespace CZGL.CodeAnalysis.Shared
         /// <summary>
         /// None
         /// </summary>
-        [MemberDefineName(Name = "")]
+        [DefineName(Name = "")]
         Default = 0,
 
         /// <summary>
         /// static
         /// </summary>
-        [MemberDefineName(Name = "static")]
-        Static = 1 << 1,
+        [DefineName(Name = "static")]
+        Static = 1,
 
         /// <summary>
         /// abstract
-        /// <para>定义为抽象方法，则不能再有方法体。</para>
         /// </summary>
-        [MemberDefineName(Name = "abstract")]
-        Abstract = 1 << 3,
+        [DefineName(Name = "abstract")]
+        Abstract = 1 << 1,
 
         /// <summary>
         /// virtual
         /// </summary>
-        [MemberDefineName(Name = "virtual")]
-        Virtual = 1 << 4,
+        [DefineName(Name = "virtual")]
+        Virtual = 1 << 2,
 
         /// <summary>
         /// override
         /// </summary>
-        [MemberDefineName(Name = "override")]
-        Override = 1 << 5,
+        [DefineName(Name = "override")]
+        Override = 1 << 3,
 
         /// <summary>
         /// sealed override
         /// </summary>
-        [MemberDefineName(Name = "sealed override")]
-        SealedOverride = 1 << 6,
+        [DefineName(Name = "sealed override")]
+        SealedOverride = 1 << 4,
 
         /// <summary>
-        /// new
-        /// <para>指隐藏父类的方法</para>
+        /// ref readonly
         /// </summary>
-        [MemberDefineName(Name = "new")]
-        New = 1 << 7,
+        [DefineName(Name = "ref readonly")]
+        RefReadonly = 1 << 5,
 
         /// <summary>
-        /// new virsual
+        /// static ref readonly
         /// </summary>
-        [MemberDefineName(Name = "new virsual")]
-        NewVirtual = New | Virtual,
+        [DefineName(Name = "static ref readonly")]
+        StaticRefReadonly = 1 << 6,
 
         /// <summary>
-        /// 暂不支持识别此类修饰符
+        /// override ref readonly
         /// </summary>
-        [MemberDefineName(Name = "new static")]
-        NewStatic = New | Static,
+        [DefineName(Name = "virtual ref readonly")]
+        VirtualRefReadonly = 1 << 7,
+
+        /// <summary>
+        /// override ref readonly
+        /// </summary>
+        [DefineName(Name = "ovveride ref readonly")]
+        OvverideRefReadonly = 1 << 8,
 
         /// <summary>
         /// extern 方法，表明此方法使用了非托管库的函数。
         /// <para>由于 extern 必须与 static 一起使用，因此这里使用 static extern 表达 extern 方法。</para>
         /// </summary>
-        [MemberDefineName(Name = "static extern")]
-        StaticExtern
+        [DefineName(Name = "static extern")]
+        StaticExtern = 1 << 9
     }
 }

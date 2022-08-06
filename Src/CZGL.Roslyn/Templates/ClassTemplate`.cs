@@ -28,7 +28,7 @@ namespace CZGL.Roslyn.Templates
         /// <returns></returns>
         public virtual TBuilder WithKeyword(ClassKeyword keyword)
         {
-            _typeState.Keyword = EnumCache.GetValue(keyword);
+            _typeState.Keyword = EnumCache.View<ClassKeyword>(keyword);
             return _TBuilder;
         }
 

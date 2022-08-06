@@ -8,10 +8,10 @@ namespace CZGL.CodeAnalysis.Shared
     /// 为枚举定义注释别名。
     /// </summary>
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
-    internal class MemberDefineNameAttribute : Attribute
+    internal class DefineNameAttribute : Attribute
     {
-        public MemberDefineNameAttribute() { }
-        public MemberDefineNameAttribute(string name)
+        public DefineNameAttribute() { }
+        public DefineNameAttribute(string name)
         {
             Name = name;
         }

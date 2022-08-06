@@ -22,7 +22,7 @@ namespace CZGL.Roslyn.Templates
         /// <returns></returns>
         public TBuilder WithAccess(NamespaceAccess access = NamespaceAccess.Internal)
         {
-            _member.Access = EnumCache.GetValue(access);
+            _member.Access = EnumCache.View<NamespaceAccess>(access);
             return _TBuilder;
         }
     }

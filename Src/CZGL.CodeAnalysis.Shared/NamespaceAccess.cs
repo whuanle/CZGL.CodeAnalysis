@@ -13,19 +13,19 @@ namespace CZGL.CodeAnalysis.Shared
         /// <summary>
         /// 无
         /// </summary>
-        [MemberDefineName(Name = "")]
+        [DefineName(Name = "")]
         Default = 0,
 
         /// <summary>
         /// internal
         /// </summary>
-        [MemberDefineName(Name = "internal")]
+        [DefineName(Name = "internal")]
         Internal = 1,
 
         /// <summary>
         /// public
         /// </summary>
-        [MemberDefineName(Name = "public")]
+        [DefineName(Name = "public")]
         Public = 1 << 1
     }
 }

@@ -29,7 +29,7 @@ namespace CZGL.CodeAnalysis.Shared
 
                 foreach (var item in type.GetFields(BindingFlags.Static | BindingFlags.Public))
                 {
-                    var attr = item.GetCustomAttributes().Single(x => x.GetType() == typeof(MemberDefineNameAttribute)) as MemberDefineNameAttribute;
+                    var attr = item.GetCustomAttributes().Single(x => x.GetType() == typeof(DefineNameAttribute)) as DefineNameAttribute;
                     var name = attr!.Name;
                     dictionary.Add((T)Enum.Parse(type, item.Name), name);
                 }
@@ -42,14 +42,14 @@ namespace CZGL.CodeAnalysis.Shared
         /// </summary>
         /// <param name="value">枚举</param>
         /// <returns>类修饰符</returns>
-        public static string GetClassKeyword(ClassKeyword value) => Cache<ClassKeyword>.Data[value];
+        public static string View(ClassKeyword value) => Cache<ClassKeyword>.Data[value];
 
         /// <summary>
         /// 获取 <see cref="RecordKeyword"/> 枚举代表的信息。
         /// </summary>
         /// <param name="value">枚举</param>
         /// <returns>类修饰符</returns>
-        public static string GetRecordKeyword(RecordKeyword value) => Cache<RecordKeyword>.Data[value];
+        public static string View(RecordKeyword value) => Cache<RecordKeyword>.Data[value];
 
         /// <summary>
         /// 获取 <see cref="StructKeyword"/> 枚举代表的信息。
@@ -57,7 +57,7 @@ namespace CZGL.CodeAnalysis.Shared
         /// <param name="value">枚举</param>
         /// <returns>结构体修饰符</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetStructKword(StructKeyword value) => Cache<StructKeyword>.Data[value];
+        public static string View(StructKeyword value) => Cache<StructKeyword>.Data[value];
 
         /// <summary>
         /// 获取 <see cref="EventKeyword"/> 枚举代表的信息。
@@ -65,7 +65,7 @@ namespace CZGL.CodeAnalysis.Shared
         /// <param name="value">枚举</param>
         /// <returns>事件类型</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetEventKeyword(EventKeyword value) => Cache<EventKeyword>.Data[value];
+        public static string View(EventKeyword value) => Cache<EventKeyword>.Data[value];
 
         /// <summary>
         /// 获取 <see cref="GenericKeyword"/>  枚举代表的信息。
@@ -73,7 +73,7 @@ namespace CZGL.CodeAnalysis.Shared
         /// <param name="value">枚举</param>
         /// <returns>泛型类型</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetGenericKeyword(GenericKeyword value) => Cache<GenericKeyword>.Data[value];
+        public static string View(GenericKeyword value) => Cache<GenericKeyword>.Data[value];
 
         /// <summary>
         /// 获取 <see cref="FieldKeyword"/>  枚举代表的信息。
@@ -81,7 +81,7 @@ namespace CZGL.CodeAnalysis.Shared
         /// <param name="value">枚举</param>
         /// <returns>字段</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetFieldKeyword(FieldKeyword value) => Cache<FieldKeyword>.Data[value];
+        public static string View(FieldKeyword value) => Cache<FieldKeyword>.Data[value];
 
         /// <summary>
         /// 获取 <see cref="MemberAccess"/> 枚举代表的信息。
@@ -89,7 +89,7 @@ namespace CZGL.CodeAnalysis.Shared
         /// <param name="value">枚举</param>
         /// <returns>成员访问修饰符</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetMemberAccess(MemberAccess value) => Cache<MemberAccess>.Data[value];
+        public static string View(MemberAccess value) => Cache<MemberAccess>.Data[value];
 
         /// <summary>
         /// 获取 <see cref="MemberType"/> 枚举代表的信息。
@@ -97,14 +97,14 @@ namespace CZGL.CodeAnalysis.Shared
         /// <param name="value">枚举</param>
         /// <returns>成员类型</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetMemberType(MemberType value) => Cache<MemberType>.Data[value];
+        public static string View(MemberType value) => Cache<MemberType>.Data[value];
 
         /// <summary>
         /// 获取 <see cref="MethodKeyword"/> 枚举代表的信息。
         /// </summary>
         /// <param name="value">枚举</param>
         /// <returns>方法修饰符</returns>
-        public static string GetMethodKeyword(MethodKeyword value) => Cache<MethodKeyword>.Data[value];
+        public static string View(MethodKeyword value) => Cache<MethodKeyword>.Data[value];
 
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace CZGL.CodeAnalysis.Shared
         /// <param name="value">枚举</param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetNamespaceAccess(NamespaceAccess value) => Cache<NamespaceAccess>.Data[value];
+        public static string View(NamespaceAccess value) => Cache<NamespaceAccess>.Data[value];
 
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace CZGL.CodeAnalysis.Shared
         /// <param name="value">枚举</param>
         /// <returns>属性修饰符</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetPropertyKeyword(PropertyKeyword value) => Cache<PropertyKeyword>.Data[value];
+        public static string View(PropertyKeyword value) => Cache<PropertyKeyword>.Data[value];
 
         #endregion
 
@@ -133,7 +133,7 @@ namespace CZGL.CodeAnalysis.Shared
         /// <param name="value"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns>修饰符或关键字</returns>
-        public static string GetValue<T>(T value) where T : Enum => Cache<T>.Data[value];
+        public static string View<T>(T value) where T : Enum => Cache<T>.Data[value];
 
         /// <summary>
         /// 转换标识符。

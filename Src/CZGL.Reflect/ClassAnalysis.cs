@@ -29,7 +29,7 @@ namespace CZGL.Reflect
         /// <returns></returns>
         public static ClassKeyword GetKeyword(this Type type)
         {
-            return KeywordAnalysis.GetClassKeyword(type);
+            return KeywordAnalysis.GetKeyword(type);
         }
 
         /// <summary>
@@ -42,8 +42,8 @@ namespace CZGL.Reflect
             if (type.IsValueType || !type.IsClass || type == typeof(Delegate))
                 return false;
 
-            var keyword = KeywordAnalysis.GetClassKeyword(type);
-            if (keyword == ClassKeyword.Abstract || keyword == ClassKeyword.Sealed || keyword == ClassKeyword.Static)
+            var keyword = KeywordAnalysis.GetKeyword(type);
+            if (keyword == ClassKeyword.Sealed || keyword == ClassKeyword.Static)
                 return false;
             return true;
         }

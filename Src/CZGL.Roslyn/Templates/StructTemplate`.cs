@@ -22,7 +22,7 @@ namespace CZGL.Roslyn.Templates
         /// <returns></returns>
         public TBuilder WithKeyword(StructKeyword keyword)
         {
-            _typeState.Keyword = EnumCache.GetStructKword(keyword);
+            _typeState.Keyword = EnumCache.View(keyword);
 
             return _TBuilder;
         }

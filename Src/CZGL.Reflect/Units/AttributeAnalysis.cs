@@ -14,7 +14,7 @@ namespace CZGL.Reflect
     public static class AttributeAnalysis
     {
         /// <summary>
-        /// 获取当前类型的每个特性的定义。
+        /// 获得在当前类型上定义的特性注解定义。
         /// </summary>
         /// <param name="type">类型</param>
         /// <returns>特性定义</returns>
@@ -26,12 +26,12 @@ namespace CZGL.Reflect
 
 
         /// <summary>
-        /// 获取当前成员的每个特性的定义。
+        /// 获得在当前成员上定义的特性注解定义。
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="info">成员</param>
         /// <returns></returns>
-        public static IReadOnlyList<AttributeDefine> Getfine<T>(T info) where T : MemberInfo
+        public static IReadOnlyList<AttributeDefine> GetDefine<T>(T info) where T : MemberInfo
         {
             IList<CustomAttributeData> attrs = info.GetCustomAttributesData();
             return ToDefines(attrs);
@@ -54,10 +54,11 @@ namespace CZGL.Reflect
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static AttributeDefine ToDefine(CustomAttributeData attr)
         {
-            Type attrType = attr.AttributeType;
-            AttributeDefine info = new AttributeDefine(attrType.Name, attrType);
+            var nameLen = attr.AttributeType.Name.Length - nameof(Attribute).Length;
+            var name = attr.AttributeType.Name.Remove(nameLen, nameof(Attribute).Length);
+            AttributeDefine info = new AttributeDefine(name, attr.AttributeType);
 
-            Debug.Assert(!attrType.Name.EndsWith(nameof(Attribute)));
+            Debug.Assert(!info.Name.EndsWith(nameof(Attribute)));
 
             // 构造函数中的参数
             IList<CustomAttributeTypedArgument> constructors = attr.ConstructorArguments;
@@ -66,11 +67,11 @@ namespace CZGL.Reflect
 
             if (constructors.Count != 0)
             {
-                info.ConstructorParams = constructors.ToList();
+                info.ConstructorArguments = constructors.ToList();
             }
             if (arguments.Count != 0)
             {
-                info.PropertyParams = arguments.Select(x => x.TypedValue).ToList();
+                info.NamedArguments = arguments.ToDictionary(a => a.MemberInfo, a => a.TypedValue);
             }
 
             return info;

@@ -113,7 +113,7 @@ namespace CZGL.Roslyn.Templates
         /// <returns></returns>
         public virtual TBuilder WithAccess(MemberAccess access = MemberAccess.Default)
         {
-            _member.Access = EnumCache.GetValue(access);
+            _member.Access = EnumCache.View<MemberAccess>(access);
             return _TBuilder;
         }
 

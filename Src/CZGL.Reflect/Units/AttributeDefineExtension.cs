@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
@@ -7,6 +8,7 @@ namespace CZGL.Reflect
     /// <summary>
     /// AttributeDefine 扩展
     /// </summary>
+    [CLSCompliant(true)]
     public static class AttributeDefineExtension
     {
         /// <summary>
@@ -15,12 +17,25 @@ namespace CZGL.Reflect
         /// <param name="define"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string ToCode(this AttributeDefine define)
+        public static string View(this AttributeDefine define)
         {
-            if (define.ConstructorParams is { } && define.PropertyParams is { })
+            if (define.ConstructorArguments.IsNullOrEmpty() && define.NamedArguments.IsNullOrEmpty())
                 return $"[{define.Name}]";
-            var comma = define.ConstructorParams.Any() && define.PropertyParams.Any() ? "," : "";
-            return $"[{define.Name}({string.Join(",", define.ConstructorParams.Select(c => c.Value.ToString()))}{comma}{string.Join(",", define.PropertyParams.Select(c => c.Value.ToString()))})]";
+
+            var comma = define.ConstructorArguments.IsHasValue() && define.NamedArguments.IsHasValue() ? ", " : "";
+            string? constroctors = null;
+            string? propertyParams = null;
+
+            if (define.ConstructorArguments.IsHasValue())
+            {
+                constroctors = string.Join(", ", define.ConstructorArguments!.Select(c => c.ToString()));
+            }
+            if (define.NamedArguments.IsHasValue())
+            {
+                propertyParams = string.Join(", ", define.NamedArguments!.Select(c => $"{c.Key.Name} = {c.Value.ToString()}"));
+            }
+
+            return $"[{define.Name}({constroctors}{comma}{propertyParams})]";
         }
 
         /// <summary>
@@ -28,9 +43,9 @@ namespace CZGL.Reflect
         /// </summary>
         /// <param name="defines"></param>
         /// <returns></returns>
-        public static string ToCode(this IEnumerable<AttributeDefine> defines)
+        public static string View(this IEnumerable<AttributeDefine> defines)
         {
-            return string.Join(Constants.NewLine, defines.Select(d => ToCode(d)));
+            return string.Join(Environment.NewLine, defines.Select(d => View(d)));
         }
     }
 }

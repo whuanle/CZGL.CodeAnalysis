@@ -15,31 +15,25 @@ namespace CZGL.CodeAnalysis.Shared
         /// <summary>
         /// 没有任何修饰符号。
         /// </summary>
-        [MemberDefineName(Name = "")]
+        [DefineName(Name = "")]
         Default = 0,
 
         /// <summary>
         /// 安全类(不可被继承的类)。
         /// </summary>
-        [MemberDefineName(Name = "sealed")]
+        [DefineName(Name = "sealed")]
         Sealed = 1,
 
         /// <summary>
         /// 静态类型。
         /// </summary>
-        [MemberDefineName(Name = "static")]
+        [DefineName(Name = "static")]
         Static = 2,
 
         /// <summary>
         /// 抽象类。
         /// </summary>
-        [MemberDefineName(Name = "abstract")]
-        Abstract = 3,
-
-        /// <summary>
-        /// 嵌套类。
-        /// </summary>
-        [MemberDefineName(Name = "new")]
-        New = 4
+        [DefineName(Name = "abstract")]
+        Abstract = 3
     }
 }

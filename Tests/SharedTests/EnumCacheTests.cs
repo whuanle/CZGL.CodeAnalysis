@@ -21,10 +21,10 @@ namespace SharedTests
         public void 类关键字()
         {
             ClassKeyword classKeyword = ClassKeyword.Abstract;
-            var output = EnumCache.GetClassKeyword(classKeyword);
+            var output = EnumCache.View(classKeyword);
             Assert.Equal("abstract", output);
 
-            output = EnumCache.GetValue(classKeyword);
+            output = EnumCache.View<ClassKeyword>(classKeyword);
             Assert.Equal("abstract", output);
         }
 
@@ -32,10 +32,10 @@ namespace SharedTests
         public void 结构体关键字()
         {
             StructKeyword structKeyword = StructKeyword.ReadonlyRef;
-            var output = EnumCache.GetStructKword(structKeyword);
+            var output = EnumCache.View(structKeyword);
             Assert.Equal("readonly ref", output);
 
-            output = EnumCache.GetValue(structKeyword);
+            output = EnumCache.View<StructKeyword>(structKeyword);
             Assert.Equal("readonly ref", output);
         }
 
@@ -43,10 +43,10 @@ namespace SharedTests
         public void 事件关键字()
         {
             EventKeyword eventKeyword = EventKeyword.Virtual;
-            var output = EnumCache.GetEventKeyword(eventKeyword);
+            var output = EnumCache.View(eventKeyword);
             Assert.Equal("virtual", output);
 
-            output = EnumCache.GetValue(eventKeyword);
+            output = EnumCache.View<EventKeyword>(eventKeyword);
             Assert.Equal("virtual", output);
         }
 
@@ -54,10 +54,10 @@ namespace SharedTests
         public void 泛型关键字()
         {
             GenericKeyword genericKeyword = GenericKeyword.Unmanaged;
-            var output = EnumCache.GetGenericKeyword(genericKeyword);
+            var output = EnumCache.View(genericKeyword);
             Assert.Equal("unmanaged", output);
 
-            output = EnumCache.GetValue(genericKeyword);
+            output = EnumCache.View<GenericKeyword>(genericKeyword);
             Assert.Equal("unmanaged", output);
         }
 
@@ -65,10 +65,10 @@ namespace SharedTests
         public void 字段关键字()
         {
             FieldKeyword fieldKeyword = FieldKeyword.StaticReadonly;
-            var output = EnumCache.GetFieldKeyword(fieldKeyword);
+            var output = EnumCache.View(fieldKeyword);
             Assert.Equal("static readonly", output);
 
-            output = EnumCache.GetValue(fieldKeyword);
+            output = EnumCache.View<FieldKeyword>(fieldKeyword);
             Assert.Equal("static readonly", output);
         }
 
@@ -76,10 +76,10 @@ namespace SharedTests
         public void 成员访问修饰符()
         {
             MemberAccess access = MemberAccess.Protected;
-            var output = EnumCache.GetMemberAccess(access);
+            var output = EnumCache.View(access);
             Assert.Equal("protected", output);
 
-            output = EnumCache.GetValue(access);
+            output = EnumCache.View<MemberAccess>(access);
             Assert.Equal("protected", output);
         }
 
@@ -87,10 +87,10 @@ namespace SharedTests
         public void 成员类型()
         {
             MemberType type = MemberType.BaseType;
-            var output = EnumCache.GetMemberType(type);
+            var output = EnumCache.View(type);
             Assert.Equal("BaseType", output);
 
-            output = EnumCache.GetValue(type);
+            output = EnumCache.View<MemberType>(type);
             Assert.Equal("BaseType", output);
         }
 
@@ -98,10 +98,10 @@ namespace SharedTests
         public void 方法关键字()
         {
             MethodKeyword methodKeyword = MethodKeyword.Abstract;
-            var output = EnumCache.GetMethodKeyword(methodKeyword);
+            var output = EnumCache.View(methodKeyword);
             Assert.Equal("abstract", output);
 
-            output = EnumCache.GetValue(methodKeyword);
+            output = EnumCache.View<MethodKeyword>(methodKeyword);
             Assert.Equal("abstract", output);
         }
 
@@ -109,10 +109,10 @@ namespace SharedTests
         public void 命名空间访问修饰符()
         {
             NamespaceAccess access = NamespaceAccess.Internal;
-            var output = EnumCache.GetNamespaceAccess(access);
+            var output = EnumCache.View(access);
             Assert.Equal("internal", output);
 
-            output = EnumCache.GetValue(access);
+            output = EnumCache.View<NamespaceAccess>(access);
             Assert.Equal("internal", output);
         }
 
@@ -120,10 +120,10 @@ namespace SharedTests
         public void 属性关键字()
         {
             PropertyKeyword propertyKeyword = PropertyKeyword.Abstract;
-            var output = EnumCache.GetPropertyKeyword(propertyKeyword);
+            var output = EnumCache.View(propertyKeyword);
             Assert.Equal("abstract", output);
 
-            output = EnumCache.GetValue(propertyKeyword);
+            output = EnumCache.View<PropertyKeyword>(propertyKeyword);
             Assert.Equal("abstract", output);
         }
 

@@ -49,7 +49,7 @@ namespace CZGL.Reflect.Tests
 
         #region test1
 
-        [Test1_()]
+        [Test1_]
         public class Test1_1 { }
 
         [Test1_("aaa")]

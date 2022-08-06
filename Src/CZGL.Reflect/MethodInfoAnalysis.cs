@@ -87,7 +87,7 @@ namespace CZGL.Reflect
         /// <returns></returns>
         public static MethodKeyword GetKeyword(this MethodInfo method)
         {
-            return KeywordAnalysis.GetMethodKeyword(method);
+            return KeywordAnalysis.GetKeyword(method);
         }
 
         /// <summary>

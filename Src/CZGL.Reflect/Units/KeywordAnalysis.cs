@@ -1,25 +1,23 @@
 using CZGL.CodeAnalysis.Shared;
 using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace CZGL.Reflect
 {
     /// <summary>
-    /// 获取成员修饰符
+    /// 获取成员修饰符。
     /// </summary>
     [CLSCompliant(true)]
     public class KeywordAnalysis
     {
         /// <summary>
-        /// 获取字段修饰符
+        /// 获取字段修饰符。
         /// </summary>
         /// <param name="info">字段</param>
         /// <returns>字段修饰符</returns>
-        public static FieldKeyword GetFieldKeyword(FieldInfo info)
+        public static FieldKeyword GetKeyword(FieldInfo info)
         {
             if (info.IsLiteral)
                 return FieldKeyword.Const;
@@ -44,23 +42,19 @@ namespace CZGL.Reflect
         }
 
         /// <summary>
-        /// 获取字段修饰符
+        /// 获取字段修饰符。
         /// </summary>
         /// <param name="info">字段</param>
         /// <returns>修饰符名称</returns>
-        public static string GetFieldKeywordCode(FieldInfo info)
-        {
-            return EnumCache.GetValue(GetFieldKeyword(info));
-        }
+        public static string View(FieldInfo info)=> EnumCache.View<FieldKeyword>(GetKeyword(info));
 
 
         /// <summary>
-        /// 判断方法的访问修饰符
-        /// <para>暂不支持 new static</para>
+        /// 判断方法的访问修饰符。
         /// </summary>
         /// <param name="info">字段</param>
         /// <returns><see cref="MethodKeyword"/></returns>
-        public static MethodKeyword GetMethodKeyword(MethodInfo info)
+        public static MethodKeyword GetKeyword(MethodInfo info)
         {
             if (info is null)
                 throw new ArgumentNullException(nameof(info));
@@ -74,26 +68,15 @@ namespace CZGL.Reflect
                 return MethodKeyword.StaticExtern;
             }
 
-            // 函数是否在本类型中 实现
-            bool isLocalDefinition = info.IsNew();
-
-            // 是否使用了 new
-            bool isHasNewSlot = (info.Attributes & MethodAttributes.VtableLayoutMask) == MethodAttributes.NewSlot;
+            if (info.IsStatic)
+            {
+                // static
+                return MethodKeyword.Static;
+            }
 
             // abstract
             if ((attributes | MethodAttributes.Abstract) == attributes)
                 return MethodKeyword.Abstract;
-
-
-            if (info.IsStatic)
-            {
-                // static
-                methodKeyword = methodKeyword | MethodKeyword.Static;
-                // new static
-                if (isHasNewSlot)
-                    methodKeyword = methodKeyword | MethodKeyword.New;
-                return methodKeyword;
-            }
 
             // 继承接口的实现、virtual、new virtual
             if ((attributes | MethodAttributes.VtableLayoutMask) == attributes)
@@ -102,11 +85,7 @@ namespace CZGL.Reflect
                 if ((attributes | MethodAttributes.Final) == attributes)
                     return MethodKeyword.Default;
 
-                if (isLocalDefinition)
-                    return MethodKeyword.NewVirtual;
-
                 return MethodKeyword.Virtual;
-
             }
 
             // override、sealed override
@@ -120,9 +99,6 @@ namespace CZGL.Reflect
                     return MethodKeyword.SealedOverride;
             }
 
-            if (isLocalDefinition)
-                return MethodKeyword.New;
-
             return MethodKeyword.Default;
         }
 
@@ -131,13 +107,11 @@ namespace CZGL.Reflect
         /// </summary>
         /// <param name="info"></param>
         /// <returns><see cref="PropertyKeyword"/></returns>
-        public static PropertyKeyword GetPropertyKeyword(PropertyInfo info)
+        public static PropertyKeyword GetKeyword(PropertyInfo info)
         {
-            MethodInfo method = info.GetGetMethod();
-            if (method == null)
-                method = info.GetSetMethod() ?? throw new NullReferenceException("无法获取属性的信息");
+            MethodInfo method = info.GetMethod ?? throw new NullReferenceException("无法获取属性的信息");
 
-            return GetMethodKeyword(method).ToPropertyKeyword();
+            return GetKeyword(method).ToPropertyKeyword();
         }
 
         /// <summary>
@@ -145,7 +119,7 @@ namespace CZGL.Reflect
         /// </summary>
         /// <param name="type"></param>
         /// <returns><see cref="ClassKeyword"/></returns>
-        public static ClassKeyword GetClassKeyword(Type type)
+        public static ClassKeyword GetKeyword(Type type)
         {
             if (type is null)
                 throw new ArgumentNullException(nameof(type));
@@ -164,7 +138,7 @@ namespace CZGL.Reflect
             if (isSealed && isAbstract)
                 return ClassKeyword.Static;
 
-            return ClassAnalysis.IsNew(type) ? ClassKeyword.New : ClassKeyword.Default;
+            return  ClassKeyword.Default;
         }
 
         /// <summary>

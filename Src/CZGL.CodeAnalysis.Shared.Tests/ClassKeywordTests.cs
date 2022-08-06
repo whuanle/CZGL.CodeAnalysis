@@ -9,7 +9,7 @@ namespace CZGL.CodeAnalysis.Shared.Tests
         [Fact]
         public void DefaultKeyword()
         {
-            var value = EnumCache.GetClassKeyword(ClassKeyword.Default);
+            var value = EnumCache.View(ClassKeyword.Default);
             Assert.Equal("", value);
         }
 
@@ -17,7 +17,7 @@ namespace CZGL.CodeAnalysis.Shared.Tests
         [Fact]
         public void SealedKeyword()
         {
-            var value = EnumCache.GetClassKeyword(ClassKeyword.Sealed);
+            var value = EnumCache.View(ClassKeyword.Sealed);
             Assert.Equal("sealed", value);
         }
 
@@ -25,7 +25,7 @@ namespace CZGL.CodeAnalysis.Shared.Tests
         [Fact]
         public void StaticKeyword()
         {
-            var value = EnumCache.GetClassKeyword(ClassKeyword.Static);
+            var value = EnumCache.View(ClassKeyword.Static);
             Assert.Equal("static", value);
         }
 
@@ -33,18 +33,8 @@ namespace CZGL.CodeAnalysis.Shared.Tests
         [Fact]
         public void AstractKeyword()
         {
-            var value = EnumCache.GetClassKeyword(ClassKeyword.Abstract);
+            var value = EnumCache.View(ClassKeyword.Abstract);
             Assert.Equal("abstract", value);
-        }
-
-#pragma warning disable CS0109
-        new class NewKeywordClass { }
-#pragma warning restore CS0109
-        [Fact]
-        public void NewKeyword()
-        {
-            var value = EnumCache.GetClassKeyword(ClassKeyword.New);
-            Assert.Equal("new", value);
         }
     }
 }

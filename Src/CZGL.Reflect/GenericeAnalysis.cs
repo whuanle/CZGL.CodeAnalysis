@@ -64,7 +64,7 @@ namespace CZGL.Reflect
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static string[] GetGenriceParams(this Type type)
+        public static IReadOnlyList<string> GetGenriceParams(this Type type)
         {
             if (!type.IsGenericType)
                 return new string[0];
@@ -72,11 +72,11 @@ namespace CZGL.Reflect
 #if NETSTANDARD2_0
             return type.GetGenericArguments().Select(x =>
                                                     x.IsGenericParameter ? x.Name : TypeAliasName.GetName(x))
-                                             .ToArray();
+                                             .ToList();
 #else
             return type.GetGenericArguments().Select(x =>
                                                     x.IsGenericTypeParameter ? x.Name : TypeAliasName.GetName(x))
-                                             .ToArray();
+                                             .ToList();
 #endif
         }
 

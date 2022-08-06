@@ -22,12 +22,12 @@ namespace CZGL.Reflect
         public AttributeDefine(string name,
             Type attributeType,
             IReadOnlyList<CustomAttributeTypedArgument>? constructParams = null,
-            IReadOnlyList<CustomAttributeTypedArgument>? propertyParams = null)
+            IReadOnlyDictionary<MemberInfo, CustomAttributeTypedArgument>? propertyParams = null)
         {
             Name = name;
             AttributeType = attributeType;
-            ConstructorParams = constructParams;
-            PropertyParams = propertyParams;
+            ConstructorArguments = constructParams;
+            NamedArguments = propertyParams;
         }
 
         /// <summary>
@@ -44,11 +44,20 @@ namespace CZGL.Reflect
         /// 特性构造函数中的值
         /// <para>ArgumentType、Value 属性分别表示构造函数中参数和参数值</para>
         /// </summary>
-        public IReadOnlyList<CustomAttributeTypedArgument>? ConstructorParams { get; set; }
+        public IReadOnlyList<CustomAttributeTypedArgument>? ConstructorArguments { get; set; }
 
         /// <summary>
         /// 特性的属性或者字段
         /// </summary>
-        public IReadOnlyList<CustomAttributeTypedArgument>? PropertyParams { get; set; }
+        public IReadOnlyDictionary<MemberInfo, CustomAttributeTypedArgument>? NamedArguments { get; set; }
+
+        /// <summary>
+        /// 以字符串代码形式输出
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return this.View();
+        }
     }
 }

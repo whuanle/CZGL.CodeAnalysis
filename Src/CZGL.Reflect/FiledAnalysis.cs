@@ -27,17 +27,7 @@ namespace CZGL.Reflect
         /// <returns></returns>
         public static FieldKeyword GetKeyword(this FieldInfo info)
         {
-            return KeywordAnalysis.GetFieldKeyword(info);
-        }
-
-        /// <summary>
-        /// 获取特性列表
-        /// </summary>
-        /// <param name="info">字段</param>
-        /// <returns></returns>
-        public static string[] GetAttributes(this FieldInfo info)
-        {
-            return AttributeAnalysis.GetAttributesString(info.GetCustomAttributesData());
+            return KeywordAnalysis.GetKeyword(info);
         }
 
         /// <summary>
@@ -47,10 +37,10 @@ namespace CZGL.Reflect
         /// <param name="obj"></param>
         /// <param name="field"></param>
         /// <param name="value"></param>
-        public static void SetValue<T>(T obj,FieldInfo field,object value)
+        public static void SetValue<T>(T obj, FieldInfo field, object value)
         {
             TypedReference tr = __makeref(obj);
-            field.SetValueDirect(tr,obj);
+            field.SetValueDirect(tr, obj);
         }
 
         ///// <summary>

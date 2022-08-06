@@ -15,44 +15,44 @@ namespace CZGL.CodeAnalysis.Shared
         /// <summary>
         /// None
         /// </summary>
-        [MemberDefineName(Name = "")]
+        [DefineName(Name = "")]
         Default = 0,
 
         /// <summary>
         /// internal
         /// </summary>
-        [MemberDefineName(Name = "internal")]
+        [DefineName(Name = "internal")]
         Internal = 1,
 
         /// <summary>
         /// public
         /// </summary>
-        [MemberDefineName(Name = "public")]
+        [DefineName(Name = "public")]
         Public = 1 << 1,
 
         /// <summary>
         /// protected
         /// </summary>
-        [MemberDefineName(Name = "protected")]
+        [DefineName(Name = "protected")]
         Protected = 1 << 2,
 
         /// <summary>
         /// private
         /// </summary>
-        [MemberDefineName(Name = "private")]
+        [DefineName(Name = "private")]
         Private = 1 << 3,
 
         /// <summary>
         /// protected internal
         /// </summary>
-        [MemberDefineName(Name = "protected internal")]
-        ProtectedInternal = Protected | Internal,
+        [DefineName(Name = "protected internal")]
+        ProtectedInternal = 1 << 4,
 
         /// <summary>
         /// private protected
         /// <para><b>只允许 C# 7.2 以上项目使用(C# 7.2 新增)。</b></para>
         /// </summary>
-        [MemberDefineName(Name = "private protected")]
-        PrivateProtected = Private | Protected
+        [DefineName(Name = "private protected")]
+        PrivateProtected = 1 << 5
     }
 }

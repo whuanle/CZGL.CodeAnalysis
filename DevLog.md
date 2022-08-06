@@ -33,7 +33,17 @@
 * 修复判断访问修饰符不严谨的 Bug；
 * 优化了不同解析器的字符串代码生成方式和代码；
 
+* 由于 `new static` 无意义，已去掉 `new static` 修饰符的判断代码；
 
+* 增加了对 `ref readonly` 属性的支持：
+
+  ```csharp
+          private static readonly SamplePoint s_origin = new SamplePoint();
+          public static ref readonly SamplePoint Origin => ref s_origin;
+          public struct SamplePoint { }
+  ```
+
+  * 属性、方法关键字不再包含 `new` ；
 
 
 

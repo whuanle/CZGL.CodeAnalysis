@@ -13,31 +13,31 @@ namespace CZGL.CodeAnalysis.Shared
         /// <summary>
         /// 无
         /// </summary>
-        [MemberDefineName(Name = "")]
+        [DefineName(Name = "")]
         Default = 0,
 
         /// <summary>
         /// 静态事件
         /// </summary>
-        [MemberDefineName(Name = "static")]
+        [DefineName(Name = "static")]
         Static = 1 << 1,
 
         /// <summary>
         /// virtual事件
         /// </summary>
-        [MemberDefineName(Name = "virtual")]
+        [DefineName(Name = "virtual")]
         Virtual = 1 << 2,
 
         /// <summary>
         /// 抽象事件
         /// </summary>
-        [MemberDefineName(Name = "abstract")]
+        [DefineName(Name = "abstract")]
         Abstract = 1 << 3,
 
         /// <summary>
         /// 密封事件
         /// </summary>
-        [MemberDefineName(Name = "sealed")]
+        [DefineName(Name = "sealed")]
         Sealed = 1 << 4
     }
 }

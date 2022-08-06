@@ -13,37 +13,37 @@ namespace CZGL.CodeAnalysis.Shared
         /// <summary>
         /// None
         /// </summary>
-        [MemberDefineName(Name = "")]
+        [DefineName(Name = "")]
         Default = 0,
 
         /// <summary>
         /// readonly
         /// </summary>
-        [MemberDefineName(Name = "readonly")]
+        [DefineName(Name = "readonly")]
         Readonly = 1,
 
         /// <summary>
         /// ref
         /// </summary>
-        [MemberDefineName(Name = "ref")]
+        [DefineName(Name = "ref")]
         Ref = 1 << 1,
 
         /// <summary>
         /// readonly ref
         /// </summary>
-        [MemberDefineName(Name = "readonly ref")]
+        [DefineName(Name = "readonly ref")]
         ReadonlyRef = Readonly | Ref,
 
         /// <summary>
         /// record
         /// </summary>
-        [MemberDefineName(Name = "record")]
+        [DefineName(Name = "record")]
         Record = 1 << 3,
 
         /// <summary>
         /// readonly record
         /// </summary>
-        [MemberDefineName(Name = "readonly record")]
+        [DefineName(Name = "readonly record")]
         ReadonlyRecord = 1 << 4,
     }
 }
