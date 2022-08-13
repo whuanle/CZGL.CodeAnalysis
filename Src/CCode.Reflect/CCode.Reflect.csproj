@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<Description>
+			反射分析框架，帮助你解析并获取反射信息。
+			文档地址：https://roslyn.whuanle.cn/
+			API文档地址：https://api.roslyn.whuanle.cn/api/CCode.Reflect.html
+		</Description>
+		<PackageProjectUrl>https://github.com/whuanle/CZGL.CodeAnalysis</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/whuanle/CZGL.CodeAnalysis</RepositoryUrl>
+		<LangVersion>8.0</LangVersion>
+		<Nullable>enable</Nullable>
+		<Version>0.0.1</Version>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+		<DefineConstants>TRACE</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+		<DefineConstants>TRACE</DefineConstants>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\CCode.Shared\CCode.Shared.csproj" />
+	</ItemGroup>
+
+</Project>

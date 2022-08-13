@@ -4,7 +4,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Linq;
-using System.Text;
 
 namespace CZGL.Roslyn
 {
@@ -15,28 +14,23 @@ namespace CZGL.Roslyn
     {
         internal CtorBuilder(string name)
         {
-            _base.Name = name;
-            _TBuilder = this;
+            _name = name;
         }
 
         /// <summary>
-        /// 生成语法树
+        /// 通过代码生成语法树
         /// </summary>
-        /// <param name="Code"></param>
-        /// <param name="attrs"></param>
+        /// <param name="code">构造函数代码</param>
         /// <returns></returns>
-        public static ConstructorDeclarationSyntax BuildSyntax(string Code, string[] attrs = null)
+        public static ConstructorDeclarationSyntax BuildSyntax(string code)
         {
-            var syntaxNodes = CSharpSyntaxTree.ParseText(Code).GetRoot().DescendantNodes();
-            ConstructorDeclarationSyntax memberDeclaration = syntaxNodes
+            var newCode = $"class N___{{{code}}}";
+            var syntaxNodes = CSharpSyntaxTree.ParseText(newCode).GetRoot().DescendantNodes();
+            var ctorSyntax = syntaxNodes
                 .OfType<ConstructorDeclarationSyntax>()
-                .FirstOrDefault();
+                .SingleOrDefault();
 
-            if (attrs != null)
-                memberDeclaration = memberDeclaration
-                    .WithAttributeLists(CodeSyntax.CreateAttributeList(attrs));
-
-            return memberDeclaration;
+            return ctorSyntax;
         }
 
         /// <summary>
@@ -44,9 +38,9 @@ namespace CZGL.Roslyn
         /// </summary>
         /// <param name="code"></param>
         /// <returns></returns>
-        public static CtorBuilder FromCode(string code)
+        public static CtorBuilder GetFromCode(string code)
         {
-            var ctor = new CtorBuilder(null);
+            var ctor = new CtorBuilder("");
             ctor.WithFromCode(code);
             return ctor;
         }
@@ -57,31 +51,22 @@ namespace CZGL.Roslyn
         /// <returns></returns>
         public ConstructorDeclarationSyntax BuildSyntax()
         {
-            var code = $@"public class {Name}
+            var attr = string.Join(Environment.NewLine, _atributes);
+            var code = $@"public class N___
 {{
                 {ToFullCode()}
 }}";
 
-            ConstructorDeclarationSyntax memberDeclaration = default;
-            var syntaxNodes = CSharpSyntaxTree.ParseText(code)
+            var ctorSyntax = CSharpSyntaxTree.ParseText(code)
                 .GetRoot()
-                .DescendantNodes();
+                .DescendantNodes()
+                .OfType<ConstructorDeclarationSyntax>()
+                .SingleOrDefault();
 
-
-            memberDeclaration = syntaxNodes
-           .OfType<ConstructorDeclarationSyntax>().FirstOrDefault();
-
-            if (memberDeclaration is null)
+            if (ctorSyntax is null)
                 throw new InvalidOperationException("未能构建构造函数，请检查代码是否有语法错误！");
 
-            // 添加特性
-            if (_member.Atributes.Count != 0)
-            {
-                var tmp = CodeSyntax.CreateAttributeList(_member.Atributes.ToArray());
-                memberDeclaration = memberDeclaration.WithAttributeLists(tmp);
-            }
-
-            return memberDeclaration;
+            return ctorSyntax;
         }
 
 
@@ -102,23 +87,19 @@ namespace CZGL.Roslyn
         /// <returns>代码 <see cref="string"/></returns>
         public override string ToFullCode()
         {
-            if (_func.UseCode)
-                return _func.Code;
+            if (_useCode)
+                return _code!;
 
-            const string Template = @"{Access} {Name}({Params}) {BaseOrThis}
-{
-{BlockCode}
-}";
-            var code = Template
-                .Replace("{Access}", _member.Access)
-                .Replace("{Name}", _base.Name)
-                .Replace("{Params}", _func.Params.Join(","))
-                .Replace("{BaseOrThis}",_method.BaseOrThis.CodeNewBefore(":"))
-                .Replace("{BlockCode}", _method.BlockCode);
+            var access = _access;
+            var name = _name;
+            var @params = _inputParams.Join(", ");
+            var invoke = _invokeBase;
+
+            string code = @$"{access} {name}({@params}) {invoke.CodeNewBefore(" : ")}
+{{
+{_blockCode}
+}}";
             return code;
         }
-
-
-
     }
 }

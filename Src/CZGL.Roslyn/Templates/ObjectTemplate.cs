@@ -17,9 +17,14 @@ namespace CZGL.Roslyn.Templates
         where TBuilder : ObjectTemplate<TBuilder>
     {
         /// <summary>
-        /// 类型状态机
+        /// 属性
         /// </summary>
-        protected internal readonly ObjectState _objectState = new ObjectState();
+        public HashSet<PropertyBuilder> Propertys { get; } = new HashSet<PropertyBuilder>();
+
+        /// <summary>
+        /// 方法
+        /// </summary>
+        public HashSet<MethodBuilder> Methods { get; } = new HashSet<MethodBuilder>();
 
 
         /// <summary>
@@ -29,8 +34,8 @@ namespace CZGL.Roslyn.Templates
         /// <returns></returns>
         public TBuilder WithAccess(NamespaceAccess access = NamespaceAccess.Internal)
         {
-            _member.Access = EnumCache.View<NamespaceAccess>(access);
-            return _TBuilder;
+            _access = EnumCache.View<NamespaceAccess>(access);
+            return (TBuilder)this;
         }
 
         #region 属性

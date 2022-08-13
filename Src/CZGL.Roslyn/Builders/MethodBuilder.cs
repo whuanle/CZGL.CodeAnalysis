@@ -11,7 +11,7 @@ namespace CZGL.Roslyn
     /// <summary>
     /// 方法构建器
     /// </summary>
-    public sealed class MethodBuilder : MethodTemplate<MethodBuilder>
+    public sealed class MethodBuilder : MethodBaseTemplate<MethodBuilder>
     {
         internal MethodBuilder()
         {

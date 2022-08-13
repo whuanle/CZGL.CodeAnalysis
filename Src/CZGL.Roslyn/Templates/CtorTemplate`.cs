@@ -9,12 +9,12 @@ namespace CZGL.Roslyn.Templates
     /// 构造函数构建器
     /// </summary>
     /// <typeparam name="TBuilder"></typeparam>
-    public abstract class CtorTemplate<TBuilder> : MethodTemplate<TBuilder> where TBuilder : CtorTemplate<TBuilder>
+    public abstract class CtorTemplate<TBuilder> : MethodBaseTemplate<TBuilder> where TBuilder : CtorTemplate<TBuilder>
     {
         /// <summary>
-        /// 构造函数状态机
+        /// 调用其它构造函数
         /// </summary>
-        protected internal readonly CtorState _ctor = new CtorState();
+        protected string? _invokeBase;
 
         /// <summary>
         /// 调用父类构造函数
@@ -28,8 +28,8 @@ namespace CZGL.Roslyn.Templates
         /// </example>
         public virtual TBuilder WithBase(string code)
         {
-            _method.BaseOrThis = code;
-            return _TBuilder;
+            _invokeBase = code;
+            return (TBuilder)this;
         }
 
         /// <summary>
@@ -39,9 +39,8 @@ namespace CZGL.Roslyn.Templates
         /// <returns></returns>
         public virtual TBuilder WithThis(string code)
         {
-            _method.BaseOrThis = code;
-            return _TBuilder;
+            _invokeBase = code;
+            return (TBuilder)this;
         }
-
     }
 }

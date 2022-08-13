@@ -18,14 +18,9 @@ namespace CZGL.Roslyn
     public sealed class StructBuilder : StructTemplate<StructBuilder>
     {
 
-        internal StructBuilder()
+        internal StructBuilder(string name) 
         {
-            _TBuilder = this;
-        }
-
-        internal StructBuilder(string name) : this()
-        {
-            base.WithName(name);
+            _name = name;
         }
 
         /// <summary>

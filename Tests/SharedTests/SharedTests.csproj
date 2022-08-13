@@ -19,8 +19,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Src\CZGL.CodeAnalysis.Shared\CZGL.CodeAnalysis.Shared.csproj" />
-  </ItemGroup>
-
 </Project>

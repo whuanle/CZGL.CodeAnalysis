@@ -12,13 +12,12 @@ namespace CZGL.Roslyn
     public static class CodeExtensions
     {
         /// <summary>
-        /// Windows 下 使用 \n，Linux 下时，需要使用 \r\n 才算换行
+        /// Windows 下 使用 r\n，Linux 下时，需要使用 \n
         /// <para>或者使用 Environment.NewLine </para>
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static string WithUnixEOL(this string source) => source;
-            //Debugger.IsAttached ? source : source.Replace("\r\n", "\n");
+        public static string WithUnixEOL(this string source) => source.Replace("\r\n", Environment.NewLine);
 
         /// <summary>
         /// 将集合中的元素以某个字符结尾组合成字符串
@@ -29,11 +28,11 @@ namespace CZGL.Roslyn
         public static string Join(this IEnumerable<string> source, string separator) => string.Join(separator, source);
 
         /// <summary>
-        /// 将集合中的元素以 \n 字符结尾组合成字符串
+        /// 将集合中的元素以 <see cref="Environment.NewLine"/> 字符结尾组合成字符串
         /// </summary>
         /// <param name="list"></param>
         /// <returns></returns>
-        public static string Join(this HashSet<string> list) => string.Join("\n", list);
+        public static string Join(this HashSet<string> list) => string.Join(Environment.NewLine, list);
 
         /// <summary>
         /// 代码换行；如果源字符串为空，则不改变
@@ -52,10 +51,10 @@ namespace CZGL.Roslyn
         /// </summary>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static string CodeNewSpace(this string source)
+        public static string CodeNewSpace(this string? source)
         {
             if (string.IsNullOrEmpty(source))
-                return source;
+                return "";
             return source + " ";
         }
 
@@ -65,10 +64,10 @@ namespace CZGL.Roslyn
         /// <param name="source"></param>
         /// <param name="separator">分隔符</param>
         /// <returns></returns>
-        public static string CodeNewBefore(this string source, string separator = " ")
+        public static string CodeNewBefore(this string? source, string separator = " ")
         {
             if (string.IsNullOrEmpty(source))
-                return null;
+                return "";
             return separator + source;
         }
 
@@ -78,15 +77,15 @@ namespace CZGL.Roslyn
         /// <param name="source"></param>
         /// <param name="separator">分隔符</param>
         /// <returns></returns>
-        public static string CodeNewAfter(this string source, string separator = " ")
+        public static string CodeNewAfter(this string? source, string separator = " ")
         {
             if (string.IsNullOrEmpty(source))
-                return null;
+                return "";
             return source + separator;
         }
 
         /// <summary>
-        /// 每次等待时都执行任务
+        /// 对每个成员执行一个操作
         /// </summary>
         /// <typeparam name="TSource"></typeparam>
         /// <param name="source"></param>

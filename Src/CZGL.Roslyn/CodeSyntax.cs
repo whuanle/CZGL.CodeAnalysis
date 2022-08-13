@@ -1,11 +1,9 @@
-﻿using CZGL.Roslyn.Templates;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace CZGL.Roslyn
 {
@@ -14,6 +12,7 @@ namespace CZGL.Roslyn
     /// </summary>
     public static class CodeSyntax
     {
+
 
         #region 命名空间
 
@@ -31,6 +30,29 @@ namespace CZGL.Roslyn
 
 
         #region 特性
+
+        /// <summary>
+        /// 特性字符串代码生成语法树。
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public static SyntaxList<AttributeListSyntax> BuildAttributeListSyntax(string code)
+        {
+            var syntaxNodes = CSharpSyntaxTree.ParseText(code).GetRoot().DescendantNodes();
+            var attrubutes = syntaxNodes
+                .OfType<AttributeSyntax>();
+
+            List<AttributeListSyntax> syntaxes = new List<AttributeListSyntax>();
+
+            foreach (var item in attrubutes)
+            {
+                syntaxes.Add(
+                    SyntaxFactory.AttributeList(
+                        SyntaxFactory.SingletonSeparatedList<AttributeSyntax>(item)));
+            }
+
+            return SyntaxFactory.List<AttributeListSyntax>(syntaxes);
+        }
 
         /// <summary>
         /// 字符串生成特性列表
@@ -64,6 +86,8 @@ namespace CZGL.Roslyn
 
             return SyntaxFactory.List<AttributeListSyntax>(syntaxes.ToArray());
         }
+
+
 
         /// <summary>
         /// 生成特性列表

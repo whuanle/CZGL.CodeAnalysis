@@ -5,28 +5,43 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CZGL.Roslyn.Templates
+namespace CZGL.Roslyn
 {
     /// <summary>
     /// 构造函数和方法构建模板
     /// </summary>
     /// <typeparam name="TBuilder"></typeparam>
-    public abstract class MethodTemplate<TBuilder> : FuncTemplate<TBuilder> where TBuilder : MethodTemplate<TBuilder>
+    public abstract class MethodBaseTemplate<TBuilder> : FuncTemplate<TBuilder> where TBuilder : MethodBaseTemplate<TBuilder>
     {
         /// <summary>
-        /// 方法状态机
+        /// 方法关键字
         /// </summary>
-        protected internal MethodState _method = new MethodState();
+        protected string? _keyword;
 
         /// <summary>
-        /// 设置方法的关键字修饰符，如 static，virtual、override
+        /// 方法关键字
+        /// </summary>
+        public string? Keyword => _keyword;
+
+        /// <summary>
+        /// 方法是否具有代码体，例如抽象方法就没有代码体
+        /// </summary>
+        public bool IsHasBlockCode => !string.IsNullOrEmpty(_blockCode);
+
+        /// <summary>
+        /// 方法的代码块
+        /// </summary>
+        protected string? _blockCode;
+
+        /// <summary>
+        /// 设置方法的关键字修饰符
         /// </summary>
         /// <param name="keyword">关键字</param>
         /// <returns></returns>
-        public TBuilder WithKeyword(MethodKeyword keyword=MethodKeyword.Default)
+        public TBuilder WithKeyword(MethodKeyword keyword = MethodKeyword.Default)
         {
-            _method.Keyword = EnumCache.View<MethodKeyword>(keyword);
-            return _TBuilder;
+            _keyword = EnumCache.View<MethodKeyword>(keyword);
+            return (TBuilder)this;
         }
 
 
@@ -38,37 +53,20 @@ namespace CZGL.Roslyn.Templates
         /// <returns></returns>
         public TBuilder WithKeyword(string keyword = "")
         {
-            _method.Keyword = keyword;
-            return _TBuilder;
+            _keyword = keyword;
+            return (TBuilder)this;
         }
 
 
         /// <summary>
         /// 方法体中的代码
-        /// <example>
-        /// <code>
-        /// int a = 0;
-        /// Console.WriteLine(a);
-        /// </code>
-        /// </example>
         /// </summary>
         /// <param name="blockCode">方法体中的代码</param>
         /// <returns></returns>
-        public TBuilder WithBlock(string blockCode = null)
+        public TBuilder WithBlock(string? blockCode = null)
         {
-            _method.BlockCode = blockCode;
-            return _TBuilder;
-        }
-
-        /// <summary>
-        /// 定义此方法没有代码体，例如抽象方法
-        /// </summary>
-        /// <returns></returns>
-        public TBuilder WithNullBlock()
-        {
-            _method.IsHasBlockCode = false;
-            _method.BlockCode = null;
-            return _TBuilder;
+            _blockCode = blockCode;
+            return (TBuilder)this;
         }
     }
 }

@@ -9,7 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CZGL.Reflect\CZGL.Reflect.csproj" />
     <ProjectReference Include="..\CZGL.Roslyn\CZGL.Roslyn.csproj" />
   </ItemGroup>
 

@@ -15,7 +15,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CZGL.CodeAnalysis.Shared\CZGL.CodeAnalysis.Shared.csproj" />
     <ProjectReference Include="..\CZGL.Roslyn\CZGL.Roslyn.csproj" />
   </ItemGroup>
 

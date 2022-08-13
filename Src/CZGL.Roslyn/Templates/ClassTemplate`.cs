@@ -15,9 +15,14 @@ namespace CZGL.Roslyn.Templates
     public abstract class ClassTemplate<TBuilder> : ObjectTypeTemplate<TBuilder> where TBuilder : ClassTemplate<TBuilder>
     {
         /// <summary>
-        /// 类状态机
+        /// 继承基类
         /// </summary>
-        protected internal readonly ClassState _class = new ClassState();
+        public string BaseClass { get; set; }
+
+        /// <summary>
+        /// 接口列表
+        /// </summary>
+        public HashSet<string> Interfaces { get; } = new HashSet<string>();
 
         #region 修饰符
 
@@ -29,7 +34,7 @@ namespace CZGL.Roslyn.Templates
         public virtual TBuilder WithKeyword(ClassKeyword keyword)
         {
             _typeState.Keyword = EnumCache.View<ClassKeyword>(keyword);
-            return _TBuilder;
+            return (TBuilder)this;
         }
 
         #endregion
@@ -45,19 +50,10 @@ namespace CZGL.Roslyn.Templates
         /// <returns></returns>
         public virtual TBuilder WithBaseClass(string baseName)
         {
-            _class.BaseClass = baseName;
-            return _TBuilder;
+            BaseClass = baseName;
+            return (TBuilder)this;
         }
 
         #endregion
-
-        /// <summary>
-        /// 获得构建器
-        /// </summary>
-        /// <returns></returns>
-        public TBuilder GetBuilder()
-        {
-            return _TBuilder;
-        }
     }
 }

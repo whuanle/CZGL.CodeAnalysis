@@ -1,31 +1,28 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netcoreapp3.1;net5.0</TargetFrameworks>
-    <Version>0.2.0</Version>
-    <LangVersion>8.0</LangVersion>
-    <Description>
-      基于 Roslyn 技术的 C# 动态代码构建器以及编译器，开发者可以使用此库动态构建 C# 代码，并且通过指定条件编译代码。
-      * 运行时动态构造代码；
-      * 运行时为程序提供新的模块功能，拓展能力；
-      * 设计函数平台，以代码片段为单位执行；
-      * 语法分析提示，编译错误语法警告，精确到代码行；
-      * 完善的代码标准，避免动态代码语法错误；
-      * 简洁、简单的 API，完整的 Test 测试；
-    </Description>
-    <PackageProjectUrl>https://github.com/whuanle/CZGL.CodeAnalysis</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/whuanle/CZGL.CodeAnalysis</RepositoryUrl>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;netcoreapp3.1;net5.0;net6.0;</TargetFrameworks>
+		<Version>0.2.0</Version>
+		<LangVersion>8.0</LangVersion>
+		<Nullable>enable</Nullable>
+		<Description>
+			基于 Roslyn 技术的 C# 动态代码构建器以及编译器，开发者可以使用此库动态构建 C# 代码，并且通过指定条件编译代码。
+			* 运行时动态构造代码；
+			* 运行时为程序提供新的模块功能，拓展能力；
+			* 设计函数平台，以代码片段为单位执行；
+			* 语法分析提示，编译错误语法警告，精确到代码行；
+			* 完善的代码标准，避免动态代码语法错误；
+			* 简洁、简单的 API，完整的 Test 测试；
+		</Description>
+		<PackageProjectUrl>https://github.com/whuanle/CZGL.CodeAnalysis</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/whuanle/CZGL.CodeAnalysis</RepositoryUrl>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.11.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="5.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\CZGL.CodeAnalysis.Shared\CZGL.CodeAnalysis.Shared.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyModel" Version="6.0.0" />
+	</ItemGroup>
 
 </Project>

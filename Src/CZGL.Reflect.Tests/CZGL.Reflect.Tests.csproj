@@ -20,8 +20,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\CZGL.Reflect\CZGL.Reflect.csproj" />
-  </ItemGroup>
-
 </Project>
