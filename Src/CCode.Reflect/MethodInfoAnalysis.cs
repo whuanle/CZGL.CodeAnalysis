@@ -1,5 +1,4 @@
-﻿using CZGL.CodeAnalysis.Shared;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -15,12 +14,12 @@ namespace CCode.Reflect
     {
         /// <summary>
         /// 判断一个方法是否为 new 方法
-        /// <para>不支持 new virtual</para>
         /// </summary>
         /// <param name="method"></param>
         /// <returns></returns>
         public static bool IsNew(this MethodInfo method)
         {
+            var attr = method.Attributes;
             var baseType = method.GetBaseDefinition().DeclaringType;
 
             // 排除 object

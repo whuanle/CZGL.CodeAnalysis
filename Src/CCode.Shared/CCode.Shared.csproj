@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0;net7.0;</TargetFrameworks>
 		<Version>0.0.1</Version>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -12,6 +12,9 @@
 		<LangVersion>8.0</LangVersion>
 		<Authors>痴者工良</Authors>
 		<EnableNETAnalyzers>True</EnableNETAnalyzers>
+		<RootNamespace>CCode</RootNamespace>
+		<Title>CCode.Shared</Title>
+		
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0|AnyCPU'">

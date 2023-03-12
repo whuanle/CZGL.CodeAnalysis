@@ -1,9 +1,4 @@
-﻿using CZGL.CodeAnalysis.Shared;
-using CZGL.Roslyn;
-using Microsoft.CodeAnalysis;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Reflection;
+﻿using CZGL.Roslyn;
 using Xunit;
 using Xunit.Abstractions;
 

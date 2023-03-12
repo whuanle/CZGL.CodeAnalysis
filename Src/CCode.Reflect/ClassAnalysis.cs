@@ -1,5 +1,4 @@
-﻿using CZGL.CodeAnalysis.Shared;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -7,7 +6,7 @@ using System.Reflection;
 namespace CCode.Reflect
 {
     /// <summary>
-    /// 解析一个类型
+    /// 解析一个类
     /// </summary>
     [CLSCompliant(true)]
     public static class ClassAnalysis
@@ -41,7 +40,6 @@ namespace CCode.Reflect
         {
             if (type.IsValueType || !type.IsClass || type == typeof(Delegate))
                 return false;
-
             var keyword = KeywordAnalysis.GetKeyword(type);
             if (keyword == ClassKeyword.Sealed || keyword == ClassKeyword.Static)
                 return false;
@@ -55,7 +53,7 @@ namespace CCode.Reflect
         /// <returns>类名称</returns>
         public static string GetGenericeName(this Type type)
         {
-            return GenericeAnalysis.GetGenriceName(type);
+            return GenericeAnalysis.GetGenriceDefine(type);
         }
 
         /// <summary>
@@ -69,7 +67,6 @@ namespace CCode.Reflect
             if (type.IsValueType || type == typeof(Delegate))
                 return false;
 
-
             var baseType = type.BaseType != typeof(object) ? true : false;
             var interfaces = type.GetInterfaces().Any() ? true : false;
             return baseType || interfaces;
@@ -82,7 +79,7 @@ namespace CCode.Reflect
         /// <returns></returns>
         public static Dictionary<string, IEnumerable<GenericeConstraintInfo>> GetGenericeParam(this Type type)
         {
-            return GenericeAnalysis.GetConstrains(type);
+            return GenericeAnalysis.GetConstrainParams(type);
         }
 
         /// <summary>

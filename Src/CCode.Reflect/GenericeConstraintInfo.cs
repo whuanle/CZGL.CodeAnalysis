@@ -1,9 +1,4 @@
-﻿using CZGL.CodeAnalysis.Shared;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CCode.Reflect
+﻿namespace CCode.Reflect
 {
     /// <summary>
     /// 表示泛型参数的一个约束信息。

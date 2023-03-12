@@ -1,4 +1,3 @@
-using CZGL.CodeAnalysis.Shared;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -60,7 +59,6 @@ namespace CCode.Reflect
                 throw new ArgumentNullException(nameof(info));
 
             MethodAttributes attributes = info.Attributes;
-            MethodKeyword methodKeyword = MethodKeyword.Default;
 
             // extern 方法
             if ((attributes | MethodAttributes.PinvokeImpl) == attributes)
@@ -93,10 +91,10 @@ namespace CCode.Reflect
             {
                 // override
                 if (info.IsFinal)
-                    return MethodKeyword.Override;
+                    return MethodKeyword.SealedOverride;
                 // new override
                 else
-                    return MethodKeyword.SealedOverride;
+                    return MethodKeyword.Override;
             }
 
             return MethodKeyword.Default;

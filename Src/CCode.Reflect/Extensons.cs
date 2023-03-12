@@ -6,6 +6,7 @@ using System.Text;
 
 namespace System.Linq
 {
+    // 判断集合是否为空或有值
     internal static class Extensons
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

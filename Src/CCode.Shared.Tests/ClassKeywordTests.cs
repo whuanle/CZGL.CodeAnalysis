@@ -1,10 +1,10 @@
+using CCode.Shared;
 using Xunit;
 
 namespace CZGL.CodeAnalysis.Shared.Tests
 {
     public class ClassKeywordTests
     {
-
         class DefaultKeywordClass { }
         [Fact]
         public void DefaultKeyword()

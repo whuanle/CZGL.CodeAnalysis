@@ -1,12 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <TargetFrameworks>netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+	  <TargetFrameworks>netcoreapp3.1;net5.0;net6.0;net7.0;</TargetFrameworks>
     <Nullable>enable</Nullable>
-
     <IsPackable>false</IsPackable>
-
-    <RootNamespace>CZGL.Reflect.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,6 +17,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CCode.Reflect\CCode.Reflect.csproj" />
   </ItemGroup>
 
 </Project>

@@ -15,13 +15,11 @@ namespace CCode.Reflect
        private static readonly TType[] Value = new TType[2];
 
         /// <summary>
-        /// 获得一个类型的字节大小（未实例化时）
+        /// 获得一个类型的字节大小
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <remarks>引用类型一定是 4/8 字节，结构体才能计算处理</remarks>
         /// <returns></returns>
-#pragma warning disable CS3002 // 返回类型不符合 CLS
-        public static uint SizeOf<T>()
-#pragma warning restore CS3002 // 返回类型不符合 CLS
+        public static int SizeOf()
         {
             unsafe
             {
@@ -29,7 +27,7 @@ namespace CCode.Reflect
                     elem1 = __makeref(Value[0]),
                     elem2 = __makeref(Value[1]);
                 unsafe
-                { return (uint)((byte*)*(IntPtr*)(&elem2) - (byte*)*(IntPtr*)(&elem1)); }
+                { return (int)((byte*)*(IntPtr*)(&elem2) - (byte*)*(IntPtr*)(&elem1)); }
             }
         }
     }

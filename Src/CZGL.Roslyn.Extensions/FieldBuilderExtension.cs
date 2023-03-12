@@ -1,9 +1,6 @@
 ﻿using CZGL.Roslyn;
-using CZGL.Reflect;
-using CZGL.CodeAnalysis.Shared;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Reflection;
 using System;
+using System.Reflection;
 
 namespace CZGL.Roslyn
 {
