@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
-using CCode.Reflect;
+﻿using System.Reflection;
 
 namespace CCode.Roslyn
 {

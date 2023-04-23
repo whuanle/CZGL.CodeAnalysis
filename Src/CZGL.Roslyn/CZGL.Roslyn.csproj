@@ -25,4 +25,8 @@
 		<PackageReference Include="Microsoft.Extensions.DependencyModel" Version="6.0.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\CCode.Shared\CCode.Shared.csproj" />
+	</ItemGroup>
+
 </Project>
